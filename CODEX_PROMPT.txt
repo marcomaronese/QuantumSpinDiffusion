@@ -1,0 +1,11 @@
+Read CODEX_HANDOFF.md first and treat it as the scientific specification.
+
+Begin with Task A and Task B only:
+1. run and inspect the existing toy model;
+2. identify mathematical/implementation bugs before modifying behavior;
+3. add physicality/CPTP regression tests;
+4. implement T_{ell m} multipole diagnostics;
+5. verify the theoretical exp[-D ell(ell+1)t] decay numerically;
+6. produce a short validation report.
+
+Do not add Qiskit yet. Do not claim quantum advantage. Preserve the current model assumptions until the diagnostics are passing.
