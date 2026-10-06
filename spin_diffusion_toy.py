@@ -38,6 +38,7 @@ full images. It is the cleanest test of the spin/spherical construction.
 """
 
 import argparse
+import json
 import math
 from pathlib import Path
 
@@ -45,6 +46,21 @@ import numpy as np
 import torch
 from scipy.linalg import expm
 import matplotlib.pyplot as plt
+
+from spin_losses import (
+    build_husimi_grid,
+    frobenius_loss,
+    multipole_loss,
+    objective_loss,
+    quantum_fidelity,
+    trace_distance,
+)
+from spin_multipoles import (
+    irreducible_spherical_tensors,
+    max_multipole_decay_error,
+    multipole_powers,
+    multipole_trajectory,
+)
 
 
 torch.set_default_dtype(torch.float64)
@@ -134,10 +150,7 @@ def empirical_density(points, j: float):
         psi = spin_coherent_state(j, theta, phi)
         rho = rho + torch.outer(psi, psi.conj())
 
-    rho = rho / len(points)
-    rho = 0.5 * (rho + rho.conj().T)
-    rho = rho / torch.trace(rho)
-    return rho
+    return rho / len(points)
 
 
 def liouvillian_matrix(Js, D: float):
@@ -162,13 +175,10 @@ def liouvillian_matrix(Js, D: float):
 
 
 def apply_superoperator(S, rho):
-    # Column-vectorization implemented as transpose + row-major flatten.
+    """Apply a linear superoperator using column-vectorization."""
     vec = rho.T.contiguous().reshape(-1)
     out = S @ vec
-    out = out.reshape(rho.shape).T.contiguous()
-    out = 0.5 * (out + out.conj().T)
-    out = out / torch.trace(out)
-    return out
+    return out.reshape(rho.shape).T.contiguous()
 
 
 def build_forward_trajectory(rho0, Jx, Jy, Jz, D, dt, T):
@@ -224,8 +234,33 @@ def partial_trace_ancilla(joint, d):
     joint acts on system(d) x ancilla(2).
     """
     joint = joint.reshape(d, 2, d, 2)
-    out = joint[:, 0, :, 0] + joint[:, 1, :, 1]
-    return 0.5 * (out + out.conj().T)
+    return joint[:, 0, :, 0] + joint[:, 1, :, 1]
+
+
+def reverse_collision_unitary(theta, generators):
+    """Build the system--ancilla unitary for one reverse step."""
+    dim = generators[0].shape[0]
+    U = torch.eye(dim, dtype=CDTYPE, device=theta.device)
+
+    for layer in range(theta.shape[0]):
+        for k, G in enumerate(generators):
+            Uk = torch.matrix_exp(-1j * theta[layer, k] * G)
+            U = Uk @ U
+    return U
+
+
+def collision_kraus_operators(U, system_dimension):
+    """Extract the two Kraus operators ``<a|U|0>`` for the ancilla."""
+    if U.shape != (2 * system_dimension, 2 * system_dimension):
+        raise ValueError("unitary dimension is inconsistent with the system")
+    blocks = U.reshape(system_dimension, 2, system_dimension, 2)
+    return [blocks[:, a, :, 0] for a in range(2)]
+
+
+def choi_matrix_from_kraus(kraus_operators):
+    """Construct the unnormalized Choi matrix from Kraus operators."""
+    vectors = [K.T.contiguous().reshape(-1) for K in kraus_operators]
+    return sum(torch.outer(vec, vec.conj()) for vec in vectors)
 
 
 def reverse_collision_channel(rho, theta, generators):
@@ -235,26 +270,13 @@ def reverse_collision_channel(rho, theta, generators):
     Append |0><0|_a, apply U_theta, trace the ancilla.
     """
     d = rho.shape[0]
-    dim = 2 * d
-    U = torch.eye(dim, dtype=CDTYPE)
-
-    for layer in range(theta.shape[0]):
-        for k, G in enumerate(generators):
-            Uk = torch.matrix_exp(-1j * theta[layer, k] * G)
-            U = Uk @ U
+    U = reverse_collision_unitary(theta, generators)
 
     anc0 = torch.tensor([[1, 0], [0, 0]], dtype=CDTYPE)
     joint_in = torch.kron(rho.contiguous(), anc0)
     joint_out = U @ joint_in @ U.conj().T
 
-    rho_out = partial_trace_ancilla(joint_out, d)
-    rho_out = rho_out / torch.trace(rho_out)
-    return rho_out
-
-
-def frobenius_loss(a, b):
-    diff = a - b
-    return torch.real(torch.sum(diff.conj() * diff))
+    return partial_trace_ancilla(joint_out, d)
 
 
 def train_reverse(
@@ -264,6 +286,10 @@ def train_reverse(
     epochs,
     lr,
     seed,
+    objective="frobenius",
+    multipole_tensors=None,
+    multipole_weighting="rank-balanced",
+    husimi_grid=None,
 ):
     torch.manual_seed(seed)
 
@@ -287,7 +313,14 @@ def train_reverse(
         # params[0] implements the T -> T-1 reverse step.
         for p_index, t in enumerate(range(T, 0, -1)):
             rho = reverse_collision_channel(rho, params[p_index], generators)
-            loss = loss + frobenius_loss(rho, forward_states[t - 1])
+            loss = loss + objective_loss(
+                rho,
+                forward_states[t - 1],
+                objective,
+                tensors=multipole_tensors,
+                multipole_weighting=multipole_weighting,
+                husimi_grid=husimi_grid,
+            )
 
         loss.backward()
         optimizer.step()
@@ -298,7 +331,7 @@ def train_reverse(
             final_err = float(frobenius_loss(rho, forward_states[0]).detach())
             print(
                 f"epoch={epoch:5d}  "
-                f"path_loss={float(loss.detach()):.6e}  "
+                f"{objective}_path_loss={float(loss.detach()):.6e}  "
                 f"final_state_error={final_err:.6e}"
             )
 
@@ -306,11 +339,47 @@ def train_reverse(
 
 
 @torch.no_grad()
-def generate_density(prior, params, generators):
+def generate_trajectory(prior, params, generators):
+    """Return the prior and every state produced by the reverse stack."""
     rho = prior
+    trajectory = [rho]
     for step in range(params.shape[0]):
         rho = reverse_collision_channel(rho, params[step], generators)
-    return rho
+        trajectory.append(rho)
+    return trajectory
+
+
+@torch.no_grad()
+def generate_density(prior, params, generators):
+    return generate_trajectory(prior, params, generators)[-1]
+
+
+def density_matrix_metrics(rho):
+    """Return trace, Hermiticity residual, and smallest Hermitian eigenvalue."""
+    trace = torch.trace(rho)
+    hermiticity_error = torch.linalg.norm(rho - rho.conj().T)
+    hermitian_part = 0.5 * (rho + rho.conj().T)
+    minimum_eigenvalue = torch.linalg.eigvalsh(hermitian_part).min()
+    return {
+        "trace_real": float(torch.real(trace)),
+        "trace_imag": float(torch.imag(trace)),
+        "hermiticity_error": float(hermiticity_error),
+        "minimum_eigenvalue": float(minimum_eigenvalue),
+    }
+
+
+def assert_physical_density(rho, label, tolerance=1e-10):
+    """Raise if a state is not trace-one, Hermitian, and positive semidefinite."""
+    metrics = density_matrix_metrics(rho)
+    if abs(metrics["trace_real"] - 1.0) > tolerance:
+        raise AssertionError(f"{label}: trace is not one: {metrics}")
+    if abs(metrics["trace_imag"]) > tolerance:
+        raise AssertionError(f"{label}: trace has an imaginary part: {metrics}")
+    if metrics["hermiticity_error"] > tolerance:
+        raise AssertionError(f"{label}: state is not Hermitian: {metrics}")
+    if metrics["minimum_eigenvalue"] < -tolerance:
+        raise AssertionError(f"{label}: state is not positive: {metrics}")
+    return metrics
 
 
 def husimi_q_grid(rho, j, n_theta=80, n_phi=160):
@@ -334,7 +403,10 @@ def husimi_q_grid(rho, j, n_theta=80, n_phi=160):
 
     # Normalize numerically with spherical measure.
     weights = Q * np.sin(thetas)[:, None]
-    weights = np.maximum(weights, 0.0)
+    minimum_weight = float(weights.min())
+    if minimum_weight < -1e-12:
+        raise ValueError(f"Husimi-Q grid has negative weight {minimum_weight}")
+    weights = np.clip(weights, 0.0, None)
     weights = weights / weights.sum()
 
     return thetas, phis, Q, weights
@@ -402,6 +474,53 @@ def plot_training(history, output_file):
     plt.close(fig)
 
 
+def plot_multipole_power(times, powers, output_file):
+    """Plot total Hilbert--Schmidt power in each multipole rank."""
+    fig, ax = plt.subplots(figsize=(7.2, 4.6))
+    for ell, values in sorted(powers.items()):
+        ax.semilogy(
+            times,
+            values.detach().cpu().numpy(),
+            marker="o",
+            label=fr"$\ell={ell}$",
+        )
+    ax.set_xlabel("diffusion time")
+    ax.set_ylabel(r"$P_\ell(t)=\sum_m |c_{\ell m}(t)|^2$")
+    ax.set_title("Forward diffusion: multipole power")
+    ax.grid(True, alpha=0.25)
+    ax.legend(ncol=2)
+    fig.tight_layout()
+    fig.savefig(output_file, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_multipole_decay_comparison(times, powers, D, output_file):
+    """Compare normalized observed root-power with the theoretical decay."""
+    fig, ax = plt.subplots(figsize=(7.2, 4.6))
+    times_array = np.asarray(times, dtype=float)
+    for ell, values in sorted(powers.items()):
+        initial = float(values[0])
+        if initial <= 1e-24:
+            continue
+        observed = np.sqrt(np.maximum(values.detach().cpu().numpy(), 0.0) / initial)
+        theoretical = np.exp(-D * ell * (ell + 1) * times_array)
+        (line,) = ax.semilogy(
+            times_array,
+            observed,
+            "o",
+            label=fr"observed $\ell={ell}$",
+        )
+        ax.semilogy(times_array, theoretical, "--", color=line.get_color())
+    ax.set_xlabel("diffusion time")
+    ax.set_ylabel(r"$\sqrt{P_\ell(t)/P_\ell(0)}$")
+    ax.set_title(r"Observed multipole decay vs. $e^{-D\ell(\ell+1)t}$")
+    ax.grid(True, alpha=0.25)
+    ax.legend(ncol=2, fontsize=8)
+    fig.tight_layout()
+    fig.savefig(output_file, dpi=180, bbox_inches="tight")
+    plt.close(fig)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--j", type=float, default=2.0)
@@ -414,6 +533,24 @@ def main():
     parser.add_argument("--epochs", type=int, default=700)
     parser.add_argument("--lr", type=float, default=0.04)
     parser.add_argument("--seed", type=int, default=7)
+    parser.add_argument(
+        "--objective",
+        choices=[
+            "frobenius",
+            "multipole",
+            "fidelity",
+            "trace-distance",
+            "husimi-js",
+        ],
+        default="frobenius",
+    )
+    parser.add_argument(
+        "--multipole-weighting",
+        choices=["uniform", "rank-balanced", "high-rank"],
+        default="rank-balanced",
+    )
+    parser.add_argument("--loss-grid-theta", type=int, default=16)
+    parser.add_argument("--loss-grid-phi", type=int, default=32)
     parser.add_argument("--outdir", type=str, default="spin_diffusion_output")
     args = parser.parse_args()
 
@@ -438,12 +575,38 @@ def main():
         rho_data, Jx, Jy, Jz, args.D, args.dt, args.T
     )
 
+    forward_metrics = [
+        assert_physical_density(rho, f"forward state {step}")
+        for step, rho in enumerate(forward_states)
+    ]
+
     prior = I / d
+    initial_distance = float(torch.linalg.norm(forward_states[0] - prior))
     terminal_distance = float(torch.linalg.norm(forward_states[-1] - prior))
     print(f"||rho_T - I/d||_F = {terminal_distance:.6e}")
 
-    # 4. Train the reverse quantum collision channels.
+    # 4. Resolve the exact forward trajectory into irreducible multipoles.
+    times = [step * args.dt for step in range(args.T + 1)]
+    tensors = irreducible_spherical_tensors(j, Jx, Jy)
+    coefficients = multipole_trajectory(forward_states, tensors)
+    powers = multipole_powers(coefficients)
+    decay_error = max_multipole_decay_error(coefficients, times, args.D)
+    if decay_error > 1e-10:
+        raise AssertionError(
+            f"multipole decay disagrees with theory: max error={decay_error}"
+        )
+    print(f"max multipole decay error = {decay_error:.6e}")
+
+    # 5. Train the reverse quantum collision channels.
     generators = build_reverse_generators(Jx, Jy, Jz, I)
+    loss_husimi_grid = None
+    if args.objective == "husimi-js":
+        loss_husimi_grid = build_husimi_grid(
+            j,
+            spin_coherent_state,
+            n_theta=args.loss_grid_theta,
+            n_phi=args.loss_grid_phi,
+        )
     params, history = train_reverse(
         forward_states=forward_states,
         generators=generators,
@@ -451,14 +614,66 @@ def main():
         epochs=args.epochs,
         lr=args.lr,
         seed=args.seed,
+        objective=args.objective,
+        multipole_tensors=tensors,
+        multipole_weighting=args.multipole_weighting,
+        husimi_grid=loss_husimi_grid,
     )
 
-    # 5. Generate from the maximally mixed prior.
-    rho_generated = generate_density(prior, params, generators)
+    # 6. Generate from the maximally mixed prior and validate every state.
+    reverse_states = generate_trajectory(prior, params, generators)
+    reverse_metrics = [
+        assert_physical_density(rho, f"reverse state {step}")
+        for step, rho in enumerate(reverse_states)
+    ]
+    rho_generated = reverse_states[-1]
     final_error = float(frobenius_loss(rho_generated, rho_data))
+    final_fidelity = float(quantum_fidelity(rho_generated, rho_data))
+    final_trace_distance = float(trace_distance(rho_generated, rho_data))
+    final_rank_balanced_multipole_loss = float(
+        multipole_loss(
+            rho_generated,
+            rho_data,
+            tensors,
+            weighting="rank-balanced",
+        )
+    )
+    final_high_rank_multipole_loss = float(
+        multipole_loss(
+            rho_generated,
+            rho_data,
+            tensors,
+            weighting="high-rank",
+        )
+    )
     print(f"final Frobenius state error = {final_error:.6e}")
+    print(f"final quantum fidelity = {final_fidelity:.6e}")
+    print(f"final trace distance = {final_trace_distance:.6e}")
 
-    # 6. Read out the target and generated distributions via Husimi Q.
+    cptp_metrics = []
+    for step, theta in enumerate(params):
+        U = reverse_collision_unitary(theta, generators)
+        unitary_error = float(
+            torch.linalg.norm(U.conj().T @ U - torch.eye(2 * d, dtype=CDTYPE))
+        )
+        kraus = collision_kraus_operators(U, d)
+        completeness = sum(K.conj().T @ K for K in kraus)
+        trace_preservation_error = float(torch.linalg.norm(completeness - I))
+        choi = choi_matrix_from_kraus(kraus)
+        minimum_choi_eigenvalue = float(torch.linalg.eigvalsh(choi).min())
+        if unitary_error > 1e-10 or trace_preservation_error > 1e-10:
+            raise AssertionError(f"reverse channel {step} is not trace preserving")
+        if minimum_choi_eigenvalue < -1e-10:
+            raise AssertionError(f"reverse channel {step} is not completely positive")
+        cptp_metrics.append(
+            {
+                "unitarity_error": unitary_error,
+                "trace_preservation_error": trace_preservation_error,
+                "minimum_choi_eigenvalue": minimum_choi_eigenvalue,
+            }
+        )
+
+    # 7. Read out the target and generated distributions via Husimi Q.
     th, ph, Q_target, W_target = husimi_q_grid(rho_data, j)
     _, _, Q_generated, W_generated = husimi_q_grid(rho_generated, j)
 
@@ -471,7 +686,36 @@ def main():
     js = 0.5 * np.sum(p * np.log(p / m)) + 0.5 * np.sum(q * np.log(q / m))
     print(f"grid Jensen-Shannon divergence = {js:.6e}")
 
-    # 7. Draw classical generated directions from Q_generated.
+    q_grid_correlation = float(
+        np.corrcoef(Q_target.reshape(-1), Q_generated.reshape(-1))[0, 1]
+    )
+    target_peak = np.unravel_index(np.argmax(Q_target), Q_target.shape)
+    generated_peak = np.unravel_index(np.argmax(Q_generated), Q_generated.shape)
+
+    def unit_direction(index):
+        theta = th[index[0]]
+        phi = ph[index[1]]
+        return np.array(
+            [
+                np.sin(theta) * np.cos(phi),
+                np.sin(theta) * np.sin(phi),
+                np.cos(theta),
+            ]
+        )
+
+    peak_angular_shift = float(
+        np.arccos(
+            np.clip(
+                unit_direction(target_peak) @ unit_direction(generated_peak),
+                -1.0,
+                1.0,
+            )
+        )
+    )
+    print(f"Q-grid correlation = {q_grid_correlation:.6e}")
+    print(f"Q peak angular shift = {peak_angular_shift:.6e} rad")
+
+    # 8. Draw classical generated directions from Q_generated and save results.
     generated_points = sample_from_grid(
         th, ph, W_generated, n_samples=args.n_data, seed=args.seed + 1
     )
@@ -479,6 +723,66 @@ def main():
     np.save(outdir / "rho_data.npy", rho_data.detach().cpu().numpy())
     np.save(outdir / "rho_generated.npy", rho_generated.detach().cpu().numpy())
     torch.save(params.cpu(), outdir / "reverse_parameters.pt")
+    np.savez(
+        outdir / "forward_multipoles.npz",
+        times=np.asarray(times),
+        **{
+            f"ell{ell}_m{m:+d}": np.asarray(
+                [complex(at_time[(ell, m)]) for at_time in coefficients]
+            )
+            for ell, m in tensors
+        },
+    )
+
+    validation_metrics = {
+        "forward": {
+            "initial_distance_from_maximally_mixed": initial_distance,
+            "terminal_distance_from_maximally_mixed": terminal_distance,
+            "max_trace_error": max(
+                abs(item["trace_real"] - 1.0) for item in forward_metrics
+            ),
+            "max_hermiticity_error": max(
+                item["hermiticity_error"] for item in forward_metrics
+            ),
+            "minimum_eigenvalue": min(
+                item["minimum_eigenvalue"] for item in forward_metrics
+            ),
+            "max_multipole_decay_error": decay_error,
+        },
+        "reverse": {
+            "training_objective": args.objective,
+            "multipole_weighting": args.multipole_weighting,
+            "initial_training_loss": history[0],
+            "final_training_loss": history[-1],
+            "final_frobenius_state_error": final_error,
+            "final_quantum_fidelity": final_fidelity,
+            "final_trace_distance": final_trace_distance,
+            "final_rank_balanced_multipole_loss": (
+                final_rank_balanced_multipole_loss
+            ),
+            "final_high_rank_multipole_loss": final_high_rank_multipole_loss,
+            "grid_jensen_shannon_divergence": float(js),
+            "q_grid_correlation": q_grid_correlation,
+            "q_peak_angular_shift_radians": peak_angular_shift,
+            "max_trace_error": max(
+                abs(item["trace_real"] - 1.0) for item in reverse_metrics
+            ),
+            "max_hermiticity_error": max(
+                item["hermiticity_error"] for item in reverse_metrics
+            ),
+            "minimum_eigenvalue": min(
+                item["minimum_eigenvalue"] for item in reverse_metrics
+            ),
+            "max_trace_preservation_error": max(
+                item["trace_preservation_error"] for item in cptp_metrics
+            ),
+            "minimum_choi_eigenvalue": min(
+                item["minimum_choi_eigenvalue"] for item in cptp_metrics
+            ),
+        },
+    }
+    with (outdir / "validation_metrics.json").open("w", encoding="utf-8") as handle:
+        json.dump(validation_metrics, handle, indent=2)
 
     plot_q_map(
         th,
@@ -495,6 +799,13 @@ def main():
         outdir / "generated_Q.png",
     )
     plot_training(history, outdir / "training_loss.png")
+    plot_multipole_power(times, powers, outdir / "multipole_power.png")
+    plot_multipole_decay_comparison(
+        times,
+        powers,
+        args.D,
+        outdir / "multipole_decay_comparison.png",
+    )
 
     print(f"outputs written to: {outdir.resolve()}")
 
