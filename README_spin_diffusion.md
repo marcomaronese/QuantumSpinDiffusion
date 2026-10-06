@@ -37,11 +37,48 @@ Available objectives are `frobenius`, `multipole`, `fidelity`,
 Uniform multipole weights are mathematically identical to Frobenius loss;
 `rank-balanced` and `high-rank` provide distinct rank-dependent objectives.
 
+Configure the Task D reverse architecture with, for example:
+
+```bash
+.venv/bin/python spin_diffusion_toy.py \
+  --generator-set no-twist \
+  --parameter-sharing shared \
+  --ancilla-count 2
+```
+
+The defaults remain the original `full` generator family, independent
+parameters at every reverse time, and one ancilla. Every run now saves
+`config.json`, `reproducibility.json`, architecture metrics, and the trained
+parameters in addition to the scientific outputs.
+
 Reproduce the five-seed objective and representation study with:
 
 ```bash
 .venv/bin/python experiments/validation_study.py
 ```
+
+Run the mode-resolving `j=2.5` fidelity study and the Task E quantum-instrument
+comparison with:
+
+```bash
+.venv/bin/python experiments/j25_fidelity_study.py
+.venv/bin/python experiments/instrument_study.py
+```
+
+The instrument implementation samples normalized conditional states only
+after ancilla measurement. The probability-weighted conditional branches are
+tested against the deterministic CPTP channel.
+
+Run the separate two-spin correlated pilot and its independent metric audit:
+
+```bash
+.venv/bin/python experiments/two_spin_correlated.py
+.venv/bin/python experiments/validate_two_spin.py
+```
+
+That pilot includes the required factorized, spherical heat-kernel,
+low-bond separable tensor-mixture, and matched-parameter neural baselines. It
+is a single-seed architecture probe, not an advantage benchmark.
 
 Default model:
 - spin `j=2`;
@@ -52,6 +89,8 @@ Default model:
 - symmetry-preserving trainable collision channels.
 
 Outputs include:
+- `config.json`
+- `reproducibility.json`
 - `target_Q.png`
 - `generated_Q.png`
 - `training_loss.png`
@@ -90,3 +129,9 @@ classical density.
 The diagnostic representation sweep resolves two significant encoded-Q
 maxima starting at `j=2.5` for the current dataset and declared grid-mode
 criterion. This is a resolution diagnostic, not a change to the default model.
+
+The follow-up five-seed fidelity study shows that representational resolution
+does not guarantee learned mode preservation: only one of five 100-epoch runs
+recovered both target modes under the same criterion. The first two-spin pilot
+also places the small quantum reverse ansatz behind all three correlation-aware
+classical baselines. These are current limitations, not tuned-away failures.

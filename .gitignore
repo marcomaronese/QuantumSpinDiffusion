@@ -4,3 +4,6 @@ __pycache__/
 spin_diffusion_output/
 spin_diffusion_validation/
 validation_study/
+j25_fidelity_study/
+instrument_study/
+two_spin_pilot/

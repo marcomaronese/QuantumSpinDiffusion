@@ -61,6 +61,16 @@ from spin_multipoles import (
     multipole_powers,
     multipole_trajectory,
 )
+from spin_config import ExperimentConfig, reproducibility_metadata
+from spin_reverse import (
+    build_reverse_generators,
+    choi_matrix_from_kraus,
+    collision_kraus_operators,
+    parameter_schedule,
+    partial_trace_ancilla,
+    reverse_collision_channel,
+    reverse_collision_unitary,
+)
 
 
 torch.set_default_dtype(torch.float64)
@@ -193,92 +203,6 @@ def build_forward_trajectory(rho0, Jx, Jy, Jz, D, dt, T):
     return trajectory
 
 
-def normalized_generator(G):
-    return G / torch.linalg.norm(G)
-
-
-def build_reverse_generators(Jx, Jy, Jz, I):
-    """
-    Hardware-motivated generators on spin-j system + one ancilla qubit.
-
-    In the symmetric N=2j qubit encoding:
-      J_a = 1/2 sum_i sigma_a^(i)
-    and J_z^2 corresponds to permutation-symmetric pair interactions.
-    """
-    X = torch.tensor([[0, 1], [1, 0]], dtype=CDTYPE)
-    Y = torch.tensor([[0, -1j], [1j, 0]], dtype=CDTYPE)
-    Z = torch.tensor([[1, 0], [0, -1]], dtype=CDTYPE)
-    Ia = torch.eye(2, dtype=CDTYPE)
-
-    def kron(a, b):
-        return torch.kron(a.contiguous(), b.contiguous())
-
-    Jz2 = Jz @ Jz
-
-    generators = [
-        kron(Jx, Ia),
-        kron(Jy, Ia),
-        kron(Jz, Ia),
-        kron(Jz2, Ia),
-        kron(Jx, X),
-        kron(Jy, Y),
-        kron(Jz, Z),
-        kron(I, X),
-        kron(I, Y),
-    ]
-    return [normalized_generator(g) for g in generators]
-
-
-def partial_trace_ancilla(joint, d):
-    """
-    joint acts on system(d) x ancilla(2).
-    """
-    joint = joint.reshape(d, 2, d, 2)
-    return joint[:, 0, :, 0] + joint[:, 1, :, 1]
-
-
-def reverse_collision_unitary(theta, generators):
-    """Build the system--ancilla unitary for one reverse step."""
-    dim = generators[0].shape[0]
-    U = torch.eye(dim, dtype=CDTYPE, device=theta.device)
-
-    for layer in range(theta.shape[0]):
-        for k, G in enumerate(generators):
-            Uk = torch.matrix_exp(-1j * theta[layer, k] * G)
-            U = Uk @ U
-    return U
-
-
-def collision_kraus_operators(U, system_dimension):
-    """Extract the two Kraus operators ``<a|U|0>`` for the ancilla."""
-    if U.shape != (2 * system_dimension, 2 * system_dimension):
-        raise ValueError("unitary dimension is inconsistent with the system")
-    blocks = U.reshape(system_dimension, 2, system_dimension, 2)
-    return [blocks[:, a, :, 0] for a in range(2)]
-
-
-def choi_matrix_from_kraus(kraus_operators):
-    """Construct the unnormalized Choi matrix from Kraus operators."""
-    vectors = [K.T.contiguous().reshape(-1) for K in kraus_operators]
-    return sum(torch.outer(vec, vec.conj()) for vec in vectors)
-
-
-def reverse_collision_channel(rho, theta, generators):
-    """
-    theta shape: [layers, n_generators].
-
-    Append |0><0|_a, apply U_theta, trace the ancilla.
-    """
-    d = rho.shape[0]
-    U = reverse_collision_unitary(theta, generators)
-
-    anc0 = torch.tensor([[1, 0], [0, 0]], dtype=CDTYPE)
-    joint_in = torch.kron(rho.contiguous(), anc0)
-    joint_out = U @ joint_in @ U.conj().T
-
-    return partial_trace_ancilla(joint_out, d)
-
-
 def train_reverse(
     forward_states,
     generators,
@@ -290,6 +214,7 @@ def train_reverse(
     multipole_tensors=None,
     multipole_weighting="rank-balanced",
     husimi_grid=None,
+    parameter_sharing="independent",
 ):
     torch.manual_seed(seed)
 
@@ -297,9 +222,14 @@ def train_reverse(
     d = forward_states[0].shape[0]
     prior = torch.eye(d, dtype=CDTYPE) / d
 
-    params = torch.nn.Parameter(
-        0.03 * torch.randn(T, layers, len(generators), dtype=RDTYPE)
+    if parameter_sharing not in {"independent", "shared"}:
+        raise ValueError("parameter_sharing must be independent or shared")
+    parameter_shape = (
+        (T, layers, len(generators))
+        if parameter_sharing == "independent"
+        else (layers, len(generators))
     )
+    params = torch.nn.Parameter(0.03 * torch.randn(*parameter_shape, dtype=RDTYPE))
     optimizer = torch.optim.Adam([params], lr=lr)
 
     history = []
@@ -311,8 +241,9 @@ def train_reverse(
         loss = torch.tensor(0.0, dtype=RDTYPE)
 
         # params[0] implements the T -> T-1 reverse step.
-        for p_index, t in enumerate(range(T, 0, -1)):
-            rho = reverse_collision_channel(rho, params[p_index], generators)
+        schedule = parameter_schedule(params, n_steps=T)
+        for theta, t in zip(schedule, range(T, 0, -1), strict=True):
+            rho = reverse_collision_channel(rho, theta, generators)
             loss = loss + objective_loss(
                 rho,
                 forward_states[t - 1],
@@ -339,19 +270,19 @@ def train_reverse(
 
 
 @torch.no_grad()
-def generate_trajectory(prior, params, generators):
+def generate_trajectory(prior, params, generators, n_steps=None):
     """Return the prior and every state produced by the reverse stack."""
     rho = prior
     trajectory = [rho]
-    for step in range(params.shape[0]):
-        rho = reverse_collision_channel(rho, params[step], generators)
+    for theta in parameter_schedule(params, n_steps=n_steps):
+        rho = reverse_collision_channel(rho, theta, generators)
         trajectory.append(rho)
     return trajectory
 
 
 @torch.no_grad()
-def generate_density(prior, params, generators):
-    return generate_trajectory(prior, params, generators)[-1]
+def generate_density(prior, params, generators, n_steps=None):
+    return generate_trajectory(prior, params, generators, n_steps=n_steps)[-1]
 
 
 def density_matrix_metrics(rho):
@@ -551,11 +482,56 @@ def main():
     )
     parser.add_argument("--loss-grid-theta", type=int, default=16)
     parser.add_argument("--loss-grid-phi", type=int, default=32)
+    parser.add_argument("--q-grid-theta", type=int, default=80)
+    parser.add_argument("--q-grid-phi", type=int, default=160)
+    parser.add_argument(
+        "--generator-set",
+        choices=["full", "no-twist", "minimal"],
+        default="full",
+    )
+    parser.add_argument(
+        "--parameter-sharing",
+        choices=["independent", "shared"],
+        default="independent",
+        help="use separate reverse parameters per time step or one shared block",
+    )
+    parser.add_argument("--ancilla-count", type=int, default=1)
     parser.add_argument("--outdir", type=str, default="spin_diffusion_output")
     args = parser.parse_args()
 
+    config = ExperimentConfig(
+        j=args.j,
+        n_data=args.n_data,
+        sigma=args.sigma,
+        diffusion_steps=args.T,
+        diffusion_rate=args.D,
+        time_step=args.dt,
+        reverse_layers=args.layers,
+        epochs=args.epochs,
+        learning_rate=args.lr,
+        seed=args.seed,
+        objective=args.objective,
+        multipole_weighting=args.multipole_weighting,
+        loss_grid_theta=args.loss_grid_theta,
+        loss_grid_phi=args.loss_grid_phi,
+        q_grid_theta=args.q_grid_theta,
+        q_grid_phi=args.q_grid_phi,
+        generator_set=args.generator_set,
+        parameter_sharing=args.parameter_sharing,
+        ancilla_count=args.ancilla_count,
+        output_directory=args.outdir,
+    )
+    config.validate()
     outdir = Path(args.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
+    with (outdir / "config.json").open("w", encoding="utf-8") as handle:
+        json.dump(config.to_dict(), handle, indent=2)
+    with (outdir / "reproducibility.json").open("w", encoding="utf-8") as handle:
+        json.dump(
+            reproducibility_metadata(config, Path(__file__).resolve().parent),
+            handle,
+            indent=2,
+        )
 
     j = args.j
     N = int(round(2 * j))
@@ -598,7 +574,15 @@ def main():
     print(f"max multipole decay error = {decay_error:.6e}")
 
     # 5. Train the reverse quantum collision channels.
-    generators = build_reverse_generators(Jx, Jy, Jz, I)
+    generators, generator_names = build_reverse_generators(
+        Jx,
+        Jy,
+        Jz,
+        I,
+        ancilla_count=args.ancilla_count,
+        generator_set=args.generator_set,
+        return_names=True,
+    )
     loss_husimi_grid = None
     if args.objective == "husimi-js":
         loss_husimi_grid = build_husimi_grid(
@@ -618,10 +602,16 @@ def main():
         multipole_tensors=tensors,
         multipole_weighting=args.multipole_weighting,
         husimi_grid=loss_husimi_grid,
+        parameter_sharing=args.parameter_sharing,
     )
 
     # 6. Generate from the maximally mixed prior and validate every state.
-    reverse_states = generate_trajectory(prior, params, generators)
+    reverse_states = generate_trajectory(
+        prior,
+        params,
+        generators,
+        n_steps=args.T,
+    )
     reverse_metrics = [
         assert_physical_density(rho, f"reverse state {step}")
         for step, rho in enumerate(reverse_states)
@@ -651,12 +641,22 @@ def main():
     print(f"final trace distance = {final_trace_distance:.6e}")
 
     cptp_metrics = []
-    for step, theta in enumerate(params):
+    for step, theta in enumerate(parameter_schedule(params, n_steps=args.T)):
         U = reverse_collision_unitary(theta, generators)
         unitary_error = float(
-            torch.linalg.norm(U.conj().T @ U - torch.eye(2 * d, dtype=CDTYPE))
+            torch.linalg.norm(
+                U.conj().T @ U
+                - torch.eye(
+                    (2**args.ancilla_count) * d,
+                    dtype=CDTYPE,
+                )
+            )
         )
-        kraus = collision_kraus_operators(U, d)
+        kraus = collision_kraus_operators(
+            U,
+            d,
+            ancilla_dimension=2**args.ancilla_count,
+        )
         completeness = sum(K.conj().T @ K for K in kraus)
         trace_preservation_error = float(torch.linalg.norm(completeness - I))
         choi = choi_matrix_from_kraus(kraus)
@@ -674,8 +674,18 @@ def main():
         )
 
     # 7. Read out the target and generated distributions via Husimi Q.
-    th, ph, Q_target, W_target = husimi_q_grid(rho_data, j)
-    _, _, Q_generated, W_generated = husimi_q_grid(rho_generated, j)
+    th, ph, Q_target, W_target = husimi_q_grid(
+        rho_data,
+        j,
+        n_theta=args.q_grid_theta,
+        n_phi=args.q_grid_phi,
+    )
+    _, _, Q_generated, W_generated = husimi_q_grid(
+        rho_generated,
+        j,
+        n_theta=args.q_grid_theta,
+        n_phi=args.q_grid_phi,
+    )
 
     eps = 1e-14
     p = W_target.reshape(-1) + eps
@@ -735,6 +745,15 @@ def main():
     )
 
     validation_metrics = {
+        "architecture": {
+            "generator_set": args.generator_set,
+            "generator_names": generator_names,
+            "generator_count": len(generators),
+            "ancilla_count": args.ancilla_count,
+            "kraus_rank_upper_bound": 2**args.ancilla_count,
+            "parameter_sharing": args.parameter_sharing,
+            "trainable_parameter_count": params.numel(),
+        },
         "forward": {
             "initial_distance_from_maximally_mixed": initial_distance,
             "terminal_distance_from_maximally_mixed": terminal_distance,
