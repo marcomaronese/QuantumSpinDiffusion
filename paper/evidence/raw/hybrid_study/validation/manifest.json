@@ -1,0 +1,196 @@
+{
+  "source_sha256": "f14faebee90597d707fdfcc4be9828025992dc3cb275035bbd03db08f3fced21",
+  "jobs": [
+    {
+      "seed": 17,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 19,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 23,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 29,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 31,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 17,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.25
+    },
+    {
+      "seed": 19,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.25
+    },
+    {
+      "seed": 23,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.25
+    },
+    {
+      "seed": 29,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.25
+    },
+    {
+      "seed": 31,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.25
+    },
+    {
+      "seed": 17,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.5
+    },
+    {
+      "seed": 19,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.5
+    },
+    {
+      "seed": 23,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.5
+    },
+    {
+      "seed": 29,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.5
+    },
+    {
+      "seed": 31,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.5
+    },
+    {
+      "seed": 17,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.75
+    },
+    {
+      "seed": 19,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.75
+    },
+    {
+      "seed": 23,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.75
+    },
+    {
+      "seed": 29,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.75
+    },
+    {
+      "seed": 31,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "hybrid",
+      "hybrid_lambda": 0.75
+    }
+  ],
+  "protocol": {
+    "validation_seeds": [
+      17,
+      19,
+      23,
+      29,
+      31
+    ],
+    "test_seeds": [
+      41,
+      43,
+      47,
+      53,
+      59
+    ],
+    "lambdas": [
+      0.0,
+      0.25,
+      0.5,
+      0.75
+    ],
+    "epochs": 500,
+    "start": "mixed",
+    "supervision": "final",
+    "reason": "Generative prior with objective aligned directly to the final target",
+    "high_rank_loss": "existing mean-one weights proportional to (ell+1)^2 across all ranks",
+    "selection": "guard mean infidelity (+.005), trace distance (+.01), Q JS (+.001) vs lambda=0; maximize both-mode recovery; tie-break by ell=4+5 squared coefficient error, then smaller lambda",
+    "success_gate": "at least 4/5 validation and 4/5 test successes, physicality and decay within 1e-10, guardrails on each split",
+    "source_sha256": "f14faebee90597d707fdfcc4be9828025992dc3cb275035bbd03db08f3fced21",
+    "selection_code_sha256": "5029e53752e7ff991bed104261e3d38fda8c456db933453edbc420e02f28736e"
+  }
+}

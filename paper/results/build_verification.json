@@ -1,0 +1,10 @@
+{
+  "standalone_overleaf_compile_passed": true,
+  "compiler": "pdfLaTeX + BibTeX",
+  "page_count": 13,
+  "bibliography_entries": 11,
+  "latex_warnings": [],
+  "source_snapshots_match_across_diagnostic_and_hybrid": true,
+  "visual_review": "All pages inspected in rendered contact sheets; figures and tables checked for overlap and clipping.",
+  "remaining_author_action": "Supply names/affiliations and submission declarations; research limits are documented in SUBMISSION_NOTES.md."
+}

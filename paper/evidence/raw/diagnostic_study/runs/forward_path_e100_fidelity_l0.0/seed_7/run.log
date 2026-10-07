@@ -1,0 +1,21 @@
+spin j=2.5, symmetric-qubit count N=5, spin dimension d=6
+||rho_T - I/d||_F = 6.136314e-03
+max multipole decay error = 6.661338e-16
+epoch=    0  fidelity_path_loss=5.412388e-01  final_state_error=2.652489e-01
+epoch=   10  fidelity_path_loss=3.324577e-01  final_state_error=1.628268e-01
+epoch=   20  fidelity_path_loss=1.873004e-01  final_state_error=7.223802e-02
+epoch=   30  fidelity_path_loss=1.098560e-01  final_state_error=3.749868e-02
+epoch=   40  fidelity_path_loss=8.365776e-02  final_state_error=3.183793e-02
+epoch=   50  fidelity_path_loss=7.763785e-02  final_state_error=2.653811e-02
+epoch=   60  fidelity_path_loss=7.369159e-02  final_state_error=2.504752e-02
+epoch=   70  fidelity_path_loss=7.090704e-02  final_state_error=2.191112e-02
+epoch=   80  fidelity_path_loss=6.872431e-02  final_state_error=2.070073e-02
+epoch=   90  fidelity_path_loss=6.602539e-02  final_state_error=1.880510e-02
+epoch=   99  fidelity_path_loss=6.301858e-02  final_state_error=1.662734e-02
+final Frobenius state error = 1.634616e-02
+final quantum fidelity = 9.574850e-01
+final trace distance = 1.326823e-01
+grid Jensen-Shannon divergence = 5.807758e-03
+Q-grid correlation = 9.961722e-01
+Q peak angular shift = 2.211248e-01 rad
+outputs written to: /home/mmaronese/work/spin_quantum_diffusion/diagnostic_study/runs/forward_path_e100_fidelity_l0.0/seed_7

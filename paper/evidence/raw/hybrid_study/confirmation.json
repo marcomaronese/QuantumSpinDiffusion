@@ -1,0 +1,20 @@
+{
+  "selected_lambda": 0.75,
+  "eligible_lambdas": [
+    0.0,
+    0.25,
+    0.5,
+    0.75
+  ],
+  "validation_modes_recovered": 5,
+  "guardrail_absolute_deltas": {
+    "infidelity": 0.005,
+    "trace_distance": 0.01,
+    "q_js_divergence": 0.001
+  },
+  "selection_uses_test_results": false,
+  "test_modes_recovered": 5,
+  "test_guardrails_pass": true,
+  "physicality_and_forward_decay_pass": true,
+  "single_spin_gate_pass": true
+}

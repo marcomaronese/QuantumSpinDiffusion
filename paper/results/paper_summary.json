@@ -1,0 +1,168 @@
+{
+  "diagnostic": [
+    {
+      "start": "mixed",
+      "supervision": "path",
+      "epochs": 100,
+      "mode_successes": 1,
+      "infidelity": {
+        "mean": 0.042083829632111526,
+        "sample_sd": 0.013168176113875264
+      },
+      "trace_distance": {
+        "mean": 0.13282569403503697,
+        "sample_sd": 0.025706245994254615
+      },
+      "q_js_divergence": {
+        "mean": 0.005761765465230948,
+        "sample_sd": 0.0017383373903314477
+      }
+    },
+    {
+      "start": "mixed",
+      "supervision": "final",
+      "epochs": 100,
+      "mode_successes": 5,
+      "infidelity": {
+        "mean": 0.0007171384067919506,
+        "sample_sd": 0.00037266502677444757
+      },
+      "trace_distance": {
+        "mean": 0.016098484131786404,
+        "sample_sd": 0.0058819809798980015
+      },
+      "q_js_divergence": {
+        "mean": 2.2528231566326046e-05,
+        "sample_sd": 1.2222091955966758e-05
+      }
+    },
+    {
+      "start": "forward",
+      "supervision": "path",
+      "epochs": 100,
+      "mode_successes": 1,
+      "infidelity": {
+        "mean": 0.04221437568317563,
+        "sample_sd": 0.012143167311821116
+      },
+      "trace_distance": {
+        "mean": 0.13335944550393344,
+        "sample_sd": 0.02342890567286332
+      },
+      "q_js_divergence": {
+        "mean": 0.00573288300096244,
+        "sample_sd": 0.0016677717796516895
+      }
+    },
+    {
+      "start": "forward",
+      "supervision": "final",
+      "epochs": 100,
+      "mode_successes": 5,
+      "infidelity": {
+        "mean": 0.0008347371312721786,
+        "sample_sd": 0.00044607835319004793
+      },
+      "trace_distance": {
+        "mean": 0.017632616333218904,
+        "sample_sd": 0.006733613967807075
+      },
+      "q_js_divergence": {
+        "mean": 2.9164268683154027e-05,
+        "sample_sd": 2.0700887542856045e-05
+      }
+    },
+    {
+      "start": "mixed",
+      "supervision": "path",
+      "epochs": 500,
+      "mode_successes": 5,
+      "infidelity": {
+        "mean": 0.012193785898799204,
+        "sample_sd": 0.0010638335823880097
+      },
+      "trace_distance": {
+        "mean": 0.06901434469166631,
+        "sample_sd": 0.006249739522817461
+      },
+      "q_js_divergence": {
+        "mean": 0.001545305798907029,
+        "sample_sd": 0.00011209255838712648
+      }
+    },
+    {
+      "start": "mixed",
+      "supervision": "final",
+      "epochs": 500,
+      "mode_successes": 5,
+      "infidelity": {
+        "mean": 2.977823033989413e-05,
+        "sample_sd": 2.2609749316605624e-05
+      },
+      "trace_distance": {
+        "mean": 0.0030539992538190256,
+        "sample_sd": 0.000623446351068889
+      },
+      "q_js_divergence": {
+        "mean": 7.676678168434812e-07,
+        "sample_sd": 3.582781387899006e-07
+      }
+    },
+    {
+      "start": "forward",
+      "supervision": "path",
+      "epochs": 500,
+      "mode_successes": 5,
+      "infidelity": {
+        "mean": 0.011221484446983255,
+        "sample_sd": 0.0007431701681121838
+      },
+      "trace_distance": {
+        "mean": 0.06497824939314548,
+        "sample_sd": 0.005947207666510898
+      },
+      "q_js_divergence": {
+        "mean": 0.0014202097265278025,
+        "sample_sd": 5.532932700932288e-05
+      }
+    },
+    {
+      "start": "forward",
+      "supervision": "final",
+      "epochs": 500,
+      "mode_successes": 5,
+      "infidelity": {
+        "mean": 2.7041064422439477e-05,
+        "sample_sd": 1.1615233594701297e-05
+      },
+      "trace_distance": {
+        "mean": 0.0031221586704775874,
+        "sample_sd": 0.0011341516051831862
+      },
+      "q_js_divergence": {
+        "mean": 7.656268426604776e-07,
+        "sample_sd": 3.574212470040625e-07
+      }
+    }
+  ],
+  "hybrid_paired_confirmation": {
+    "rank45_squared_error": {
+      "mean_hybrid_minus_fidelity": -1.1461903694033753e-05,
+      "descriptive_t95_interval": [
+        -2.1024656333290756e-05,
+        -1.899151054776748e-06
+      ],
+      "seeds_improved": 5,
+      "relative_reduction_of_means_percent": 80.30922127260692
+    },
+    "trace_distance": {
+      "mean_hybrid_minus_fidelity": -0.0018455246143898145,
+      "descriptive_t95_interval": [
+        -0.0032506980959937457,
+        -0.00044035113278588305
+      ],
+      "seeds_improved": 4,
+      "relative_reduction_of_means_percent": 51.09242004697047
+    }
+  }
+}

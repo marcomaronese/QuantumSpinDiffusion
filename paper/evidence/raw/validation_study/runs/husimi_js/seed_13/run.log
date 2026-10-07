@@ -1,0 +1,21 @@
+spin j=2.0, symmetric-qubit count N=4, spin dimension d=5
+||rho_T - I/d||_F = 6.486630e-03
+max multipole decay error = 1.110223e-16
+epoch=    0  husimi-js_path_loss=1.331764e-01  final_state_error=2.704057e-01
+epoch=   10  husimi-js_path_loss=4.876541e-02  final_state_error=8.048952e-02
+epoch=   20  husimi-js_path_loss=1.446983e-02  final_state_error=4.568294e-02
+epoch=   30  husimi-js_path_loss=7.466323e-03  final_state_error=4.586702e-02
+epoch=   40  husimi-js_path_loss=6.527743e-03  final_state_error=4.614310e-02
+epoch=   50  husimi-js_path_loss=5.508017e-03  final_state_error=3.531408e-02
+epoch=   60  husimi-js_path_loss=5.020095e-03  final_state_error=3.098302e-02
+epoch=   70  husimi-js_path_loss=4.698145e-03  final_state_error=3.140890e-02
+epoch=   80  husimi-js_path_loss=4.480317e-03  final_state_error=3.081328e-02
+epoch=   90  husimi-js_path_loss=4.315188e-03  final_state_error=3.226537e-02
+epoch=   99  husimi-js_path_loss=4.190691e-03  final_state_error=3.270697e-02
+final Frobenius state error = 3.268350e-02
+final quantum fidelity = 9.553412e-01
+final trace distance = 1.638899e-01
+grid Jensen-Shannon divergence = 2.378460e-03
+Q-grid correlation = 9.912180e-01
+Q peak angular shift = 3.563714e-01 rad
+outputs written to: /home/mmaronese/work/spin_quantum_diffusion/validation_study/runs/husimi_js/seed_13

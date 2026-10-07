@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "hashed_files": 1269,
+  "single_spin_runs": 70,
+  "two_spin_models": 6,
+  "maximum_state_metric_discrepancy": 2.6867397195928788e-14,
+  "maximum_two_spin_metric_discrepancy": 2.0750068330244176e-13,
+  "maximum_trace_residual": 3.9523939688040925e-14,
+  "maximum_hermiticity_residual": 2.802698279503432e-16,
+  "minimum_state_eigenvalue": 6.0661328612506036e-05,
+  "maximum_forward_decay_error": 8.326672684688674e-16,
+  "maximum_saved_state_replay_error": 0.0,
+  "maximum_kraus_completeness_error": 2.3534772010965218e-14,
+  "mode_recovery_and_rank_errors_agree": true,
+  "scope_notes": [
+    "NumPy state metrics are independent of training losses.",
+    "Tensor basis, peak finding and channel replay reuse historical source.",
+    "Historical instrument ensemble summaries were preserved, not rerun.",
+    "Historical j=2 objective sweep is retained as supplementary evidence, not independently re-audited here."
+  ]
+}

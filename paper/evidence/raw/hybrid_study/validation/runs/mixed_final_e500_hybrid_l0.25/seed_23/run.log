@@ -1,0 +1,21 @@
+spin j=2.5, symmetric-qubit count N=5, spin dimension d=6
+||rho_T - I/d||_F = 6.148348e-03
+max multipole decay error = 6.661338e-16
+epoch=    0  hybrid_final_loss=3.695160e-01  final_state_error=2.696411e-01
+epoch=   50  hybrid_final_loss=3.630504e-03  final_state_error=1.878899e-03
+epoch=  100  hybrid_final_loss=5.382271e-04  final_state_error=1.858339e-04
+epoch=  150  hybrid_final_loss=2.466927e-04  final_state_error=7.492982e-05
+epoch=  200  hybrid_final_loss=1.590691e-04  final_state_error=4.312763e-05
+epoch=  250  hybrid_final_loss=1.172985e-04  final_state_error=2.958092e-05
+epoch=  300  hybrid_final_loss=9.360815e-05  final_state_error=2.296217e-05
+epoch=  350  hybrid_final_loss=7.876260e-05  final_state_error=1.957110e-05
+epoch=  400  hybrid_final_loss=6.856643e-05  final_state_error=1.761132e-05
+epoch=  450  hybrid_final_loss=6.106301e-05  final_state_error=1.631967e-05
+epoch=  499  hybrid_final_loss=5.537717e-05  final_state_error=1.539949e-05
+final Frobenius state error = 1.538324e-05
+final quantum fidelity = 9.999332e-01
+final trace distance = 3.828152e-03
+grid Jensen-Shannon divergence = 1.746948e-06
+Q-grid correlation = 9.999989e-01
+Q peak angular shift = 0.000000e+00 rad
+outputs written to: /home/mmaronese/work/spin_quantum_diffusion/hybrid_study/validation/runs/mixed_final_e500_hybrid_l0.25/seed_23

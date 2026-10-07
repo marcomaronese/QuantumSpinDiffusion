@@ -1,0 +1,602 @@
+{
+  "seeds": [
+    3,
+    5,
+    7,
+    11,
+    13
+  ],
+  "run_count": 25,
+  "configurations": {
+    "frobenius": {
+      "frobenius_error": {
+        "mean": 0.00841053216620715,
+        "sample_standard_deviation": 0.002280324152734826,
+        "minimum": 0.004463326841614858,
+        "maximum": 0.010116340260889131
+      },
+      "trace_distance": {
+        "mean": 0.09488478275427495,
+        "sample_standard_deviation": 0.01498319111452843,
+        "minimum": 0.06879647297644972,
+        "maximum": 0.10568918147965461
+      },
+      "infidelity": {
+        "mean": 0.033510333865965115,
+        "sample_standard_deviation": 0.0072643644089244435,
+        "minimum": 0.020787915931647416,
+        "maximum": 0.038290594214003604
+      },
+      "q_js_divergence": {
+        "mean": 0.005207548403521427,
+        "sample_standard_deviation": 0.0013256526954992538,
+        "minimum": 0.0029017578535569643,
+        "maximum": 0.0061105610687505595
+      },
+      "q_correlation": {
+        "mean": 0.9986383630471799,
+        "sample_standard_deviation": 0.0005531919549979817,
+        "minimum": 0.9981297619331072,
+        "maximum": 0.9994903461677395
+      },
+      "q_peak_shift": {
+        "mean": 0.17372927748252065,
+        "sample_standard_deviation": 0.08739280632026496,
+        "minimum": 0.09903778784840304,
+        "maximum": 0.31749452424994784
+      },
+      "rank_balanced_multipole_loss": {
+        "mean": 0.008993230377136455,
+        "sample_standard_deviation": 0.0023703323231965287,
+        "minimum": 0.004857956208704894,
+        "maximum": 0.01058574075051287
+      },
+      "high_rank_multipole_loss": {
+        "mean": 0.006617693396494558,
+        "sample_standard_deviation": 0.001965911283483682,
+        "minimum": 0.0032581550165507026,
+        "maximum": 0.008210047715220792
+      },
+      "all_losses_decreased": true
+    },
+    "multipole_rank_balanced": {
+      "frobenius_error": {
+        "mean": 0.010585848998374637,
+        "sample_standard_deviation": 0.0033013288218429154,
+        "minimum": 0.004936475015333133,
+        "maximum": 0.012879451113968508
+      },
+      "trace_distance": {
+        "mean": 0.10552896786650778,
+        "sample_standard_deviation": 0.019318009962460542,
+        "minimum": 0.07208817927018812,
+        "maximum": 0.11827379273106291
+      },
+      "infidelity": {
+        "mean": 0.0321405296894393,
+        "sample_standard_deviation": 0.006845651892887319,
+        "minimum": 0.020116568955616088,
+        "maximum": 0.036466603473880754
+      },
+      "q_js_divergence": {
+        "mean": 0.004029023201659151,
+        "sample_standard_deviation": 0.0008924426615734606,
+        "minimum": 0.0024799675298929043,
+        "maximum": 0.004573020984129974
+      },
+      "q_correlation": {
+        "mean": 0.9983574890895561,
+        "sample_standard_deviation": 0.0006632286949838083,
+        "minimum": 0.9977817854242805,
+        "maximum": 0.9994645929740069
+      },
+      "q_peak_shift": {
+        "mean": 0.23544198530599295,
+        "sample_standard_deviation": 0.050748535419644324,
+        "minimum": 0.16341820126336437,
+        "maximum": 0.2955280872883335
+      },
+      "rank_balanced_multipole_loss": {
+        "mean": 0.009457597394444395,
+        "sample_standard_deviation": 0.00268643889851998,
+        "minimum": 0.0048963906045282075,
+        "maximum": 0.011424527406640657
+      },
+      "high_rank_multipole_loss": {
+        "mean": 0.010058879542918276,
+        "sample_standard_deviation": 0.003459849264103961,
+        "minimum": 0.00404958438611254,
+        "maximum": 0.012321788930233425
+      },
+      "all_losses_decreased": true
+    },
+    "multipole_high_rank": {
+      "frobenius_error": {
+        "mean": 0.007646884469441634,
+        "sample_standard_deviation": 0.0023941866829136093,
+        "minimum": 0.003954736065160075,
+        "maximum": 0.009842332382835727
+      },
+      "trace_distance": {
+        "mean": 0.08573005863381569,
+        "sample_standard_deviation": 0.014881610353893225,
+        "minimum": 0.061967687270832864,
+        "maximum": 0.09878358187661665
+      },
+      "infidelity": {
+        "mean": 0.041117416952252926,
+        "sample_standard_deviation": 0.012907023328294118,
+        "minimum": 0.020878388908839862,
+        "maximum": 0.051913753306397026
+      },
+      "q_js_divergence": {
+        "mean": 0.0077161685159516935,
+        "sample_standard_deviation": 0.0030576296147858096,
+        "minimum": 0.0031960269224528323,
+        "maximum": 0.010311188717184838
+      },
+      "q_correlation": {
+        "mean": 0.9973216309372883,
+        "sample_standard_deviation": 0.0013574534486719898,
+        "minimum": 0.9961062575645151,
+        "maximum": 0.9990302139810844
+      },
+      "q_peak_shift": {
+        "mean": 0.1629565715422862,
+        "sample_standard_deviation": 0.252167278433733,
+        "minimum": 0.0,
+        "maximum": 0.6103593466647677
+      },
+      "rank_balanced_multipole_loss": {
+        "mean": 0.011133062912584018,
+        "sample_standard_deviation": 0.004128055035021748,
+        "minimum": 0.004987309797434054,
+        "maximum": 0.014973843447785067
+      },
+      "high_rank_multipole_loss": {
+        "mean": 0.0032203021582060754,
+        "sample_standard_deviation": 0.0006367975072199828,
+        "minimum": 0.002190323198368121,
+        "maximum": 0.003782712951518458
+      },
+      "all_losses_decreased": true
+    },
+    "fidelity": {
+      "frobenius_error": {
+        "mean": 0.009512587993564567,
+        "sample_standard_deviation": 0.003291198185950359,
+        "minimum": 0.0038143501343367307,
+        "maximum": 0.012116551623008929
+      },
+      "trace_distance": {
+        "mean": 0.09253053233385561,
+        "sample_standard_deviation": 0.021278956400482864,
+        "minimum": 0.055007863349399326,
+        "maximum": 0.10750213812976965
+      },
+      "infidelity": {
+        "mean": 0.021411772461801613,
+        "sample_standard_deviation": 0.007560975192311081,
+        "minimum": 0.00797656396963431,
+        "maximum": 0.02623786939328976
+      },
+      "q_js_divergence": {
+        "mean": 0.0021251199488835,
+        "sample_standard_deviation": 0.000675117080375085,
+        "minimum": 0.0009304586385283776,
+        "maximum": 0.002526527616936341
+      },
+      "q_correlation": {
+        "mean": 0.9985345339213593,
+        "sample_standard_deviation": 0.000551253274862198,
+        "minimum": 0.9980801256233055,
+        "maximum": 0.9994842754869528
+      },
+      "q_peak_shift": {
+        "mean": 0.3532446323352188,
+        "sample_standard_deviation": 0.18671476644219845,
+        "minimum": 0.19280326369544443,
+        "maximum": 0.6698249792685512
+      },
+      "rank_balanced_multipole_loss": {
+        "mean": 0.007885884121730975,
+        "sample_standard_deviation": 0.0026538170065271275,
+        "minimum": 0.0032487209562421073,
+        "maximum": 0.009872202312465514
+      },
+      "high_rank_multipole_loss": {
+        "mean": 0.009364631424462744,
+        "sample_standard_deviation": 0.0031914180349456047,
+        "minimum": 0.00387126714180916,
+        "maximum": 0.011972126176357465
+      },
+      "all_losses_decreased": true
+    },
+    "husimi_js": {
+      "frobenius_error": {
+        "mean": 0.024991507063773174,
+        "sample_standard_deviation": 0.008818174964010649,
+        "minimum": 0.010032281001839637,
+        "maximum": 0.03268349563864394
+      },
+      "trace_distance": {
+        "mean": 0.14248929910221575,
+        "sample_standard_deviation": 0.02701031431624506,
+        "minimum": 0.09590387810819728,
+        "maximum": 0.1638898980020227
+      },
+      "infidelity": {
+        "mean": 0.03770025135824937,
+        "sample_standard_deviation": 0.009543214362000191,
+        "minimum": 0.021347046308681228,
+        "maximum": 0.04465883337025889
+      },
+      "q_js_divergence": {
+        "mean": 0.002169967628449779,
+        "sample_standard_deviation": 0.00032543631437272644,
+        "minimum": 0.0016727135010860712,
+        "maximum": 0.002476641644282916
+      },
+      "q_correlation": {
+        "mean": 0.9936687882180412,
+        "sample_standard_deviation": 0.002485131667828021,
+        "minimum": 0.9912180045248034,
+        "maximum": 0.997675120757748
+      },
+      "q_peak_shift": {
+        "mean": 0.30012072929523,
+        "sample_standard_deviation": 0.06975646770918681,
+        "minimum": 0.18534878285600456,
+        "maximum": 0.3563714333663059
+      },
+      "rank_balanced_multipole_loss": {
+        "mean": 0.018396155578299486,
+        "sample_standard_deviation": 0.006091387933246416,
+        "minimum": 0.008107009090041419,
+        "maximum": 0.023635823918593892
+      },
+      "high_rank_multipole_loss": {
+        "mean": 0.026843768201237704,
+        "sample_standard_deviation": 0.010057278739923882,
+        "minimum": 0.009740436500042525,
+        "maximum": 0.03584480715680361
+      },
+      "all_losses_decreased": true
+    }
+  },
+  "global_validation": {
+    "maximum_trace_error": 3.681932536636623e-11,
+    "minimum_state_eigenvalue": 0.0034176474119654125,
+    "maximum_trace_preservation_error": 3.904819866513731e-11,
+    "minimum_choi_eigenvalue": -1.633838828343777e-15,
+    "maximum_multipole_decay_error": 2.220446049250313e-16
+  },
+  "paired_vs_frobenius": {
+    "multipole_rank_balanced": {
+      "frobenius_error": {
+        "mean_candidate_minus_frobenius": 0.0021753168321674847,
+        "paired_95_percent_t_interval": [
+          0.0005083296404281494,
+          0.00384230402390682
+        ],
+        "lower_is_better_wins": 0,
+        "paired_run_count": 5
+      },
+      "trace_distance": {
+        "mean_candidate_minus_frobenius": 0.010644185112232835,
+        "paired_95_percent_t_interval": [
+          0.0025512208593437453,
+          0.018737149365121924
+        ],
+        "lower_is_better_wins": 0,
+        "paired_run_count": 5
+      },
+      "infidelity": {
+        "mean_candidate_minus_frobenius": -0.001369804176525813,
+        "paired_95_percent_t_interval": [
+          -0.0036619067033324204,
+          0.0009222983502807944
+        ],
+        "lower_is_better_wins": 4,
+        "paired_run_count": 5
+      },
+      "q_js_divergence": {
+        "mean_candidate_minus_frobenius": -0.0011785252018622766,
+        "paired_95_percent_t_interval": [
+          -0.0017839871569081027,
+          -0.0005730632468164505
+        ],
+        "lower_is_better_wins": 5,
+        "paired_run_count": 5
+      },
+      "high_rank_multipole_loss": {
+        "mean_candidate_minus_frobenius": 0.00344118614642372,
+        "paired_95_percent_t_interval": [
+          0.0012410677004135134,
+          0.005641304592433926
+        ],
+        "lower_is_better_wins": 0,
+        "paired_run_count": 5
+      }
+    },
+    "multipole_high_rank": {
+      "frobenius_error": {
+        "mean_candidate_minus_frobenius": -0.0007636476967655176,
+        "paired_95_percent_t_interval": [
+          -0.003891452791363867,
+          0.002364157397832832
+        ],
+        "lower_is_better_wins": 4,
+        "paired_run_count": 5
+      },
+      "trace_distance": {
+        "mean_candidate_minus_frobenius": -0.00915472412045926,
+        "paired_95_percent_t_interval": [
+          -0.030250251744932437,
+          0.011940803504013917
+        ],
+        "lower_is_better_wins": 4,
+        "paired_run_count": 5
+      },
+      "infidelity": {
+        "mean_candidate_minus_frobenius": 0.007607083086287813,
+        "paired_95_percent_t_interval": [
+          -0.007507209704126519,
+          0.022721375876702147
+        ],
+        "lower_is_better_wins": 1,
+        "paired_run_count": 5
+      },
+      "q_js_divergence": {
+        "mean_candidate_minus_frobenius": 0.002508620112430267,
+        "paired_95_percent_t_interval": [
+          -0.0009063527536993165,
+          0.00592359297855985
+        ],
+        "lower_is_better_wins": 1,
+        "paired_run_count": 5
+      },
+      "high_rank_multipole_loss": {
+        "mean_candidate_minus_frobenius": -0.0033973912382884823,
+        "paired_95_percent_t_interval": [
+          -0.005657854956053154,
+          -0.0011369275205238105
+        ],
+        "lower_is_better_wins": 5,
+        "paired_run_count": 5
+      }
+    },
+    "fidelity": {
+      "frobenius_error": {
+        "mean_candidate_minus_frobenius": 0.0011020558273574152,
+        "paired_95_percent_t_interval": [
+          -0.00019057698516324246,
+          0.002394688639878073
+        ],
+        "lower_is_better_wins": 1,
+        "paired_run_count": 5
+      },
+      "trace_distance": {
+        "mean_candidate_minus_frobenius": -0.002354250420419336,
+        "paired_95_percent_t_interval": [
+          -0.010464347157193486,
+          0.005755846316354813
+        ],
+        "lower_is_better_wins": 2,
+        "paired_run_count": 5
+      },
+      "infidelity": {
+        "mean_candidate_minus_frobenius": -0.012098561404163499,
+        "paired_95_percent_t_interval": [
+          -0.013388837526287504,
+          -0.010808285282039493
+        ],
+        "lower_is_better_wins": 5,
+        "paired_run_count": 5
+      },
+      "q_js_divergence": {
+        "mean_candidate_minus_frobenius": -0.0030824284546379275,
+        "paired_95_percent_t_interval": [
+          -0.003949270025674335,
+          -0.0022155868836015204
+        ],
+        "lower_is_better_wins": 5,
+        "paired_run_count": 5
+      },
+      "high_rank_multipole_loss": {
+        "mean_candidate_minus_frobenius": 0.002746938027968187,
+        "paired_95_percent_t_interval": [
+          0.0012153030379864877,
+          0.004278573017949887
+        ],
+        "lower_is_better_wins": 0,
+        "paired_run_count": 5
+      }
+    },
+    "husimi_js": {
+      "frobenius_error": {
+        "mean_candidate_minus_frobenius": 0.016580974897566023,
+        "paired_95_percent_t_interval": [
+          0.008374942951551433,
+          0.024787006843580615
+        ],
+        "lower_is_better_wins": 0,
+        "paired_run_count": 5
+      },
+      "trace_distance": {
+        "mean_candidate_minus_frobenius": 0.047604516347940815,
+        "paired_95_percent_t_interval": [
+          0.03198582562270084,
+          0.0632232070731808
+        ],
+        "lower_is_better_wins": 0,
+        "paired_run_count": 5
+      },
+      "infidelity": {
+        "mean_candidate_minus_frobenius": 0.004189917492284256,
+        "paired_95_percent_t_interval": [
+          0.00015418755129517625,
+          0.008225647433273336
+        ],
+        "lower_is_better_wins": 0,
+        "paired_run_count": 5
+      },
+      "q_js_divergence": {
+        "mean_candidate_minus_frobenius": -0.0030375807750716486,
+        "paired_95_percent_t_interval": [
+          -0.004342477324145404,
+          -0.0017326842259978933
+        ],
+        "lower_is_better_wins": 5,
+        "paired_run_count": 5
+      },
+      "high_rank_multipole_loss": {
+        "mean_candidate_minus_frobenius": 0.020226074804743147,
+        "paired_95_percent_t_interval": [
+          0.01009142764926296,
+          0.030360721960223335
+        ],
+        "lower_is_better_wins": 0,
+        "paired_run_count": 5
+      }
+    }
+  },
+  "representation_sweep": [
+    {
+      "j": 0.5,
+      "dimension": 2,
+      "significant_mode_count": 1,
+      "top_two_separation_radians": null,
+      "modes": [
+        {
+          "theta": 0.5965111367575556,
+          "phi": 1.0602875205865552,
+          "q_value": 0.13405845635411076,
+          "relative_height": 1.0
+        }
+      ]
+    },
+    {
+      "j": 1.0,
+      "dimension": 3,
+      "significant_mode_count": 1,
+      "top_two_separation_radians": null,
+      "modes": [
+        {
+          "theta": 0.5965111367575556,
+          "phi": 1.0602875205865552,
+          "q_value": 0.17078580673460142,
+          "relative_height": 1.0
+        }
+      ]
+    },
+    {
+      "j": 1.5,
+      "dimension": 4,
+      "significant_mode_count": 1,
+      "top_two_separation_radians": null,
+      "modes": [
+        {
+          "theta": 0.5965111367575556,
+          "phi": 1.0995574287564276,
+          "q_value": 0.19488773835761067,
+          "relative_height": 1.0
+        }
+      ]
+    },
+    {
+      "j": 2.0,
+      "dimension": 5,
+      "significant_mode_count": 1,
+      "top_two_separation_radians": null,
+      "modes": [
+        {
+          "theta": 0.6362778792080593,
+          "phi": 1.5707963267948966,
+          "q_value": 0.21076831488704267,
+          "relative_height": 1.0
+        }
+      ]
+    },
+    {
+      "j": 2.5,
+      "dimension": 6,
+      "significant_mode_count": 2,
+      "top_two_separation_radians": 1.1695473356245614,
+      "modes": [
+        {
+          "theta": 0.7953448490100742,
+          "phi": 1.9242255003237483,
+          "q_value": 0.23104187992456487,
+          "relative_height": 1.0
+        },
+        {
+          "theta": 0.7953448490100742,
+          "phi": 0.15707963267948966,
+          "q_value": 0.22869541091738835,
+          "relative_height": 0.9898439667823745
+        }
+      ]
+    },
+    {
+      "j": 3.0,
+      "dimension": 7,
+      "significant_mode_count": 2,
+      "top_two_separation_radians": 1.3566694153872096,
+      "modes": [
+        {
+          "theta": 0.8748783339110816,
+          "phi": 2.0420352248333655,
+          "q_value": 0.2553547315112076,
+          "relative_height": 1.0
+        },
+        {
+          "theta": 0.8351115914605779,
+          "phi": 0.07853981633974483,
+          "q_value": 0.2524108716143758,
+          "relative_height": 0.9884714887427001
+        }
+      ]
+    },
+    {
+      "j": 4.0,
+      "dimension": 9,
+      "significant_mode_count": 2,
+      "top_two_separation_radians": 1.5053243685330804,
+      "modes": [
+        {
+          "theta": 0.9146450763615853,
+          "phi": 2.081305133003238,
+          "q_value": 0.3066993675858321,
+          "relative_height": 1.0
+        },
+        {
+          "theta": 0.9146450763615853,
+          "phi": 0.0,
+          "q_value": 0.3027047011961,
+          "relative_height": 0.9869753028146881
+        }
+      ]
+    },
+    {
+      "j": 5.0,
+      "dimension": 11,
+      "significant_mode_count": 2,
+      "top_two_separation_radians": 1.5053243685330804,
+      "modes": [
+        {
+          "theta": 0.9146450763615853,
+          "phi": 2.081305133003238,
+          "q_value": 0.356884257882071,
+          "relative_height": 1.0
+        },
+        {
+          "theta": 0.9146450763615853,
+          "phi": 0.0,
+          "q_value": 0.3522950660056817,
+          "relative_height": 0.9871409517931
+        }
+      ]
+    }
+  ]
+}

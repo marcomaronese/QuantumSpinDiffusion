@@ -1,0 +1,72 @@
+{
+  "run_count": 5,
+  "seeds": [
+    3,
+    5,
+    7,
+    11,
+    13
+  ],
+  "trajectory_count_per_run": 256,
+  "metrics": {
+    "ensemble_frobenius_error_to_deterministic": {
+      "mean": 0.000700970317285928,
+      "sample_standard_deviation": 0.00027911289360292113,
+      "minimum": 0.0003034434953956178,
+      "maximum": 0.0010073159868231828
+    },
+    "ensemble_trace_distance_to_deterministic": {
+      "mean": 0.024657472320477807,
+      "sample_standard_deviation": 0.005395750416743217,
+      "minimum": 0.016578829498433062,
+      "maximum": 0.028990115909175575
+    },
+    "deterministic_fidelity_to_target": {
+      "mean": 0.9579161702324878,
+      "sample_standard_deviation": 0.013168177334307609,
+      "minimum": 0.9490816363702582,
+      "maximum": 0.9809718557090136
+    },
+    "mean_trajectory_fidelity_to_target": {
+      "mean": 0.8330613048196965,
+      "sample_standard_deviation": 0.01413830880568065,
+      "minimum": 0.815235737365868,
+      "maximum": 0.8536785252933781
+    },
+    "deterministic_trace_distance_to_target": {
+      "mean": 0.13282569554155887,
+      "sample_standard_deviation": 0.02570625083551527,
+      "minimum": 0.08800688701675247,
+      "maximum": 0.1513876818510885
+    },
+    "mean_trajectory_trace_distance_to_target": {
+      "mean": 0.32999435184377696,
+      "sample_standard_deviation": 0.011459296822271278,
+      "minimum": 0.3194073321734134,
+      "maximum": 0.3478224644696627
+    },
+    "mean_trajectory_diversity_squared_frobenius": {
+      "mean": 0.14479245431731505,
+      "sample_standard_deviation": 0.011609558456468681,
+      "minimum": 0.13453324333357575,
+      "maximum": 0.1636779923601367
+    },
+    "mean_branch_entropy_nats": {
+      "mean": 0.5565525539730952,
+      "sample_standard_deviation": 0.034602164748855545,
+      "minimum": 0.5260361821768058,
+      "maximum": 0.6146156357330271
+    }
+  },
+  "physicality": {
+    "minimum_trajectory_eigenvalue": 3.4747933367750224e-11,
+    "maximum_trajectory_trace_error": 4.440892098500626e-16,
+    "maximum_deterministic_replay_frobenius_error": 0.0
+  },
+  "configuration": {
+    "runs_root": "/home/mmaronese/work/spin_quantum_diffusion/j25_fidelity_study/runs",
+    "trajectory_count_per_run": 256,
+    "study_seed": 20261006,
+    "instrument_basis": "computational basis of the collision ancilla"
+  }
+}

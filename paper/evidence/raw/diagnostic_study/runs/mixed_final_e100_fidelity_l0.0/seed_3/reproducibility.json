@@ -1,0 +1,37 @@
+{
+  "created_utc": "2026-10-06T15:21:42.618790+00:00",
+  "command": [
+    "/home/mmaronese/work/spin_quantum_diffusion/spin_diffusion_toy.py",
+    "--j",
+    "2.5",
+    "--outdir",
+    "/home/mmaronese/work/spin_quantum_diffusion/diagnostic_study/runs/mixed_final_e100_fidelity_l0.0/seed_3",
+    "--seed",
+    "3",
+    "--epochs",
+    "100",
+    "--starting-state",
+    "mixed",
+    "--supervision",
+    "final",
+    "--objective",
+    "fidelity",
+    "--hybrid-lambda",
+    "0.0"
+  ],
+  "seed": 3,
+  "torch_deterministic_algorithms_enabled": false,
+  "software": {
+    "python": "3.12.14",
+    "torch": "2.14.1+cpu",
+    "numpy": "2.5.3",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "git": {
+    "commit": "b003d2555129dbc48a511de111b25a61669310a0",
+    "branch": "codex/next-milestones",
+    "dirty": true
+  }
+}

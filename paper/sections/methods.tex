@@ -1,0 +1,62 @@
+\section{Numerical methods and experimental design}
+\subsection{Data, representation, and architecture}
+The single-spin source draws either of two unit directions with equal probability,
+\begin{equation}
+ \mu_1=(0.8,0,0.6),\qquad
+ \mu_2=\frac{(-0.4,0.7,0.6)}{\norm{(-0.4,0.7,0.6)}}.
+\end{equation}
+A sample is $x=(\mu_z+\sigma\epsilon)/\norm{\mu_z+\sigma\epsilon}$, with $\epsilon\sim\mathcal N(0,\id_3)$ and $\sigma=0.22$. This is a normalized Gaussian mixture, not an exact von Mises--Fisher sampler. Each seed supplies $N=2000$ directions and its own empirical density. Single-spin evaluation compares against that same empirical encoded target. New confirmation seeds are independent data realizations and parameter initializations, not held-out observations from the training dataset of a fixed model.
+
+A representation sweep uses the seed-7 dataset and $j\in\{1/2,1,3/2,2,5/2,3,4,5\}$. Subsequent controlled experiments use $j=5/2$, dimension six, with six forward time steps, $D=1$ and $\Delta t=0.35$. Matrix exponentiation of the Liouvillian gives the forward trajectory $\rho_0,\ldots,\rho_6$ at times $t_s=s\Delta t$.
+
+Each reverse unitary has three layers and nine ordered Hermitian generators:
+\begin{equation}
+ \{J_x\otimes\id,J_y\otimes\id,J_z\otimes\id,J_z^2\otimes\id,
+ J_x\otimes X,J_y\otimes Y,J_z\otimes Z,\id\otimes X,\id\otimes Y\}.
+ \label{eq:generators}
+\end{equation}
+Every generator is divided by its Hilbert--Schmidt norm. Exponentials are multiplied in the order implemented by the archived source; parameters are independent across steps. There are $6\times3\times9=162$ real parameters. The ansatz acts within the spin-$j$ representation. Preservation of this representation does not imply rotational covariance of the learned channel.
+
+Angles are initialized independently as $0.03\,\mathcal N(0,1)$ and optimized with Adam at learning rate $0.04$, default $\beta_1=0.9$, $\beta_2=0.999$, and $\epsilon=10^{-8}$ \citep{kingma2015}. Training uses double-precision real parameters and complex-double matrices. The same seed fixes the target and initialization across each paired diagnostic condition.
+
+\subsection{Supervision and objectives}
+Let $\widetilde\rho_s=\R_s\circ\cdots\circ\R_1(\pi)$ be the state after $s$ reverse steps, for $\pi=\id_d/d$ or, diagnostically, $\pi=\rho_6$. For a state loss $L$, the two objectives are
+\begin{equation}
+ L_{\rm path}=\sum_{s=1}^{6}L(\widetilde\rho_s,\rho_{6-s}),\qquad
+ L_{\rm final}=L(\widetilde\rho_6,\rho_0).
+ \label{eq:supervision}
+\end{equation}
+Path training backpropagates through the composed stack: it is not teacher-forced training of isolated one-step inverse channels. The path sum is not divided by six. Consequently the comparison changes both the intermediate constraints and the overall loss scale; it does not isolate a gradient-conflict mechanism.
+
+The diagnostic loss is squared-Uhlmann infidelity,
+\begin{equation}
+ L_F(\rho,\sigma)=1-F(\rho,\sigma),\qquad
+ F(\rho,\sigma)=\left[\Tr\sqrt{\sqrt\rho\,\sigma\sqrt\rho}\right]^2.
+\end{equation}
+The follow-up objective is $L_\lambda=(1-\lambda)L_F+\lambda L_M$, where
+\begin{equation}
+ L_M=\sum_{\ell=0}^{2j}w_\ell\sum_{m=-\ell}^{\ell}
+ |c_{\ell m}(\rho)-c_{\ell m}(\sigma)|^2,\qquad
+ w_\ell=\frac{d^2(\ell+1)^2}{\sum_{r=0}^{2j}(2r+1)(r+1)^2}.
+ \label{eq:hybrid}
+\end{equation}
+Weights have mean one over all $d^2$ components. Uniform component weights reproduce squared Frobenius distance by Parseval's identity. Although $L_M$ emphasizes high ranks, it includes all accessible ranks. The separate selection metric $E_{45}=\sum_{\ell=4}^{5}\sum_m|\Delta c_{\ell m}|^2$ measures only the top two ranks at $j=5/2$.
+
+\subsection{Controlled study and confirmation protocol}
+The diagnostic crosses two starting states, two supervision schemes, and two budgets (100 or 500 epochs), for seeds $3,5,7,11,13$: 40 runs in total. Starting at $\rho_6$ uses target information and is an initialization diagnostic, not sampling from a target-independent prior. Both starts are evaluated separately; the mixed-prior output of every trained model is also archived.
+
+The hybrid study uses final supervision, the mixed prior, and 500 epochs. Its saved protocol fixes candidate weights $\lambda\in\{0,0.25,0.5,0.75\}$ and validation seeds $17,19,23,29,31$. A candidate is eligible if its mean infidelity, trace distance and Husimi-grid Jensen--Shannon (JS) divergence worsen relative to $\lambda=0$ by no more than $0.005$, $0.01$ and $0.001$, respectively. Among eligible candidates, selection maximizes the number of runs recovering both modes, then minimizes mean $E_{45}$, then favors the smaller $\lambda$. Selection is saved before comparing the selected value and zero on confirmation seeds $41,43,47,53,59$. There are 20 validation and 10 confirmation runs. This is a repository-recorded predeclared protocol, not an externally registered study.
+
+\subsection{Metrics and mode detection}
+We report squared Frobenius error $\norm{\rho-\sigma}_F^2$, trace distance $\frac12\norm{\rho-\sigma}_1$, infidelity and JS divergence in nats. For JS, the $80\times160$ angular grid is converted into probability masses using $q(\theta,\phi)\sin\theta$ and normalized; $10^{-14}$ stabilization is then added before a second normalization. A high correlation between unweighted $q$ grids is a global descriptive statistic, not a mode-recovery test.
+
+Significant modes are maxima in a $5\times5$ grid neighborhood, with periodic azimuth and nearest-value polar boundaries. Candidates must reach half the global maximum; descending-height suppression imposes at least $0.35$ radians separation. A minimum-total-angle one-to-one assignment matches generated and target modes, and only assigned angles of at most $0.35$ radians count as recovered. Missing peaks are not replaced by the value of $q$ near their expected location. These choices are fixed across the experiments. The criterion is a grid diagnostic rather than a topological or resolution-independent definition of modality.
+
+Tables use means and sample standard deviations across seeds unless otherwise indicated. Paired effects and descriptive Student-$t$ intervals are provided in the evidence bundle; no multiplicity-adjusted hypothesis tests or population success-rate claims are made. Five seeds characterize this small experiment, not a broad class of directional distributions.
+
+\subsection{Two-spin pilot and classical comparators}
+The pilot uses two $j=1$ spins, 1200 training pairs, and 1200 independent test pairs. The first direction follows the mixture above with $\sigma=0.18$; the second is a normalized Gaussian perturbation of the first rotated by $0.55$ radians around $z$. Training seed 17 and test seed 1017 define one split. The local forward process has three steps, $D=1$, $\Delta t=0.5$. Both quantum models use one layer per reverse step, a shared ancilla, fidelity path supervision, 80 epochs and learning rate $0.04$. Adding $J_{z1}J_{z2}$ and $J_{x1}J_{x2}+J_{y1}J_{y2}$ generators increases parameters from 33 to 39. The shared ancilla can already mediate correlations in the model without direct interactions.
+
+The comparators are the product of training marginals; a spherical kernel estimator with bandwidth $0.10$; a two-component separable product mixture; and a 39-parameter neural generator trained for 300 epochs to match first and second moments. The kernel estimator bootstraps paired observations and perturbs each direction with a tangent-plane Gaussian mapped onto the sphere. The code labels it ``Riemannian heat-kernel KDE,'' but it is a finite-increment approximation, not an exact spectral heat-kernel sampler or a learned reverse diffusion. Parameter matching of the neural and direct-interaction quantum models does not match training objectives or compute. Metrics use the encoded independent test state, quantum mutual information $I(A:B)=S(\rho_A)+S(\rho_B)-S(\rho_{AB})$, and the Frobenius error of the connected $3\times3$ spin-correlation tensor.
+
+The current repository additionally implements an ambient-space classical DDPM with normalization onto the sphere. It was added after the archived studies and has no results in this paper's frozen evidence. We do not substitute that implementation for a completed comparison. A competitive single-spin benchmark against learned classical diffusion remains outstanding.

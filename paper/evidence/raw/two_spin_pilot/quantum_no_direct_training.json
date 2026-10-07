@@ -1,0 +1,17 @@
+{
+  "generator_names": [
+    "Jx1",
+    "Jy1",
+    "Jz1",
+    "Jx2",
+    "Jy2",
+    "Jz2",
+    "Jx_total_Xa",
+    "Jy_total_Ya",
+    "Jz_total_Za",
+    "I_Xa",
+    "I_Ya"
+  ],
+  "initial_loss": 0.676501279607138,
+  "final_loss": 0.435053756555134
+}

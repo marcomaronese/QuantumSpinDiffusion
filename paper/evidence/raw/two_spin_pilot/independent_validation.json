@@ -1,0 +1,144 @@
+{
+  "method": "independent NumPy/SciPy recomputation from density_matrices.npz",
+  "maximum_absolute_discrepancy": 2.0750068330244176e-13,
+  "models": [
+    {
+      "model": "Factorized marginals",
+      "independent_metrics": {
+        "frobenius_error": 0.10144533883814887,
+        "trace_distance": 0.32715016330047597,
+        "infidelity": 0.18895782816565498,
+        "quantum_mutual_information": -8.881784197001252e-16,
+        "mutual_information_absolute_error": 0.3445423799264158,
+        "connected_correlation_error": 0.4524903340822329,
+        "minimum_eigenvalue": 0.0001920124131072855,
+        "trace_error": 1.1102230246251565e-15
+      },
+      "absolute_discrepancies": {
+        "frobenius_error": 1.3877787807814457e-17,
+        "trace_distance": 1.6653345369377348e-16,
+        "infidelity": 4.440892098500626e-16,
+        "quantum_mutual_information": 4.440892098500626e-16,
+        "mutual_information_absolute_error": 7.771561172376096e-16,
+        "connected_correlation_error": 1.1102230246251565e-16,
+        "minimum_eigenvalue": 8.673617379884035e-19,
+        "trace_error": 0.0
+      }
+    },
+    {
+      "model": "Riemannian heat-kernel KDE",
+      "independent_metrics": {
+        "frobenius_error": 0.0018662507025964646,
+        "trace_distance": 0.03421442867880349,
+        "infidelity": 0.0014475773048934215,
+        "quantum_mutual_information": 0.33067268871556355,
+        "mutual_information_absolute_error": 0.013869691210851354,
+        "connected_correlation_error": 0.015736543100896012,
+        "minimum_eigenvalue": 0.0002723203501488062,
+        "trace_error": 0.0
+      },
+      "absolute_discrepancies": {
+        "frobenius_error": 0.0,
+        "trace_distance": 6.938893903907228e-18,
+        "infidelity": 3.219646771412954e-14,
+        "quantum_mutual_information": 0.0,
+        "mutual_information_absolute_error": 3.3306690738754696e-16,
+        "connected_correlation_error": 1.734723475976807e-17,
+        "minimum_eigenvalue": 2.0111950299606107e-17,
+        "trace_error": 1.1102230246251565e-16
+      }
+    },
+    {
+      "model": "Separable tensor mixture (chi=2)",
+      "independent_metrics": {
+        "frobenius_error": 0.0013543302731066817,
+        "trace_distance": 0.04048679000183854,
+        "infidelity": 0.010589528075914068,
+        "quantum_mutual_information": 0.29775063992700845,
+        "mutual_information_absolute_error": 0.046791739999406445,
+        "connected_correlation_error": 0.03909272715692162,
+        "minimum_eigenvalue": 0.00011989423908599181,
+        "trace_error": 1.1102230246251565e-16
+      },
+      "absolute_discrepancies": {
+        "frobenius_error": 4.336808689942018e-19,
+        "trace_distance": 6.938893903907228e-18,
+        "infidelity": 2.886579864025407e-15,
+        "quantum_mutual_information": 0.0,
+        "mutual_information_absolute_error": 3.3306690738754696e-16,
+        "connected_correlation_error": 6.245004513516506e-17,
+        "minimum_eigenvalue": 1.5856456772600502e-18,
+        "trace_error": 1.1102230246251565e-16
+      }
+    },
+    {
+      "model": "Quantum reverse, no direct J1-J2",
+      "independent_metrics": {
+        "frobenius_error": 0.211175067405376,
+        "trace_distance": 0.5328205074839651,
+        "infidelity": 0.4014902658689492,
+        "quantum_mutual_information": 0.019240765992591946,
+        "mutual_information_absolute_error": 0.32530161393382295,
+        "connected_correlation_error": 0.4849183519607326,
+        "minimum_eigenvalue": 0.013654492160255882,
+        "trace_error": 7.66053886991358e-15
+      },
+      "absolute_discrepancies": {
+        "frobenius_error": 0.0,
+        "trace_distance": 2.220446049250313e-16,
+        "infidelity": 6.661338147750939e-16,
+        "quantum_mutual_information": 2.220446049250313e-16,
+        "mutual_information_absolute_error": 5.551115123125783e-16,
+        "connected_correlation_error": 1.6653345369377348e-16,
+        "minimum_eigenvalue": 0.0,
+        "trace_error": 1.1102230246251565e-16
+      }
+    },
+    {
+      "model": "Quantum reverse, direct J1-J2",
+      "independent_metrics": {
+        "frobenius_error": 0.20537220276135307,
+        "trace_distance": 0.5286448311580961,
+        "infidelity": 0.3891422990909136,
+        "quantum_mutual_information": 0.025070201168355455,
+        "mutual_information_absolute_error": 0.31947217875805944,
+        "connected_correlation_error": 0.46230319762328165,
+        "minimum_eigenvalue": 0.016489277863223767,
+        "trace_error": 2.6645352591003757e-15
+      },
+      "absolute_discrepancies": {
+        "frobenius_error": 8.326672684688674e-17,
+        "trace_distance": 1.1102230246251565e-16,
+        "infidelity": 2.1094237467877974e-15,
+        "quantum_mutual_information": 2.220446049250313e-16,
+        "mutual_information_absolute_error": 5.551115123125783e-16,
+        "connected_correlation_error": 1.1102230246251565e-16,
+        "minimum_eigenvalue": 2.7755575615628914e-17,
+        "trace_error": 2.220446049250313e-16
+      }
+    },
+    {
+      "model": "Matched-parameter neural generator",
+      "independent_metrics": {
+        "frobenius_error": 0.0023617208269236583,
+        "trace_distance": 0.052566316942636464,
+        "infidelity": 0.012290254771823439,
+        "quantum_mutual_information": 0.3876483883958517,
+        "mutual_information_absolute_error": 0.043106008469436796,
+        "connected_correlation_error": 0.03236944495501699,
+        "minimum_eigenvalue": 3.2351670811777006e-06,
+        "trace_error": 1.1102230246251565e-16
+      },
+      "absolute_discrepancies": {
+        "frobenius_error": 0.0,
+        "trace_distance": 1.3877787807814457e-17,
+        "infidelity": 2.0750068330244176e-13,
+        "quantum_mutual_information": 2.220446049250313e-16,
+        "mutual_information_absolute_error": 1.1102230246251565e-16,
+        "connected_correlation_error": 6.245004513516506e-17,
+        "minimum_eigenvalue": 6.642432372368223e-18,
+        "trace_error": 1.1102230246251565e-16
+      }
+    }
+  ]
+}

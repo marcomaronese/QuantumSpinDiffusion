@@ -1,0 +1,34 @@
+\section{Readout transfer function and tensor conventions}
+The overlap of two spin coherent states is
+$|\langle\Omega|\Omega'\rangle|^2=[(1+\Omega\cdot\Omega')/2]^{2j}$.
+Rotational convolution and the Funk--Hecke formula give
+\begin{equation}
+ b_{j\ell}=\frac{2j+1}{2}\int_{-1}^{1}
+ \left(\frac{1+u}{2}\right)^{2j}P_\ell(u)\,\dd u.
+\end{equation}
+Using Rodrigues' formula for $P_\ell$ and integrating by parts $\ell$ times yields Eq.~\eqref{eq:transfer}. If $\ell>2j$, the differentiated polynomial vanishes. This also explains why a resolution claim based only on the largest accessible rank would be incomplete.
+
+The numerical tensors start at $T_{\ell\ell}\propto(-1)^\ell J_+^\ell$, normalized in Hilbert--Schmidt norm, and descend through
+\begin{equation}
+ T_{\ell,m-1}=\frac{[J_-,T_{\ell m}]}{\sqrt{(\ell+m)(\ell-m+1)}}.
+\end{equation}
+They obey $T_{\ell m}^\dagger=(-1)^mT_{\ell,-m}$ and reconstruct a state as $\rho=\sum_{\ell m}c_{\ell m}T_{\ell m}$. In an orthonormal spherical-harmonic convention with compatible phases, the encoding maps $Y_{\ell m}$ to a tensor with scalar magnitude $\sqrt{4\pi b_{j\ell}/d}$. The precise phase convention is immaterial to the spectrum but must be consistent when comparing individual coefficients.
+
+\section{Physicality and numerical evaluation}
+Every simulated state is checked for trace one, Hermiticity and positivity at tolerance $10^{-10}$. For each reverse step, Kraus completeness is checked, and historical run metadata also retain Choi-matrix minimum eigenvalues. Forward and deterministic reverse helpers do not renormalize or project states. Small negative eigenvalues may be clipped only when evaluating square roots in fidelity or grid probabilities within roundoff tolerances; this metric stabilization is not a repaired state trajectory.
+
+An initial longer diagnostic attempt exceeded the existing unitarity tolerance using generic matrix exponentials. The completed study instead evaluates each fixed Hermitian generator through its cached eigendecomposition,
+\begin{equation}
+ G=V\operatorname{diag}(g_r)V^\dagger,\qquad
+ e^{-i\vartheta G}=V\operatorname{diag}(e^{-i\vartheta g_r})V^\dagger.
+\end{equation}
+This preserves the channel ansatz and analytic angle derivatives. The interrupted attempt is excluded from the reported results. The paper archive uses only the consistent completed rerun; it does not pool the interrupted run with the 40 diagnostic runs. Original repository notes retain the numerical precheck history.
+
+The manuscript audit hashes all frozen evidence files, re-evaluates primary state metrics with NumPy, rechecks mode assignments and coefficient errors, replays the archived reverse channels, and verifies forward decay and trajectory physicality for 70 runs. Tensor generation, peak finding and channel replay reuse historical implementation code, so these portions are consistency checks. State-distance calculations and the two-spin metric audit are independent of training-loss implementations. The fresh maximum state-metric discrepancy is \AuditMetricDelta.
+
+\section{Statistical and provenance details}
+The principal experimental unit is a seed, which changes both the finite data realization and the initial parameters. Conditions within a seed are paired. Sample standard deviations use denominator $n-1$. Descriptive paired intervals use $\bar\delta\pm t_{0.975,4}s_\delta/\sqrt5$. With only five seeds, these intervals should not be read as a comprehensive characterization of tails or robustness. The selection rule's guardrails are operational tolerances, not significance thresholds.
+
+The historical $j=2$ objective sweep and $j=5/2$ fidelity study are retained in the evidence directory as background. Their 100-epoch defaults motivated the later controlled study; their results are not pooled with the 500-epoch confirmation results. Instrument aggregates likewise concern the original 100-epoch models. The two-spin pilot retains its separate source-provenance limitations and distinct training budget. Runtime measurements taken during concurrent execution are not isolated performance benchmarks.
+
+The manuscript distinguishes three reproducibility levels. Saved-state auditing and regeneration of figures/tables use the frozen evidence without training. Replaying channels additionally requires the archived scientific implementation and PyTorch. Fresh training should use the historical source snapshot for exact protocol replication, or a new output directory with the current source for an explicitly updated experiment. The current source adds a classical DDPM; mixing its new outputs into old study folders would break provenance.

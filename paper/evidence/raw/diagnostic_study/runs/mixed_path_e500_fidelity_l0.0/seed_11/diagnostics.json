@@ -1,0 +1,142 @@
+{
+  "seed": 11,
+  "frobenius_error": 0.006253279438798317,
+  "trace_distance": 0.0741534287743851,
+  "infidelity": 0.013415875859884352,
+  "q_js_divergence": 0.0016355316160123878,
+  "q_correlation": 0.9977802181070704,
+  "q_peak_shift": 0.039766742450508215,
+  "target_mode_count": 2,
+  "generated_mode_count": 2,
+  "matched_mode_count": 2,
+  "recovered_target_mode_count": 2,
+  "mean_matched_angle_radians": 0.019883371225254107,
+  "maximum_matched_angle_radians": 0.039766742450508215,
+  "all_target_modes_recovered": true,
+  "initial_training_loss": 0.5562308881707989,
+  "final_training_loss": 0.019288685085260493,
+  "max_trace_error": 3.730349362740526e-14,
+  "minimum_eigenvalue": 0.0042259117156450135,
+  "max_trace_preservation_error": 2.129385487831219e-14,
+  "minimum_choi_eigenvalue": -1.3392096030861473e-15,
+  "max_multipole_decay_error": 7.771561172376096e-16,
+  "starting_state": "mixed",
+  "supervision": "path",
+  "epochs": 500,
+  "objective": "fidelity",
+  "hybrid_lambda": 0.0,
+  "ranks": {
+    "0": {
+      "squared_coefficient_error": 2.1639749305494085e-28,
+      "target_power": 0.16666666666666713,
+      "generated_power": 0.16666666666667912,
+      "relative_coefficient_error": 3.6033109195983096e-14,
+      "power_ratio": 1.000000000000072
+    },
+    "1": {
+      "squared_coefficient_error": 0.0004989845624166736,
+      "target_power": 0.1716224759839376,
+      "generated_power": 0.1545464577031888,
+      "relative_coefficient_error": 0.053920818150597245,
+      "power_ratio": 0.900502436042544
+    },
+    "2": {
+      "squared_coefficient_error": 0.001737436156132071,
+      "target_power": 0.05599270387346403,
+      "generated_power": 0.038725857667644484,
+      "relative_coefficient_error": 0.1761524579460981,
+      "power_ratio": 0.691623282832701
+    },
+    "3": {
+      "squared_coefficient_error": 0.002597090535212606,
+      "target_power": 0.0348516922051288,
+      "generated_power": 0.020668339925041797,
+      "relative_coefficient_error": 0.27298049051754947,
+      "power_ratio": 0.5930369120498611
+    },
+    "4": {
+      "squared_coefficient_error": 0.0006987630864601783,
+      "target_power": 0.009058946397571113,
+      "generated_power": 0.0063812032759161105,
+      "relative_coefficient_error": 0.277732134721013,
+      "power_ratio": 0.7044089892867719
+    },
+    "5": {
+      "squared_coefficient_error": 0.0007210050985767863,
+      "target_power": 0.0005062050021265196,
+      "generated_power": 0.0012288436172781083,
+      "relative_coefficient_error": 1.1934547346375524,
+      "power_ratio": 2.4275611898654734
+    }
+  },
+  "target_modes": [
+    {
+      "theta": 0.8351115914605779,
+      "phi": 0.19634954084936207,
+      "q_value": 0.2416862403306501,
+      "relative_height": 1.0
+    },
+    {
+      "theta": 0.7555781065595705,
+      "phi": 1.806415775814131,
+      "q_value": 0.22193371410278662,
+      "relative_height": 0.9182720282261824
+    }
+  ],
+  "generated_modes": [
+    {
+      "theta": 0.7953448490100742,
+      "phi": 0.19634954084936207,
+      "q_value": 0.22267625615709238,
+      "relative_height": 1.0
+    },
+    {
+      "theta": 0.7555781065595705,
+      "phi": 1.806415775814131,
+      "q_value": 0.2081743929454761,
+      "relative_height": 0.934874676528666
+    }
+  ],
+  "per_target_mode": [
+    {
+      "target_index": 0,
+      "target": {
+        "theta": 0.8351115914605779,
+        "phi": 0.19634954084936207,
+        "q_value": 0.2416862403306501,
+        "relative_height": 1.0
+      },
+      "generated_index": 0,
+      "angle_radians": 0.039766742450508215,
+      "recovered": true,
+      "recovered_relative_height": 1.0
+    },
+    {
+      "target_index": 1,
+      "target": {
+        "theta": 0.7555781065595705,
+        "phi": 1.806415775814131,
+        "q_value": 0.22193371410278662,
+        "relative_height": 0.9182720282261824
+      },
+      "generated_index": 1,
+      "angle_radians": 0.0,
+      "recovered": true,
+      "recovered_relative_height": 0.934874676528666
+    }
+  ],
+  "weaker_target_relative_height": 0.9182720282261824,
+  "weaker_recovered_relative_height": 0.934874676528666,
+  "training_seconds": 27.055801341000915,
+  "generation_seconds": 0.012089136998838512,
+  "parameter_count": 162,
+  "mixed_prior_evaluation": {
+    "frobenius_error": 0.006253279438798317,
+    "trace_distance": 0.0741534287743851,
+    "infidelity": 0.013415875859884352,
+    "q_js_divergence": 0.0016355316160123878,
+    "q_correlation": 0.9977802181070704,
+    "q_peak_shift": 0.039766742450508215
+  },
+  "run_directory": "/home/mmaronese/work/spin_quantum_diffusion/diagnostic_study/runs/mixed_path_e500_fidelity_l0.0/seed_11"
+}

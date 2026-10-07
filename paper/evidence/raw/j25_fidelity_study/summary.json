@@ -1,0 +1,70 @@
+{
+  "run_count": 5,
+  "seeds": [
+    3,
+    5,
+    7,
+    11,
+    13
+  ],
+  "all_target_modes_recovered_runs": 1,
+  "metrics": {
+    "frobenius_error": {
+      "mean": 0.01663507539681071,
+      "sample_standard_deviation": 0.0056552155720677915,
+      "minimum": 0.006850828883322755,
+      "maximum": 0.020996229659598742
+    },
+    "trace_distance": {
+      "mean": 0.13282569554155885,
+      "sample_standard_deviation": 0.02570625083551526,
+      "minimum": 0.08800688701675245,
+      "maximum": 0.15138768185108845
+    },
+    "infidelity": {
+      "mean": 0.042083829767510086,
+      "sample_standard_deviation": 0.013168177334307779,
+      "minimum": 0.019028144290984206,
+      "maximum": 0.05091836362973934
+    },
+    "q_js_divergence": {
+      "mean": 0.0057617653185067595,
+      "sample_standard_deviation": 0.0017383374380216508,
+      "minimum": 0.002714856023842265,
+      "maximum": 0.006837396317230725
+    },
+    "q_correlation": {
+      "mean": 0.9964984780429653,
+      "sample_standard_deviation": 0.0009897084724462392,
+      "minimum": 0.9956242724833276,
+      "maximum": 0.9981863008772576
+    },
+    "mean_matched_angle_radians": {
+      "mean": 0.24090770317541793,
+      "sample_standard_deviation": 0.13086188469828977,
+      "minimum": 0.0381905563269994,
+      "maximum": 0.3901632422203719
+    },
+    "maximum_matched_angle_radians": {
+      "mean": 0.24293742307198682,
+      "sample_standard_deviation": 0.12695189685564506,
+      "minimum": 0.04833915580984389,
+      "maximum": 0.3901632422203719
+    }
+  },
+  "physicality": {
+    "maximum_trace_error": 2.2254087461703875e-11,
+    "minimum_state_eigenvalue": 0.0040109930878611515,
+    "maximum_kraus_completeness_error": 3.447054109962631e-11,
+    "minimum_choi_eigenvalue": -1.2333098043552501e-15,
+    "maximum_multipole_decay_error": 7.771561172376096e-16
+  },
+  "configuration": {
+    "j": 2.5,
+    "objective": "fidelity",
+    "epochs": 100,
+    "mode_relative_height_threshold": 0.5,
+    "mode_minimum_separation_radians": 0.35,
+    "mode_recovery_tolerance_radians": 0.35
+  }
+}

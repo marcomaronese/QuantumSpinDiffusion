@@ -1,0 +1,338 @@
+{
+  "source_sha256": "f14faebee90597d707fdfcc4be9828025992dc3cb275035bbd03db08f3fced21",
+  "jobs": [
+    {
+      "seed": 3,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 5,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 7,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 11,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 13,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 3,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 5,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 7,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 11,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 13,
+      "epochs": 100,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 3,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 5,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 7,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 11,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 13,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 3,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 5,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 7,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 11,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 13,
+      "epochs": 100,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 3,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 5,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 7,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 11,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 13,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 3,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 5,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 7,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 11,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 13,
+      "epochs": 500,
+      "starting_state": "mixed",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 3,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 5,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 7,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 11,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 13,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "path",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 3,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 5,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 7,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 11,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    },
+    {
+      "seed": 13,
+      "epochs": 500,
+      "starting_state": "forward",
+      "supervision": "final",
+      "objective": "fidelity",
+      "hybrid_lambda": 0.0
+    }
+  ],
+  "protocol": {
+    "j": 2.5,
+    "architecture": "unchanged: 3 layers, 1 ancilla, full, independent",
+    "mode_grid": [
+      80,
+      160
+    ],
+    "relative_peak_threshold": 0.5,
+    "minimum_peak_separation_radians": 0.35,
+    "matching_tolerance_radians": 0.35,
+    "primary_outcome": "both encoded modes recovered",
+    "interpretation": "Finite-budget failures cannot prove insufficient expressivity."
+  }
+}

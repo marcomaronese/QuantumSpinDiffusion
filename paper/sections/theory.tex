@@ -1,0 +1,82 @@
+\section{Spin phase-space construction}
+\subsection{Encoding and the observable distribution}
+Let $\dd\Omega=\sin\theta\,\dd\theta\,\dd\phi$ denote surface area on the unit sphere and let $p$ be a normalized density with respect to this measure. Set $d=2j+1$, $\hbar=1$, and define
+\begin{equation}
+ \ket{\Omega}_j=e^{-i\phi J_z}e^{-i\theta J_y}\ket{j,j},\qquad
+ \E_j[p]=\rho_p=\int_{S^2}p(\Omega)\ket{\Omega}\bra{\Omega}\,\dd\Omega.
+ \label{eq:encoding}
+\end{equation}
+For $N$ observed directions, the empirical target is $\widehat\rho_0=N^{-1}\sum_a\ket{\Omega_a}\bra{\Omega_a}$. Coherent states resolve the identity,
+$\frac{d}{4\pi}\int\ket{\Omega}\bra{\Omega}\,\dd\Omega=\id_d$,
+so their positive operator-valued measure gives the normalized readout density
+\begin{equation}
+ q_\rho(\Omega)=\frac{d}{4\pi}\bra{\Omega}\rho\ket{\Omega},\qquad
+ \int q_\rho(\Omega)\,\dd\Omega=1.
+ \label{eq:readout}
+\end{equation}
+We use $q_\rho$ for the normalized Husimi density, avoiding an ambiguity between conventions for the unnormalized $Q$ symbol.
+
+Encoding followed by readout smooths the input:
+\begin{equation}
+ q_{\rho_p}(\Omega)=\int K_j(\Omega\cdot\Omega')p(\Omega')\,\dd\Omega',\quad
+ K_j(u)=\frac{2j+1}{4\pi}\left(\frac{1+u}{2}\right)^{2j}.
+ \label{eq:kernel}
+\end{equation}
+Thus the observable target is generally not $p$. If $p=\sum_{\ell m}a_{\ell m}Y_{\ell m}$ in orthonormal spherical harmonics, the readout multiplies each coefficient by
+\begin{equation}
+ b_{j\ell}=\frac{(2j+1)[(2j)!]^2}{(2j-\ell)!(2j+\ell+1)!},\quad 0\leq\ell\leq2j,
+ \qquad b_{j\ell}=0\quad(\ell>2j).
+ \label{eq:transfer}
+\end{equation}
+In particular $b_{j0}=1$ and $b_{j1}=j/(j+1)$. Even retained modes are attenuated. The cutoff alone does not characterize usable resolution. The positive coefficients below the cutoff make the encoding injective on the truncated harmonic space, but high-rank inversion amplifies errors, and information above $2j$ is absent. Mixedness reflects averaging over nonorthogonal coherent states; its von Neumann entropy is not the differential entropy of $p$.
+
+\subsection{Exact spherical heat evolution at finite resolution}
+We choose the isotropic generator
+\begin{equation}
+ \mathcal L_j(\rho)=-D\sum_{\alpha=x,y,z}[J_\alpha,[J_\alpha,\rho]],\qquad D>0.
+ \label{eq:lindblad}
+\end{equation}
+It has Lindblad operators $\sqrt{2D}J_\alpha$, so $\Phi_t=e^{t\mathcal L_j}$ is completely positive and trace preserving (CPTP) \citep{lindblad1976}. It is unital and covariant under rotations. This covariance concerns the forward process; the trained reverse maps need not be rotation covariant.
+
+The operator space decomposes into irreducible tensor sectors $T_{\ell m}$ with $0\leq\ell\leq2j$. We choose $T_{00}=\id_d/\sqrt d$ and $\Tr(T_{\ell m}^\dagger T_{\ell' m'})=\delta_{\ell\ell'}\delta_{mm'}$. With $c_{\ell m}=\Tr(\rho T_{\ell m}^\dagger)$,
+\begin{align}
+ \sum_\alpha[J_\alpha,[J_\alpha,T_{\ell m}]]&=\ell(\ell+1)T_{\ell m},\nonumber\\
+ c_{\ell m}(t)&=e^{-D\ell(\ell+1)t}c_{\ell m}(0),\label{eq:decay}\\
+ P_\ell(t):=\sum_m|c_{\ell m}(t)|^2&=e^{-2D\ell(\ell+1)t}P_\ell(0).\nonumber
+\end{align}
+Higher ranks decay faster. Only the scalar sector survives asymptotically, giving $\rho_t\to\id_d/d$.
+
+\begin{proposition}[Encoding--heat intertwining]
+Let $H_t=e^{tD\Delta_{S^2}}$ be the spherical heat semigroup. Then
+\begin{equation}
+ \Phi_t\E_j[p]=\E_j[H_t p],\qquad
+ q_{\Phi_t(\rho)}=H_tq_\rho.
+ \label{eq:intertwine}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The map $\E_j$ is rotation equivariant because coherent projectors transform by conjugation. The spin-$j$ operator space contains one copy of each rank $\ell=0,\ldots,2j$ and no higher ranks. Equivariance maps each retained spherical-harmonic sector to its tensor sector up to a scalar, and annihilates the rest. On either retained sector, the respective generator has eigenvalue $-D\ell(\ell+1)$; exponentiating proves the first identity. The readout is also equivariant, so the same sector argument proves the second. Equivalently, the rotation-invariant kernel in Eq.~\eqref{eq:kernel} commutes with heat evolution.
+\end{proof}
+The correspondence is exact on the encoded representation. It is not an equivalence between unrestricted classical densities and finite-dimensional quantum states. Nor does the ordering of forward decay prove that a learned reverse stack restores ranks in a prescribed order.
+
+\subsection{Physical reverse maps and sampling}
+Each reverse step introduces a fresh pure ancilla, applies a trainable joint unitary, and discards the ancilla:
+\begin{equation}
+ \R_s(\rho)=\Tr_a\!\left[U_s(\rho\otimes\ket0\bra0)U_s^\dagger\right]
+ =\sum_kK_{s,k}\rho K_{s,k}^\dagger,\quad K_{s,k}=\bra kU_s\ket0.
+ \label{eq:reverse}
+\end{equation}
+This is CPTP by construction; state renormalization or positive-semidefinite projection is not part of the map. The generative state is $\rho_{\rm gen}=\R_S\circ\cdots\circ\R_1(\id_d/d)$. Pure fresh ancillas allow this stack to reduce the system entropy despite starting from the maximally mixed prior.
+
+The reverse is target dependent, not a universal inverse of heat diffusion. Such an inverse would amplify distinguishability lost by a channel and need not be positive. In the present simulation, one trained stack prepares one target mixed state. Sampling $q_{\rho_{\rm gen}}$ then produces classical directions.
+
+Measuring the ancilla instead gives a quantum instrument. Outcome $k$ has probability $p_k=\Tr(K_k\rho K_k^\dagger)$ and conditional state $\rho_k=K_k\rho K_k^\dagger/p_k$ for $p_k>0$. The equality $\sum_kp_k\rho_k=\R(\rho)$ holds exactly. Different conditional trajectories form one decomposition of the output density, but recovering that density does not identify a unique source ensemble. Both instrument sampling and the coherent-state POVM are operational definitions; the experiments use matrix simulation and a finite readout grid rather than a hardware measurement implementation.
+
+\subsection{Correlated product phase spaces}
+For directions on $(S^2)^n$, define
+\begin{equation}
+ \rho_p=\int p(\Omega_1,\ldots,\Omega_n)
+ \bigotimes_{i=1}^n\ket{\Omega_i}\bra{\Omega_i}\,\prod_i\dd\Omega_i.
+ \label{eq:joint}
+\end{equation}
+The local forward generator is the sum of the single-spin generators. Product tensors have eigenvalues $-\sum_iD_i\ell_i(\ell_i+1)$ and therefore separate local angular resolution from joint correlations. However, every state encoded by Eq.~\eqref{eq:joint} is separable across the spin subsystems. Classical dependence can yield nonzero connected correlations and quantum mutual information without entanglement. A reverse circuit may access entangled states, but neither their necessity nor their usefulness is demonstrated here. Dense simulation stores $\prod_i(2j_i+1)^2$ matrix entries, which grows exponentially with the number of spins.

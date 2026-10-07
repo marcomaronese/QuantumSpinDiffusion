@@ -1,0 +1,48 @@
+{
+  "architecture": {
+    "generator_set": "full",
+    "generator_names": [
+      "Jx",
+      "Jy",
+      "Jz",
+      "Jz2",
+      "Jx_Xa0",
+      "Jy_Ya0",
+      "Jz_Za0",
+      "I_Xa0",
+      "I_Ya0"
+    ],
+    "generator_count": 9,
+    "ancilla_count": 1,
+    "kraus_rank_upper_bound": 2,
+    "parameter_sharing": "independent",
+    "trainable_parameter_count": 162
+  },
+  "forward": {
+    "initial_distance_from_maximally_mixed": 0.5215668926055681,
+    "terminal_distance_from_maximally_mixed": 0.00621226911684616,
+    "max_trace_error": 3.1086244689504383e-15,
+    "max_hermiticity_error": 1.9394904798349707e-18,
+    "minimum_eigenvalue": 0.0001425515227863837,
+    "max_multipole_decay_error": 7.771561172376096e-16
+  },
+  "reverse": {
+    "training_objective": "fidelity",
+    "multipole_weighting": "rank-balanced",
+    "initial_training_loss": 0.556230888176117,
+    "final_training_loss": 0.06709523985404553,
+    "final_frobenius_state_error": 0.019131724720634298,
+    "final_quantum_fidelity": 0.9516439364139774,
+    "final_trace_distance": 0.14440456231732457,
+    "final_rank_balanced_multipole_loss": 0.01977888580798113,
+    "final_high_rank_multipole_loss": 0.013616801330806186,
+    "grid_jensen_shannon_divergence": 0.006625502099326913,
+    "q_grid_correlation": 0.9964506731792341,
+    "q_peak_angular_shift_radians": 0.2257510894763162,
+    "max_trace_error": 9.615974683185868e-12,
+    "max_hermiticity_error": 1.1483747300665708e-16,
+    "minimum_eigenvalue": 0.009403028440721321,
+    "max_trace_preservation_error": 1.2353663112639112e-11,
+    "minimum_choi_eigenvalue": -7.599081528149496e-16
+  }
+}

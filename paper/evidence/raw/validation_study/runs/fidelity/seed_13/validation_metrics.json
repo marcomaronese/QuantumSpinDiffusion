@@ -1,0 +1,29 @@
+{
+  "forward": {
+    "initial_distance_from_maximally_mixed": 0.5202773083434066,
+    "terminal_distance_from_maximally_mixed": 0.0064866301620643005,
+    "max_trace_error": 6.661338147750939e-16,
+    "max_hermiticity_error": 7.053172446469149e-18,
+    "minimum_eigenvalue": 0.0006124417752881823,
+    "max_multipole_decay_error": 1.1102230246251565e-16
+  },
+  "reverse": {
+    "training_objective": "fidelity",
+    "multipole_weighting": "rank-balanced",
+    "initial_training_loss": 0.4985339747369404,
+    "final_training_loss": 0.03936602752793994,
+    "final_frobenius_state_error": 0.012116551623008929,
+    "final_quantum_fidelity": 0.9737621306067107,
+    "final_trace_distance": 0.10750213812976969,
+    "final_rank_balanced_multipole_loss": 0.009872202312465514,
+    "final_high_rank_multipole_loss": 0.011972126176357465,
+    "grid_jensen_shannon_divergence": 0.0025187272061368672,
+    "q_grid_correlation": 0.9980801256233052,
+    "q_peak_angular_shift_radians": 0.288451887821575,
+    "max_trace_error": 2.9610980334382475e-11,
+    "max_hermiticity_error": 8.726042749658318e-17,
+    "minimum_eigenvalue": 0.00871436964656174,
+    "max_trace_preservation_error": 2.6315173711571977e-11,
+    "minimum_choi_eigenvalue": -9.918772974238836e-16
+  }
+}

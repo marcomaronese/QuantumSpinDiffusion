@@ -1,0 +1,13 @@
+/build/
+/tmp/
+*.aux
+*.blg
+*.log
+*.out
+*.toc
+__pycache__/
+# Root project ignores study directory names everywhere; retain paper evidence.
+!evidence/
+!evidence/**/
+!evidence/**
+__pycache__/

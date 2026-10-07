@@ -1,0 +1,42 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,array,tabularx}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[section]{placeins}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{url}
+\setlength{\emergencystretch}{2em}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\id}{\mathbb{I}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ket}[1]{\lvert #1\rangle}
+\newcommand{\bra}[1]{\langle #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\R}{\mathcal{R}}
+\newtheorem{proposition}{Proposition}
+\input{metadata}
+\hypersetup{pdftitle={Spin phase-space quantum diffusion: multipole structure and mode recovery on the sphere},pdfsubject={Finite-dimensional quantum generative model and controlled numerical study}}
+\input{tables/numbers}
+\title{\papertitle}
+\author{\paperauthors}
+\date{\paperdate}
+\begin{document}
+\maketitle
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/theory}
+\input{sections/methods}
+\input{sections/results}
+\input{sections/discussion}
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\clearpage
+\appendix
+\input{sections/appendix}
+\end{document}
