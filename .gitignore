@@ -1,12 +1,16 @@
 .venv/
 __pycache__/
+*.py[cod]
 .pytest_cache/
-spin_diffusion_output/
-spin_diffusion_validation/
-validation_study/
-j25_fidelity_study/
-instrument_study/
-two_spin_pilot/
-diagnostic_study/
-hybrid_study/
-diagnostic_numerical_precheck/
+*.egg-info/
+build/
+dist/
+
+# Working experiment outputs are reproducible artifacts, not source.
+outputs/experiments/*
+!outputs/experiments/README.md
+outputs/tmp/
+
+# Matplotlib and tooling scratch files.
+.mplconfig/
+*.log

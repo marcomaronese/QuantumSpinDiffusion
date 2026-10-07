@@ -1,4 +1,4 @@
-import spin_diffusion_toy as toy
+from spin_quantum_diffusion.quantum import single_spin as toy
 
 
 def test_reverse_training_reduces_loss_and_improves_on_prior():

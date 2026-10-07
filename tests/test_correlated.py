@@ -1,7 +1,7 @@
 import torch
 
-import spin_diffusion_toy as toy
-from spin_correlated import (
+from spin_quantum_diffusion.quantum import single_spin as toy
+from spin_quantum_diffusion.quantum.correlated import (
     build_two_spin_forward_trajectory,
     build_two_spin_reverse_generators,
     empirical_joint_density,

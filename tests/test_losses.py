@@ -1,8 +1,8 @@
 import pytest
 import torch
 
-import spin_diffusion_toy as toy
-from spin_losses import (
+from spin_quantum_diffusion.quantum import single_spin as toy
+from spin_quantum_diffusion.quantum.losses import (
     build_husimi_grid,
     fidelity_loss,
     frobenius_loss,
@@ -11,7 +11,7 @@ from spin_losses import (
     quantum_fidelity,
     trace_distance,
 )
-from spin_multipoles import irreducible_spherical_tensors
+from spin_quantum_diffusion.quantum.multipoles import irreducible_spherical_tensors
 
 
 def test_fidelity_and_trace_distance_on_identical_and_orthogonal_states():

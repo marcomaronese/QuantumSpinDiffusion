@@ -1,7 +1,7 @@
 import torch
 
-import spin_diffusion_toy as toy
-from spin_reverse import (
+from spin_quantum_diffusion.quantum import single_spin as toy
+from spin_quantum_diffusion.quantum.reverse import (
     instrument_outcomes,
     stochastic_reverse_trajectory,
 )

@@ -1,17 +1,12 @@
-import sys
-from pathlib import Path
-
 import numpy as np
 import pytest
 import torch
 
-import spin_diffusion_toy as toy
-from spin_config import ExperimentConfig
-from spin_losses import fidelity_loss, multipole_loss, objective_loss
-from spin_multipoles import irreducible_spherical_tensors
-
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'experiments'))
-from reverse_diagnostic import match_each_mode, rank_diagnostics
+from spin_quantum_diffusion.quantum import single_spin as toy
+from spin_quantum_diffusion.quantum.config import ExperimentConfig
+from spin_quantum_diffusion.quantum.losses import fidelity_loss, multipole_loss, objective_loss
+from spin_quantum_diffusion.quantum.multipoles import irreducible_spherical_tensors
+from tasks.reverse_diagnostic import match_each_mode, rank_diagnostics
 
 
 @pytest.mark.parametrize('start', ['mixed', 'forward'])
@@ -88,7 +83,7 @@ def test_invalid_diagnostic_config(kwargs):
 
 
 def test_hybrid_selection_enforces_guardrails_and_uses_validation_seeds_only():
-    from hybrid_objective_study import choose_lambda, LAMBDAS, VALIDATION_SEEDS
+    from tasks.hybrid_objective_study import choose_lambda, LAMBDAS, VALIDATION_SEEDS
     rows = []
     for weight in LAMBDAS:
         for seed in VALIDATION_SEEDS:

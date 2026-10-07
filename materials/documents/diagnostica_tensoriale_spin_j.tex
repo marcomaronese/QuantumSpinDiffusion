@@ -1,0 +1,409 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,top=23mm,bottom=21mm,left=23mm,right=23mm]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,array,tabularx}
+\usepackage{enumitem}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+\definecolor{Navy}{HTML}{14253D}
+\definecolor{Teal}{HTML}{178C8C}
+\definecolor{PaleTeal}{HTML}{EAF6F5}
+\definecolor{Gold}{HTML}{F2B84B}
+\definecolor{Ink}{HTML}{243447}
+\definecolor{Muted}{HTML}{66788A}
+\definecolor{Paper}{HTML}{F7F9FB}
+\definecolor{Line}{HTML}{D8E1E8}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=Teal,
+  urlcolor=Teal,
+  pdftitle={Diagnostica tensoriale irriducibile per un sistema spin-j},
+  pdfsubject={Base Tlm e validazione del decadimento multipolare},
+  pdfauthor={Codex}
+}
+
+\color{Ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4.5pt}
+\setlist[itemize]{leftmargin=5mm,itemsep=2pt,topsep=3pt}
+\renewcommand{\arraystretch}{1.25}
+
+\pagestyle{fancy}
+\setlength{\headheight}{21pt}
+\fancyhf{}
+\fancyhead[L]{\sffamily\scriptsize\color{Muted}\MakeUppercase{Spin quantum diffusion - nota tecnica}}
+\fancyhead[R]{\color{Line}\rule{25mm}{0.35pt}}
+\fancyfoot[L]{\tikz\fill[Teal] (0,0) circle (1.25mm);}
+\fancyfoot[R]{\sffamily\scriptsize\color{Muted}\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{Line}\leaders\hrule height \headrulewidth\hfill}}
+
+\titleformat{\section}
+  {\sffamily\bfseries\fontsize{19}{22}\selectfont\color{Navy}}
+  {}{0pt}{}
+\titlespacing*{\section}{0pt}{0pt}{8pt}
+
+\titleformat{\subsection}
+  {\sffamily\bfseries\large\color{Teal}}
+  {}{0pt}{}
+\titlespacing*{\subsection}{0pt}{10pt}{3pt}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\newtcolorbox{equationbox}{
+  enhanced,
+  colback=Paper,
+  colframe=Line,
+  boxrule=0.45pt,
+  arc=0pt,
+  left=2mm,right=2mm,top=1mm,bottom=1mm,
+  before skip=5pt,after skip=6pt
+}
+
+\newtcolorbox{notebox}[1][]{
+  enhanced,
+  colback=white,
+  colframe=Line,
+  boxrule=0.5pt,
+  borderline west={2.4pt}{0pt}{Teal},
+  arc=0pt,
+  left=3.5mm,right=3mm,top=2.5mm,bottom=2.5mm,
+  before upper=\raggedright,
+  #1
+}
+
+\newcommand{\cardtitle}[1]{{\sffamily\bfseries\color{Navy}#1\par}\smallskip}
+\newcommand{\muted}[1]{{\color{Muted}#1}}
+\newcommand{\HS}{\mathrm{HS}}
+
+\begin{document}
+
+% -----------------------------------------------------------------------------
+% Copertina
+% -----------------------------------------------------------------------------
+\thispagestyle{fancy}
+\vspace*{22mm}
+
+{\sffamily\bfseries\small\color{Teal}\MakeUppercase{Nota esplicativa}}\par
+\vspace{5mm}
+{\sffamily\bfseries\fontsize{27}{31}\selectfont\color{Navy}
+Diagnostica tensoriale\\[1mm]
+irriducibile per uno spin-$j$\par}
+
+\vspace{5mm}
+{\color{Gold}\rule{22mm}{2.2mm}}
+
+\vspace{9mm}
+{\fontsize{12}{17}\selectfont\color{Muted}
+Come leggere i tensori sferici $T_{\ell m}$, perch\'e vengono costruiti
+algebricamente e in che modo verificano la legge di diffusione
+$e^{-D\ell(\ell+1)t}$.\par}
+
+\vspace{10mm}
+\begin{tcbraster}[
+  raster columns=3,
+  raster equal height=rows,
+  raster column skip=3mm
+]
+  \begin{notebox}
+    \cardtitle{1 - Scomporre}
+    La matrice densit\`a viene riscritta come somma di multipoli: monopolo,
+    dipolo, quadrupolo e strutture di rango superiore.
+  \end{notebox}
+  \begin{notebox}[borderline west={2.4pt}{0pt}{Gold}]
+    \cardtitle{2 - Evolvere}
+    La diffusione isotropa agisce separatamente su ogni rango $\ell$ e non
+    mescola multipoli differenti.
+  \end{notebox}
+  \begin{notebox}[borderline west={2.4pt}{0pt}{Navy}]
+    \cardtitle{3 - Verificare}
+    I coefficienti numerici vengono confrontati con il decadimento teorico
+    previsto per ogni coppia $(\ell,m)$.
+  \end{notebox}
+\end{tcbraster}
+
+\vspace{9mm}
+\subsection{Idea centrale}
+Il modulo non introduce una nuova dinamica fisica. Fornisce un sistema di
+coordinate naturale per osservare ci\`o che la dinamica esistente sta facendo:
+\`e una diagnostica spettrale dello stato di spin.
+
+\begin{equationbox}
+\[
+  \rho(t)
+  \;\longrightarrow\;
+  \{c_{\ell m}(t)\}
+  \;\longrightarrow\;
+  c_{\ell m}(t)\stackrel{?}{=}e^{-D\ell(\ell+1)t}c_{\ell m}(0)
+\]
+\end{equationbox}
+
+\vspace{5mm}
+\muted{Contesto: sistema singolo di spin-$j$, dimensione $d=2j+1$. Il caso
+predefinito del prototipo \`e $j=2$, quindi $d=5$.}
+
+\newpage
+
+% -----------------------------------------------------------------------------
+% 1. Base multipolare
+% -----------------------------------------------------------------------------
+\section*{1. Una base multipolare per la matrice densit\`a}
+
+Una matrice densit\`a di dimensione $d=2j+1$ appartiene a uno spazio di
+operatori di dimensione $d^2$. I tensori sferici irriducibili
+$T_{\ell m}$ formano una base completa di questo spazio:
+
+\begin{equationbox}
+\[
+  \rho
+  =\sum_{\ell=0}^{2j}\sum_{m=-\ell}^{\ell}
+    c_{\ell m}T_{\ell m}.
+\]
+\end{equationbox}
+
+Questo \`e l'analogo quantistico dell'espansione di una funzione sulla sfera
+in armoniche sferiche $Y_{\ell m}$.
+
+\subsection{Che cosa rappresenta il rango \texorpdfstring{$\ell$}{l}}
+
+\rowcolors{2}{Paper}{white}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{20mm}YY}
+  \rowcolor{Navy}
+  \color{white}Rango & \color{white}\bfseries Interpretazione &
+  \color{white}\bfseries Comportamento \\
+  $\ell=0$ & Monopolo: traccia e normalizzazione & Invariato dalla diffusione \\
+  $\ell=1$ & Dipolo: orientamento medio & Struttura angolare grossolana \\
+  $\ell=2$ & Quadrupolo: anisotropia di secondo ordine & Decade pi\`u rapidamente del dipolo \\
+  $\ell>2$ & Multipoli superiori & Dettagli angolari progressivamente pi\`u fini \\
+\end{tabularx}
+
+\subsection{Perch\'e si chiamano irriducibili}
+
+Sotto una rotazione, gli operatori con lo stesso rango $\ell$ possono
+mescolarsi attraverso l'indice $m$, ma non si mescolano con ranghi diversi.
+Le relazioni caratteristiche sono
+
+\begin{equationbox}
+\[
+ [J_z,T_{\ell m}]=mT_{\ell m},
+ \qquad
+ [J_{\pm},T_{\ell m}]
+ =\sqrt{(\ell\mp m)(\ell\pm m+1)}\,T_{\ell,m\pm1}.
+\]
+\end{equationbox}
+
+In altre parole, per ogni valore di $\ell$ i $2\ell+1$ componenti formano un
+sottospazio chiuso rispetto alle rotazioni.
+
+\begin{notebox}[colback=PaleTeal,colframe=Teal]
+  \begin{tabularx}{\linewidth}{>{\bfseries}p{35mm}YY}
+    Esempio: $j=2$ & $\ell=0,1,2,3,4$ &
+    $1+3+5+7+9=25=d^2$
+  \end{tabularx}
+\end{notebox}
+
+La somma delle dimensioni $2\ell+1$ restituisce l'intero spazio degli
+operatori $5\times5$.
+
+\newpage
+
+% -----------------------------------------------------------------------------
+% 2. Costruzione algebrica
+% -----------------------------------------------------------------------------
+\section*{2. Normalizzazione, fase e costruzione algebrica}
+
+\subsection{Ortonormalit\`a di Hilbert-Schmidt}
+
+Gli operatori vengono trattati come vettori mediante il prodotto scalare
+
+\begin{equationbox}
+\[
+  \langle A,B\rangle_{\HS}=\operatorname{Tr}(A^{\dagger}B).
+\]
+\end{equationbox}
+
+La base viene normalizzata in modo che
+
+\begin{equationbox}
+\[
+  \operatorname{Tr}\!\left(
+    T_{\ell m}^{\dagger}T_{\ell' m'}
+  \right)
+  =\delta_{\ell\ell'}\delta_{mm'}.
+\]
+\end{equationbox}
+
+Di conseguenza, le coordinate della matrice densit\`a si leggono direttamente:
+
+\begin{equationbox}
+\[
+  c_{\ell m}=\operatorname{Tr}(\rho T_{\ell m}^{\dagger}),
+  \qquad
+  P_{\ell}=\sum_{m=-\ell}^{\ell}|c_{\ell m}|^2.
+\]
+\end{equationbox}
+
+$P_{\ell}$ misura quanta struttura dello stato risiede complessivamente nel
+rango $\ell$.
+
+\subsection{Convenzione di fase Condon-Shortley}
+
+I tensori possono essere moltiplicati per fasi senza perdere ortogonalit\`a.
+Per rendere i segni confrontabili con la convenzione standard viene scelta una
+fase coerente. In questa implementazione compare il fattore $(-1)^{\ell}$ e si
+ottiene
+
+\begin{equationbox}
+\[
+  T_{\ell m}^{\dagger}=(-1)^mT_{\ell,-m}.
+\]
+\end{equationbox}
+
+La fase non cambia $P_{\ell}$, ma conta quando si confrontano coefficienti
+complessi individuali o implementazioni differenti.
+
+\subsection{Dal peso massimo agli altri componenti}
+
+Per ogni rango $\ell$ si parte dall'operatore di peso massimo
+$J_+^{\ell}$, con $J_+=J_x+iJ_y$. Dopo la normalizzazione, gli altri valori di
+$m$ vengono generati tramite il commutatore con $J_-=J_x-iJ_y$:
+
+\begin{equationbox}
+\begin{align*}
+  T_{\ell\ell}
+  &=(-1)^{\ell}
+    \frac{J_+^{\ell}}{\lVert J_+^{\ell}\rVert_{\HS}},\\[2mm]
+  T_{\ell,m-1}
+  &=\frac{[J_-,T_{\ell m}]}
+  {\sqrt{(\ell+m)(\ell-m+1)}}.
+\end{align*}
+\end{equationbox}
+
+Qui il commutatore non abbassa uno stato $\lvert j,m\rangle$: abbassa l'indice
+$m$ di un operatore nello spazio degli operatori.
+
+\rowcolors{2}{Paper}{white}
+\begin{tabularx}{\textwidth}{p{30mm}>{\ttfamily\small}p{59mm}Y}
+  \rowcolor{Navy}
+  \color{white}\bfseries\sffamily Passo &
+  \color{white}\bfseries\sffamily Nel modulo &
+  \color{white}\bfseries\sffamily Significato \\
+  Monopolo & T[(0,0)] = I / sqrt(d) & Traccia normalizzata \\
+  Peso massimo & highest = J\_plus ** ell & Avvio della catena di rango $\ell$ \\
+  Normalizzazione & highest / norm(highest) & Norma Hilbert-Schmidt unitaria \\
+  Discesa & J\_minus @ T - T @ J\_minus & Generazione di $m-1$ tramite commutatore \\
+\end{tabularx}
+
+\begin{notebox}
+  \cardtitle{Perch\'e questa via \`e robusta}
+  Evita dipendenze dall'ordine degli argomenti, dalle normalizzazioni e dalle
+  fasi adottate da specifiche implementazioni dei coefficienti di
+  Clebsch-Gordan. La costruzione resta equivalente, ma \`e controllata
+  direttamente dall'algebra del momento angolare.
+\end{notebox}
+
+\newpage
+
+% -----------------------------------------------------------------------------
+% 3. Diagnostica della diffusione
+% -----------------------------------------------------------------------------
+\section*{3. La diagnostica della diffusione}
+
+La diffusione isotropa del modello \`e generata dalla doppia azione dei
+commutatori con le tre componenti del momento angolare:
+
+\begin{equationbox}
+\[
+  \frac{d\rho}{dt}
+  =-D\sum_{\alpha=x,y,z}
+  [J_{\alpha},[J_{\alpha},\rho]].
+\]
+\end{equationbox}
+
+I tensori $T_{\ell m}$ diagonalizzano questo generatore. Il relativo autovalore
+dipende soltanto dal rango $\ell$, non da $m$:
+
+\begin{equationbox}
+\[
+  \sum_{\alpha=x,y,z}
+  [J_{\alpha},[J_{\alpha},T_{\ell m}]]
+  =\ell(\ell+1)T_{\ell m}.
+\]
+\end{equationbox}
+
+Da qui segue la previsione verificata numericamente:
+
+\begin{equationbox}
+\[
+  \boxed{
+    c_{\ell m}(t)
+    =e^{-D\ell(\ell+1)t}c_{\ell m}(0)
+  }.
+\]
+\end{equationbox}
+
+\subsection{Velocit\`a attese per il caso \texorpdfstring{$j=2$}{j=2}}
+
+\rowcolors{2}{Paper}{white}
+\begin{tabularx}{\textwidth}{C{17mm}C{49mm}Y}
+  \rowcolor{Navy}
+  \color{white}\bfseries $\ell$ &
+  \color{white}\bfseries Fattore di decadimento &
+  \color{white}\bfseries Lettura fisica \\
+  $0$ & $1$ & La traccia resta costante \\
+  $1$ & $e^{-2Dt}$ & Il dipolo sopravvive pi\`u a lungo \\
+  $2$ & $e^{-6Dt}$ & Il quadrupolo si attenua pi\`u rapidamente \\
+  $3$ & $e^{-12Dt}$ & Le strutture fini vengono eliminate presto \\
+  $4$ & $e^{-20Dt}$ & Il massimo dettaglio accessibile \`e il pi\`u fragile \\
+\end{tabularx}
+
+\subsection{Che cosa viene controllato}
+
+\begin{tcbraster}[
+  raster columns=3,
+  raster equal height=rows,
+  raster column skip=3mm
+]
+  \begin{notebox}
+    \cardtitle{Coefficienti}
+    Per ogni stato della traiettoria si calcola
+    $c_{\ell m}(t)=\operatorname{Tr}[\rho(t)T_{\ell m}^{\dagger}]$.
+  \end{notebox}
+  \begin{notebox}[borderline west={2.4pt}{0pt}{Gold}]
+    \cardtitle{Potenza}
+    Si aggregano i componenti nello stesso rango:
+    $P_{\ell}(t)=\sum_m|c_{\ell m}(t)|^2$.
+  \end{notebox}
+  \begin{notebox}[borderline west={2.4pt}{0pt}{Navy}]
+    \cardtitle{Errore}
+    Si misura lo scarto massimo tra evoluzione osservata e previsione teorica.
+  \end{notebox}
+\end{tcbraster}
+
+\vspace{4mm}
+\begin{notebox}
+  \cardtitle{Conclusione operativa}
+  Se tutti i componenti con lo stesso $\ell$ seguono la medesima legge
+  esponenziale, la dinamica numerica rispetta la simmetria rotazionale e il
+  generatore teorico. Se un rango devia, la discrepanza segnala un problema
+  nella costruzione degli operatori, nella vettorizzazione della supermatrice
+  o nell'applicazione del canale.
+\end{notebox}
+
+\vfill
+\muted{Riferimento nel progetto: \texttt{spin\_multipoles.py}. La nota descrive
+la diagnostica e non propone modifiche alle ipotesi fisiche del modello.}
+
+\end{document}

@@ -11,14 +11,14 @@ import numpy as np
 import pytest
 import torch
 
-import spin_diffusion_toy as toy
-from spin_classical_benchmark import require_classical_benchmark
-from spin_classical_diffusion import (
+from spin_quantum_diffusion.quantum import single_spin as toy
+from spin_quantum_diffusion.classical.benchmark import require_classical_benchmark
+from spin_quantum_diffusion.classical.diffusion import (
     ClassicalDDPM, ClassicalDiffusionConfig, angles_to_cartesian,
     cartesian_to_angles, load_classical_model, save_classical_model,
     train_classical_diffusion,
 )
-from spin_correlated import make_correlated_direction_pairs
+from spin_quantum_diffusion.quantum.correlated import make_correlated_direction_pairs
 
 
 @pytest.fixture(autouse=True)
@@ -147,13 +147,20 @@ def test_direction_validation_and_roundtrip():
 
 def test_cli_produces_comparable_classical_artifacts(tmp_path):
     root = Path(__file__).resolve().parents[1]
+    environment = dict(
+        os.environ,
+        OMP_NUM_THREADS="1",
+        MKL_NUM_THREADS="1",
+        OPENBLAS_NUM_THREADS="1",
+        MPLBACKEND="Agg",
+        PYTHONPATH=str(root / "src") + os.pathsep + str(root),
+    )
     result = subprocess.run([
-        sys.executable, str(root / "spin_diffusion_toy.py"),
+        sys.executable, "-m", "spin_quantum_diffusion.quantum.single_spin",
         "--j", "1", "--n-data", "32", "--T", "1", "--layers", "1", "--epochs", "2",
         "--q-grid-theta", "10", "--q-grid-phi", "20", "--classical-epochs", "3",
         "--classical-steps", "8", "--classical-hidden-width", "16", "--outdir", str(tmp_path),
-    ], env=dict(os.environ, OMP_NUM_THREADS="1", MKL_NUM_THREADS="1",
-                OPENBLAS_NUM_THREADS="1", MPLBACKEND="Agg"), capture_output=True, text=True)
+    ], cwd=root, env=environment, capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
     require_classical_benchmark(tmp_path)
     metrics = json.loads((tmp_path / "validation_metrics.json").read_text())
@@ -182,16 +189,22 @@ def test_old_cached_runs_cannot_silently_skip_benchmark(tmp_path):
 
 def test_two_spin_experiment_includes_and_independently_audits_ddpm(tmp_path):
     root = Path(__file__).resolve().parents[1]
-    environment = dict(os.environ, OMP_NUM_THREADS="1", MKL_NUM_THREADS="1",
-                       OPENBLAS_NUM_THREADS="1", MPLBACKEND="Agg")
+    environment = dict(
+        os.environ,
+        OMP_NUM_THREADS="1",
+        MKL_NUM_THREADS="1",
+        OPENBLAS_NUM_THREADS="1",
+        MPLBACKEND="Agg",
+        PYTHONPATH=str(root / "src") + os.pathsep + str(root),
+    )
     commands = [
-        [str(root / "experiments/two_spin_correlated.py"), "--n-train", "32", "--n-test", "32",
+        ["-m", "tasks.two_spin_correlated", "--n-train", "32", "--n-test", "32",
          "--quantum-epochs", "1", "--neural-epochs", "1", "--classical-epochs", "2",
          "--classical-steps", "8", "--classical-hidden-width", "16", "--outdir", str(tmp_path)],
-        [str(root / "experiments/validate_two_spin.py"), "--pilot-dir", str(tmp_path)],
+        ["-m", "tasks.validate_two_spin", "--pilot-dir", str(tmp_path)],
     ]
     for command in commands:
-        result = subprocess.run([sys.executable, *command], env=environment,
+        result = subprocess.run([sys.executable, *command], cwd=root, env=environment,
                                 capture_output=True, text=True)
         assert result.returncode == 0, result.stdout + result.stderr
     audit = json.loads((tmp_path / "independent_validation.json").read_text())

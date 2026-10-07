@@ -1,6 +1,6 @@
 import torch
 
-import spin_diffusion_toy as toy
+from spin_quantum_diffusion.quantum import single_spin as toy
 
 
 TOLERANCE = 1e-10
@@ -72,8 +72,8 @@ def test_shared_parameters_are_reused_for_all_reverse_steps():
 
 def test_spectral_exponentials_match_reference_and_preserve_unitarity():
     import torch
-    import spin_diffusion_toy as toy
-    from spin_reverse import reverse_collision_unitary
+    from spin_quantum_diffusion.quantum import single_spin as toy
+    from spin_quantum_diffusion.quantum.reverse import reverse_collision_unitary
     jx, jy, jz, identity = toy.spin_operators(2.5)
     generators = toy.build_reverse_generators(jx, jy, jz, identity)
     torch.manual_seed(91)

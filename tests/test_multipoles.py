@@ -3,8 +3,8 @@ import math
 import pytest
 import torch
 
-import spin_diffusion_toy as toy
-from spin_multipoles import (
+from spin_quantum_diffusion.quantum import single_spin as toy
+from spin_quantum_diffusion.quantum.multipoles import (
     irreducible_spherical_tensors,
     max_multipole_decay_error,
     multipole_coefficients,

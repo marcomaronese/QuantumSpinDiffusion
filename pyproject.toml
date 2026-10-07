@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spin-quantum-diffusion"
+version = "0.2.0"
+description = "Spin phase-space quantum diffusion research prototype"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "torch>=2.2",
+  "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+spin-diffusion = "spin_quantum_diffusion.quantum.single_spin:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
