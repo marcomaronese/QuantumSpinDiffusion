@@ -27,6 +27,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import spin_diffusion_toy as toy  # noqa: E402
+from spin_classical_diffusion import add_classical_arguments, config_from_arguments
+from spin_classical_benchmark import run_classical_benchmark
 from spin_correlated import (  # noqa: E402
     angles_to_vector,
     build_two_spin_forward_trajectory,
@@ -268,6 +270,7 @@ def plot_comparison(rows: list[dict], path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    add_classical_arguments(parser)
     parser.add_argument("--j", type=float, default=1.0)
     parser.add_argument("--n-train", type=int, default=1200)
     parser.add_argument("--n-test", type=int, default=1200)
@@ -285,6 +288,9 @@ def main() -> None:
         default=ROOT / "two_spin_pilot",
     )
     args = parser.parse_args()
+    classical_config = config_from_arguments(args)
+    if args.n_train < 1 or args.n_test < 1:
+        raise ValueError("n-train and n-test must be positive")
     if args.j != 1.0:
         raise ValueError("this first controlled pilot is validated only at j=1")
     output_root = args.outdir.resolve()
@@ -378,6 +384,24 @@ def main() -> None:
         sampling_seconds_2000=heat_sampling * 2000 / args.n_test,
     )
     states["riemannian_heat_kernel"] = heat_density
+
+    diffusion_pairs, diffusion_metadata = run_classical_benchmark(
+        train_pairs, classical_config, args.seed, args.n_test, output_root / "classical")
+    start = time.perf_counter()
+    diffusion_density = empirical_joint_density(diffusion_pairs, args.j)
+    diffusion_encoding = time.perf_counter() - start
+    diffusion_parameters = diffusion_metadata["trainable_parameter_count"]
+    add_result(
+        rows, name="Classical DDPM", family="learned Cartesian diffusion",
+        density=diffusion_density, target=test_density,
+        target_mutual_information=target_mutual_information,
+        target_correlation=target_correlation, operators=operators, identity=identity,
+        trainable_parameters=diffusion_parameters, effective_parameters=diffusion_parameters,
+        training_seconds=diffusion_metadata["training_seconds"],
+        generation_seconds=diffusion_encoding,
+        sampling_seconds_2000=diffusion_metadata["sampling_seconds"] * 2000 / args.n_test,
+    )
+    states["classical_ddpm"] = diffusion_density
 
     start = time.perf_counter()
     tensor_density = clustered_product_mixture_density(
@@ -550,6 +574,7 @@ def main() -> None:
         "models": rows,
         "limitations": [
             "Only one train/test seed is evaluated.",
+            "The learned DDPM uses Cartesian diffusion with final sphere projection and a separate fixed budget; its parameter count is not matched.",
             "The heat-kernel baseline is a KDE/one-step diffusion baseline, not a learned reverse SDE.",
             "Quantum direction-sampling cost is not yet implemented for the joint Husimi-Q readout.",
             "The shared collision ancilla can mediate correlations even in the no-direct-interaction ablation.",

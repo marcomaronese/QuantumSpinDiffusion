@@ -30,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import spin_diffusion_toy as toy  # noqa: E402
+from spin_classical_benchmark import require_classical_benchmark, write_classical_comparison
 
 
 OBJECTIVE_CONFIGURATIONS = {
@@ -69,6 +70,7 @@ def run_training_job(
     run_directory = output_root / "runs" / label / f"seed_{seed}"
     metrics_path = run_directory / "validation_metrics.json"
     if metrics_path.exists() and not force:
+        require_classical_benchmark(run_directory)
         return metrics_path
 
     run_directory.mkdir(parents=True, exist_ok=True)
@@ -623,6 +625,10 @@ def main() -> None:
             completed.result()
 
     rows = load_training_rows(output_root, seeds)
+    write_classical_comparison(
+        [output_root / "runs" / label / f"seed_{seed}"
+         for label in OBJECTIVE_CONFIGURATIONS for seed in seeds],
+        output_root / "classical_comparison.json")
     write_csv(output_root / "training_runs.csv", rows)
     summary = aggregate_rows(rows, seeds)
 

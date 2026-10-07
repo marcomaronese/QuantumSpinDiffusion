@@ -68,3 +68,27 @@ def test_shared_parameters_are_reused_for_all_reverse_steps():
     assert history[-1] < history[0]
     for step, state in enumerate(trajectory):
         toy.assert_physical_density(state, f"shared reverse state {step}")
+
+
+def test_spectral_exponentials_match_reference_and_preserve_unitarity():
+    import torch
+    import spin_diffusion_toy as toy
+    from spin_reverse import reverse_collision_unitary
+    jx, jy, jz, identity = toy.spin_operators(2.5)
+    generators = toy.build_reverse_generators(jx, jy, jz, identity)
+    torch.manual_seed(91)
+    theta = (2 * torch.randn(3, len(generators), dtype=torch.float64)).requires_grad_()
+    actual = reverse_collision_unitary(theta, generators)
+    reference = torch.eye(12, dtype=torch.complex128)
+    for layer in theta:
+        for angle, generator in zip(layer, generators):
+            reference = torch.matrix_exp(-1j * angle * generator) @ reference
+    torch.testing.assert_close(actual, reference, rtol=1e-9, atol=1e-10)
+    assert torch.linalg.norm(actual.conj().T @ actual - torch.eye(12, dtype=actual.dtype)) < 1e-12
+    actual_gradient = torch.autograd.grad(actual.real.sum(), theta, retain_graph=True)[0]
+    reference_gradient = torch.autograd.grad(reference.real.sum(), theta)[0]
+    torch.testing.assert_close(actual_gradient, reference_gradient, rtol=1e-8, atol=1e-9)
+    # A cached spectrum must not outlive an in-place change to a control.
+    generators[0].mul_(.5)
+    updated = reverse_collision_unitary(theta.detach(), generators)
+    assert torch.linalg.norm(updated-actual.detach()) > 1e-3

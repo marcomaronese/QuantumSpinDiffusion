@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 import platform
 from pathlib import Path
@@ -15,6 +15,7 @@ import scipy
 import torch
 
 from spin_reverse import GENERATOR_SETS
+from spin_classical_diffusion import ClassicalDiffusionConfig
 
 
 @dataclass(frozen=True)
@@ -40,9 +41,16 @@ class ExperimentConfig:
     generator_set: str = "full"
     parameter_sharing: str = "independent"
     ancilla_count: int = 1
+    starting_state: str = "mixed"
+    supervision: str = "path"
+    hybrid_lambda: float = 0.0
     output_directory: str = "spin_diffusion_output"
+    classical: ClassicalDiffusionConfig = field(default_factory=ClassicalDiffusionConfig)
 
     def validate(self) -> None:
+        self.classical.validate()
+        if self.n_data < 1:
+            raise ValueError("n_data must be positive")
         if self.j < 0.5 or abs(2 * self.j - round(2 * self.j)) > 1e-12:
             raise ValueError("j must be a positive integer or half-integer")
         if self.diffusion_steps < 1:
@@ -57,6 +65,12 @@ class ExperimentConfig:
             raise ValueError(f"generator_set must be one of {GENERATOR_SETS}")
         if self.parameter_sharing not in {"independent", "shared"}:
             raise ValueError("parameter_sharing must be independent or shared")
+        if self.starting_state not in {"mixed", "forward"}:
+            raise ValueError("starting_state must be mixed or forward")
+        if self.supervision not in {"path", "final"}:
+            raise ValueError("supervision must be path or final")
+        if not 0 <= self.hybrid_lambda <= 1:
+            raise ValueError("hybrid_lambda must lie in [0, 1]")
 
     def to_dict(self) -> dict:
         self.validate()

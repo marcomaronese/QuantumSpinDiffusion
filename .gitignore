@@ -7,3 +7,6 @@ validation_study/
 j25_fidelity_study/
 instrument_study/
 two_spin_pilot/
+diagnostic_study/
+hybrid_study/
+diagnostic_numerical_precheck/

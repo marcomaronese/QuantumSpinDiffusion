@@ -9,6 +9,7 @@ is performed only after a measurement outcome has been selected.
 from __future__ import annotations
 
 from collections.abc import Sequence
+from functools import lru_cache
 
 import torch
 
@@ -160,6 +161,12 @@ def partial_trace_ancilla(
     )
 
 
+@lru_cache(maxsize=256)
+def _generator_spectrum(generator: torch.Tensor, version: int):
+    """Cache fixed Hermitian controls; tensor version invalidates in-place edits."""
+    return torch.linalg.eigh(generator)
+
+
 def reverse_collision_unitary(
     theta: torch.Tensor,
     generators: Sequence[torch.Tensor],
@@ -171,7 +178,15 @@ def reverse_collision_unitary(
     unitary = torch.eye(dimension, dtype=CDTYPE, device=theta.device)
     for layer in range(theta.shape[0]):
         for index, generator in enumerate(generators):
-            update = torch.matrix_exp(-1j * theta[layer, index] * generator)
+            # Spectral evaluation of exactly the same exponential preserves
+            # unitarity to roundoff even where matrix_exp's small-norm branch
+            # accumulates residuals above the 1e-10 channel tolerance.
+            eigenvalues, eigenvectors = (
+                torch.linalg.eigh(generator) if generator.requires_grad
+                else _generator_spectrum(generator, generator._version)
+            )
+            phases = torch.exp(-1j * theta[layer, index] * eigenvalues)
+            update = (eigenvectors * phases.unsqueeze(0)) @ eigenvectors.conj().T
             unitary = update @ unitary
     return unitary
 

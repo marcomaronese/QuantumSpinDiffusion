@@ -343,6 +343,7 @@ def main() -> None:
         raise FileNotFoundError(f"no trained runs found under {args.runs_root}")
     output_root = args.outdir.resolve()
     output_root.mkdir(parents=True, exist_ok=True)
+    toy.write_classical_comparison(run_directories, output_root / "classical_comparison.json")
 
     rows = []
     convergence_rows = []

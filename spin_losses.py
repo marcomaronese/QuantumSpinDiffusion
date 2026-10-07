@@ -161,6 +161,7 @@ def objective_loss(
     tensors: Mapping[TensorKey, torch.Tensor] | None = None,
     multipole_weighting: str = "rank-balanced",
     husimi_grid: HusimiGrid | None = None,
+    hybrid_lambda: float = 0.0,
 ) -> torch.Tensor:
     """Dispatch a named reverse-training objective."""
     if objective == "frobenius":
@@ -171,6 +172,14 @@ def objective_loss(
         return multipole_loss(predicted, target, tensors, multipole_weighting)
     if objective == "fidelity":
         return fidelity_loss(predicted, target)
+    if objective == "hybrid":
+        if not 0 <= hybrid_lambda <= 1:
+            raise ValueError("hybrid_lambda must lie in [0, 1]")
+        if tensors is None:
+            raise ValueError("hybrid objective requires a tensor basis")
+        return (1 - hybrid_lambda) * fidelity_loss(predicted, target) + (
+            hybrid_lambda * multipole_loss(predicted, target, tensors, "high-rank")
+        )
     if objective == "trace-distance":
         return trace_distance(predicted, target)
     if objective == "husimi-js":

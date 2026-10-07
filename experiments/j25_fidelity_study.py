@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import spin_diffusion_toy as toy  # noqa: E402
+from spin_classical_benchmark import require_classical_benchmark
 from validation_study import (  # noqa: E402
     independently_recompute_state_metrics,
     significant_q_modes,
@@ -43,6 +44,7 @@ def run_training(
     run_directory = output_root / "runs" / f"seed_{seed}"
     metrics_path = run_directory / "validation_metrics.json"
     if metrics_path.exists() and not force:
+        require_classical_benchmark(run_directory)
         return run_directory
     run_directory.mkdir(parents=True, exist_ok=True)
     command = [
@@ -179,12 +181,26 @@ def analyze_run(run_directory: Path, mode_tolerance: float) -> dict:
     generated_modes = significant_q_modes(thetas, phis, generated_q)
     matching = match_modes(target_modes, generated_modes, mode_tolerance)
 
+    classical = {}
+    if "classical" in metrics:
+        classical_path = run_directory / "classical" / "rho_generated.npy"
+        classical_state = torch.tensor(np.load(classical_path), dtype=toy.CDTYPE)
+        _, _, classical_q, _ = toy.husimi_q_grid(classical_state, 2.5)
+        classical_modes = significant_q_modes(thetas, phis, classical_q)
+        classical = {
+            **independently_recompute_state_metrics(
+                run_directory / "rho_data.npy", classical_path, j=2.5),
+            "generated_mode_count": len(classical_modes),
+            **match_modes(target_modes, classical_modes, mode_tolerance),
+        }
+
     return {
         "seed": seed,
         **independent,
         "target_mode_count": len(target_modes),
         "generated_mode_count": len(generated_modes),
         **matching,
+        **{f"classical_{key}": value for key, value in classical.items()},
         "initial_training_loss": reverse["initial_training_loss"],
         "final_training_loss": reverse["final_training_loss"],
         "max_trace_error": reverse["max_trace_error"],
@@ -207,6 +223,8 @@ def aggregate(rows: list[dict]) -> dict:
         "mean_matched_angle_radians",
         "maximum_matched_angle_radians",
     ]
+    if all("classical_infidelity" in row for row in rows):
+        metric_names += ["classical_" + name for name in metric_names.copy()]
     summary: dict[str, object] = {
         "run_count": len(rows),
         "seeds": [row["seed"] for row in rows],
@@ -233,11 +251,14 @@ def aggregate(rows: list[dict]) -> dict:
     for name in metric_names:
         values = [float(row[name]) for row in rows if row[name] is not None]
         summary["metrics"][name] = {
-            "mean": statistics.mean(values),
-            "sample_standard_deviation": statistics.stdev(values),
-            "minimum": min(values),
-            "maximum": max(values),
+            "mean": statistics.mean(values) if values else None,
+            "sample_standard_deviation": statistics.stdev(values) if len(values) > 1 else None,
+            "minimum": min(values) if values else None,
+            "maximum": max(values) if values else None,
         }
+    if all("classical_all_target_modes_recovered" in row for row in rows):
+        summary["classical_all_target_modes_recovered_runs"] = sum(
+            bool(row["classical_all_target_modes_recovered"]) for row in rows)
     return summary
 
 
@@ -336,6 +357,7 @@ def main() -> None:
         key=lambda row: row["seed"],
     )
     summary = aggregate(rows)
+    toy.write_classical_comparison(directories, output_root / "classical_comparison.json")
     summary["configuration"] = {
         "j": 2.5,
         "objective": "fidelity",

@@ -40,6 +40,7 @@ full images. It is the cleanest test of the spin/spherical construction.
 import argparse
 import json
 import math
+import time
 from pathlib import Path
 
 import numpy as np
@@ -62,6 +63,8 @@ from spin_multipoles import (
     multipole_trajectory,
 )
 from spin_config import ExperimentConfig, reproducibility_metadata
+from spin_classical_diffusion import add_classical_arguments, config_from_arguments
+from spin_classical_benchmark import single_spin_benchmark, write_classical_comparison
 from spin_reverse import (
     build_reverse_generators,
     choi_matrix_from_kraus,
@@ -215,12 +218,21 @@ def train_reverse(
     multipole_weighting="rank-balanced",
     husimi_grid=None,
     parameter_sharing="independent",
+    starting_state="mixed",
+    supervision="path",
+    hybrid_lambda=0.0,
 ):
     torch.manual_seed(seed)
 
     T = len(forward_states) - 1
     d = forward_states[0].shape[0]
     prior = torch.eye(d, dtype=CDTYPE) / d
+    if starting_state not in {"mixed", "forward"}:
+        raise ValueError("starting_state must be mixed or forward")
+    if supervision not in {"path", "final"}:
+        raise ValueError("supervision must be path or final")
+    if starting_state == "forward":
+        prior = forward_states[-1]
 
     if parameter_sharing not in {"independent", "shared"}:
         raise ValueError("parameter_sharing must be independent or shared")
@@ -244,6 +256,8 @@ def train_reverse(
         schedule = parameter_schedule(params, n_steps=T)
         for theta, t in zip(schedule, range(T, 0, -1), strict=True):
             rho = reverse_collision_channel(rho, theta, generators)
+            if supervision == "final" and t != 1:
+                continue
             loss = loss + objective_loss(
                 rho,
                 forward_states[t - 1],
@@ -251,6 +265,7 @@ def train_reverse(
                 tensors=multipole_tensors,
                 multipole_weighting=multipole_weighting,
                 husimi_grid=husimi_grid,
+                hybrid_lambda=hybrid_lambda,
             )
 
         loss.backward()
@@ -262,7 +277,7 @@ def train_reverse(
             final_err = float(frobenius_loss(rho, forward_states[0]).detach())
             print(
                 f"epoch={epoch:5d}  "
-                f"{objective}_path_loss={float(loss.detach()):.6e}  "
+                f"{objective}_{supervision}_loss={float(loss.detach()):.6e}  "
                 f"final_state_error={final_err:.6e}"
             )
 
@@ -392,13 +407,14 @@ def plot_q_map(thetas, phis, Q, title, output_file):
     plt.close(fig)
 
 
-def plot_training(history, output_file):
+def plot_training(history, output_file, title="Training of the reverse quantum channel stack",
+                  ylabel="reverse training loss"):
     fig, ax = plt.subplots(figsize=(7.2, 4.2))
     ax.plot(np.arange(len(history)), history)
     ax.set_yscale("log")
     ax.set_xlabel("epoch")
-    ax.set_ylabel("reverse path loss")
-    ax.set_title("Training of the reverse quantum channel stack")
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
     ax.grid(True, alpha=0.25)
     fig.tight_layout()
     fig.savefig(output_file, dpi=180, bbox_inches="tight")
@@ -470,6 +486,7 @@ def main():
             "frobenius",
             "multipole",
             "fidelity",
+            "hybrid",
             "trace-distance",
             "husimi-js",
         ],
@@ -496,7 +513,11 @@ def main():
         help="use separate reverse parameters per time step or one shared block",
     )
     parser.add_argument("--ancilla-count", type=int, default=1)
+    parser.add_argument("--starting-state", choices=["mixed", "forward"], default="mixed")
+    parser.add_argument("--supervision", choices=["path", "final"], default="path")
+    parser.add_argument("--hybrid-lambda", type=float, default=0.0)
     parser.add_argument("--outdir", type=str, default="spin_diffusion_output")
+    add_classical_arguments(parser)
     args = parser.parse_args()
 
     config = ExperimentConfig(
@@ -519,7 +540,11 @@ def main():
         generator_set=args.generator_set,
         parameter_sharing=args.parameter_sharing,
         ancilla_count=args.ancilla_count,
+        starting_state=args.starting_state,
+        supervision=args.supervision,
+        hybrid_lambda=args.hybrid_lambda,
         output_directory=args.outdir,
+        classical=config_from_arguments(args),
     )
     config.validate()
     outdir = Path(args.outdir)
@@ -591,6 +616,7 @@ def main():
             n_theta=args.loss_grid_theta,
             n_phi=args.loss_grid_phi,
         )
+    training_started = time.perf_counter()
     params, history = train_reverse(
         forward_states=forward_states,
         generators=generators,
@@ -603,11 +629,16 @@ def main():
         multipole_weighting=args.multipole_weighting,
         husimi_grid=loss_husimi_grid,
         parameter_sharing=args.parameter_sharing,
+        starting_state=args.starting_state,
+        supervision=args.supervision,
+        hybrid_lambda=args.hybrid_lambda,
     )
+    training_seconds = time.perf_counter() - training_started
 
-    # 6. Generate from the maximally mixed prior and validate every state.
+    # 6. Evaluate from the declared training start; also save generative output.
+    generation_started = time.perf_counter()
     reverse_states = generate_trajectory(
-        prior,
+        forward_states[-1] if args.starting_state == "forward" else prior,
         params,
         generators,
         n_steps=args.T,
@@ -617,6 +648,10 @@ def main():
         for step, rho in enumerate(reverse_states)
     ]
     rho_generated = reverse_states[-1]
+    generation_seconds = time.perf_counter() - generation_started
+    mixed_states = generate_trajectory(prior, params, generators, n_steps=args.T)
+    for step, rho in enumerate(mixed_states):
+        assert_physical_density(rho, f"mixed-prior reverse state {step}")
     final_error = float(frobenius_loss(rho_generated, rho_data))
     final_fidelity = float(quantum_fidelity(rho_generated, rho_data))
     final_trace_distance = float(trace_distance(rho_generated, rho_data))
@@ -732,6 +767,10 @@ def main():
     np.save(outdir / "generated_theta_phi.npy", generated_points)
     np.save(outdir / "rho_data.npy", rho_data.detach().cpu().numpy())
     np.save(outdir / "rho_generated.npy", rho_generated.detach().cpu().numpy())
+    np.save(outdir / "rho_generated_mixed.npy", mixed_states[-1].cpu().numpy())
+    np.save(outdir / "forward_states.npy", torch.stack(forward_states).cpu().numpy())
+    np.save(outdir / "reverse_states.npy", torch.stack(reverse_states).cpu().numpy())
+    np.save(outdir / "training_history.npy", np.asarray(history))
     torch.save(params.cpu(), outdir / "reverse_parameters.pt")
     np.savez(
         outdir / "forward_multipoles.npz",
@@ -769,6 +808,12 @@ def main():
             "max_multipole_decay_error": decay_error,
         },
         "reverse": {
+            "starting_state": args.starting_state,
+            "supervision": args.supervision,
+            "hybrid_lambda": args.hybrid_lambda,
+            "training_seconds": training_seconds,
+            "generation_seconds": generation_seconds,
+            "training_loss_history_timing": "before each optimizer update",
             "training_objective": args.objective,
             "multipole_weighting": args.multipole_weighting,
             "initial_training_loss": history[0],
@@ -800,8 +845,12 @@ def main():
             ),
         },
     }
+    print("Training classical DDPM benchmark on the same directional dataset...")
+    validation_metrics["classical"] = single_spin_benchmark(
+        points, rho_data, config, outdir / "classical")
     with (outdir / "validation_metrics.json").open("w", encoding="utf-8") as handle:
         json.dump(validation_metrics, handle, indent=2)
+    write_classical_comparison([outdir], outdir / "classical_comparison.json")
 
     plot_q_map(
         th,

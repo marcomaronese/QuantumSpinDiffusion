@@ -121,6 +121,9 @@ def main() -> None:
         "Quantum reverse, direct J1-J2": "quantum_direct",
         "Matched-parameter neural generator": "neural",
     }
+    # Continue auditing historical pilots, and include the DDPM in every new one.
+    if "classical_ddpm" in saved.files:
+        state_names["Classical DDPM"] = "classical_ddpm"
     with (pilot_directory / "comparison.csv").open(
         newline="", encoding="utf-8"
     ) as handle:

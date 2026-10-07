@@ -1,5 +1,26 @@
 # Proposed next development steps
 
+## Execution status — 2026-10-06
+
+Steps 1–3 are complete; see [DIAGNOSTIC_REPORT.md](DIAGNOSTIC_REPORT.md).
+The 40-run controlled study identifies path supervision and its optimization
+budget as the practical missing-mode bottleneck. At 100 epochs, final-only
+fidelity recovers both modes in 5/5 seeds from either start, versus 1/5 for
+path supervision. At 500 epochs, all four conditions recover both modes in 5/5,
+with final-only supervision retaining substantially lower reconstruction error.
+
+The hybrid weight selected on validation seeds is `lambda=0.75`; it confirms
+both modes on 5/5 untouched test seeds with the unchanged architecture and
+passes the predeclared global-metric guardrails. Pure final-only fidelity also
+recovers both modes on these test seeds. The hybrid improves high-rank accuracy.
+All physicality/CPTP and exact forward-decay checks pass. Generator exponentials
+now use equivalent spectral evaluation to avoid a reproduced numerical
+unitarity-tolerance failure; no tolerance or model assumption was changed.
+
+The conditional capacity expansion in step 4 is not indicated by these results.
+Steps 5–6 remain pending, and the hardware-readiness gate remains closed.
+The original roadmap below is retained for context.
+
 ## Scientific objective
 
 Determine why the `j=2.5` representation can resolve two target modes while
@@ -124,6 +145,8 @@ Do not begin Qiskit implementation until the abstract model:
 
 ## Immediate next experiment
 
-Implement the `rho_T` versus `I/d` and final-only versus path-loss diagnostic
-first. This is the lowest-cost experiment capable of identifying the actual
-bottleneck before more parameters are added.
+Begin the two-spin redesign in step 5 with a controlled final-only versus
+path-supervision comparison, using the single-spin result as motivation.
+Then compare local/correlation ancilla designs and richer channels while
+keeping the classical baselines fixed. Select using validation seeds before
+opening new test seeds or expanding the correlated benchmark.
