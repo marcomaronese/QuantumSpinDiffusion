@@ -28,8 +28,8 @@ materials/
 notes/                      Agent-facing history, reports, and next steps
 ```
 
-Start with [notes/NEXT_STEPS.md](notes/NEXT_STEPS.md) for the active research
-plan and [materials/paper/CLAIMS.md](materials/paper/CLAIMS.md) for the exact
+Start with [notes/TODO.md](notes/TODO.md), the single authoritative development
+plan and restart checkpoint, and [materials/paper/CLAIMS.md](materials/paper/CLAIMS.md) for the exact
 claim-to-evidence ledger. Historical notes may mention the former flat layout;
 the paths in this README are authoritative for current work.
 

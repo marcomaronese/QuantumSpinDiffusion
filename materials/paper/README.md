@@ -14,7 +14,8 @@ and reports the completed numerical evidence, including negative results.
 - `metadata.tex`: replace the author/affiliation field before submission.
 - `CLAIMS.md`: claim-to-evidence index and boundaries on interpretation.
 - `LITERATURE.md`: verified reference sources and scope of the literature search.
-- `SUBMISSION_NOTES.md`: remaining research and author-supplied information.
+- `SUBMISSION_NOTES.md`: submission context and links to the authoritative
+  [development TODO](../../notes/TODO.md), including research and authorship tasks.
 
 The Overleaf ZIP contains all typesetting dependencies, vector figures, BibTeX,
 and compact result tables. It does not require Python, PyTorch, shell escape, an
