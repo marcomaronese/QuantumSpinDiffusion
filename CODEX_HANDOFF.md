@@ -1,5 +1,12 @@
 # CODEX HANDOFF — Spin Phase-Space Quantum Diffusion
 
+> **Historical scientific specification.** Active Codex priorities, phases,
+> dependencies, gates, and restart action are maintained only in
+> [`notes/SPINDIFFUSION_PAPER_PLAN.md`](notes/SPINDIFFUSION_PAPER_PLAN.md).
+> Preserve the equations, implementation context, and historical findings
+> below, but do not treat the old task ordering as active. Use the paper claim
+> ledger for evidence-backed statements.
+
 ## 1. Project goal
 
 Build and validate a quantum generative model based on the correspondence
