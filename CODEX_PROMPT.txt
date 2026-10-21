@@ -1,3 +1,7 @@
+Archived continuation prompt; historical only. Follow `notes/SPINDIFFUSION_PAPER_PLAN.md` for the current objective, phase order, gates, and restart action. Use the paper claim ledger for evidence-backed statements.
+
+Original prompt follows:
+
 Read CODEX_HANDOFF.md first and treat it as the scientific specification.
 
 Begin with Task A and Task B only:
