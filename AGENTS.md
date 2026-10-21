@@ -1,10 +1,11 @@
 # Instructions for agents
 
-Read `README.md`, then `notes/README.md` and `notes/TODO.md` before making
-research changes. `notes/TODO.md` is the single authoritative development plan:
+Read `README.md`, then `notes/README.md` and
+`notes/SPINDIFFUSION_PAPER_PLAN.md` before making research changes.
+`notes/SPINDIFFUSION_PAPER_PLAN.md` is the single authoritative development plan:
 follow its priorities, dependencies, and restart instructions; update its status
-and next action after development. `notes/NEXT_STEPS.md` is a compatibility
-pointer, and historical handoffs are not active task lists.
+and next action after development. `notes/TODO.md` and `notes/NEXT_STEPS.md`
+are compatibility pointers, and historical handoffs are not active task lists.
 Use `materials/paper/CLAIMS.md` when describing conclusions; planned tasks are
 not evidence for claims.
 

@@ -4,15 +4,16 @@ The manuscript text, citations, figures, tables, appendices, evidence and build
 instructions are complete for the present scope. This is a research draft,
 not a declaration of submission readiness.
 
-All active tasks are maintained in the single authoritative
-**[development TODO](../../notes/TODO.md)**:
+All active research and publication tasks are maintained in the single
+authoritative **[SpinDiffusion paper plan](../../notes/SPINDIFFUSION_PAPER_PLAN.md)**.
+Its E0–E6 phases cover:
 
-- P4: direct preparation, fewer reverse steps, normalized supervision and
+- E4: direct preparation, fewer reverse steps, normalized supervision and
   learned intrinsic spherical diffusion controls.
-- P5–P6: independent correlated/single-spin evaluation and representation/readout
-  robustness; P1–P3 cover the preceding correlated-model redesign.
-- P7: new evidence snapshots, auditing, claim updates, PDF and ZIP regeneration.
-- P9: novelty review, authors/affiliations, corresponding author, funding,
+- E3/E5/E6: independent correlated/single-spin evaluation and representation/readout
+  robustness, following controlled training and correlated-model selection.
+- E0/E6: new evidence snapshots, auditing, claim updates, PDF and ZIP regeneration.
+- E6: novelty review, authors/affiliations, corresponding author, funding,
   contributions, competing interests, required AI declarations, venue/style
   and public code/data archive with permanent DOI where appropriate.
 
