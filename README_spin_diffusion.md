@@ -44,3 +44,8 @@ It tests the central construction:
 It is **not yet** a full sample-wise image diffusion model. For images/fields,
 the next step is multi-spin latent encoding plus a stochastic quantum
 instrument / trajectory-level reverse model.
+
+
+## Research plan
+
+The active Codex roadmap is [notes/SPINDIFFUSION_PAPER_PLAN.md](notes/SPINDIFFUSION_PAPER_PLAN.md), including the C1–C5 claim framework, E0–E6 experiments, validation protocol, go/no-go gates, and publication milestones. The historical handoff and prompt are retained for scientific context; they are not active task lists. Existing evidence limits remain defined by the paper claim ledger.
