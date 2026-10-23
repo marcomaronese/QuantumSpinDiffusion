@@ -13,6 +13,8 @@ and reports the completed numerical evidence, including negative results.
   source snapshots, regeneration scripts, and the compiled manuscript.
 - `metadata.tex`: replace the author/affiliation field before submission.
 - `CLAIMS.md`: claim-to-evidence index and boundaries on interpretation.
+- `PLAN_ALIGNMENT.md`: section-to-plan mapping and current evidence gaps;
+  the active development queue remains in the authoritative paper plan.
 - `LITERATURE.md`: verified reference sources and scope of the literature search.
 - `SUBMISSION_NOTES.md`: submission context and links to the authoritative
   [SpinDiffusion paper plan](../../notes/SPINDIFFUSION_PAPER_PLAN.md).

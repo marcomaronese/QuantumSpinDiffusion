@@ -95,6 +95,24 @@ def factorized_density(density: torch.Tensor, dimension: int) -> torch.Tensor:
     return torch.kron(first.contiguous(), second.contiguous())
 
 
+def joint_multipole_coefficients(
+    density: torch.Tensor,
+    local_tensors: dict[tuple[int, int], torch.Tensor],
+) -> dict[tuple[int, int, int, int], torch.Tensor]:
+    """Complex coefficients in the orthonormal product tensor basis.
+
+    Keys are ``(ell1, m1, ell2, m2)``. Ranks with either ell equal to zero
+    include local information; ranks with both nonzero include joint structure.
+    These linear coefficients are distinct from connected correlators.
+    """
+    result = {}
+    for (ell1, m1), first in local_tensors.items():
+        for (ell2, m2), second in local_tensors.items():
+            tensor = torch.kron(first.contiguous(), second.contiguous())
+            result[(ell1, m1, ell2, m2)] = torch.trace(density @ tensor.conj().T)
+    return result
+
+
 def von_neumann_entropy(density: torch.Tensor, tolerance: float = 1e-12) -> float:
     hermitian = 0.5 * (density + density.conj().T)
     eigenvalues = torch.linalg.eigvalsh(hermitian)

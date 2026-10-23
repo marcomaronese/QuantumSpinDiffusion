@@ -63,6 +63,7 @@ from .multipoles import (
     multipole_trajectory,
 )
 from .config import ExperimentConfig, reproducibility_metadata
+from .training import SUPERVISION_MODES, reverse_training_loss
 from ..classical.diffusion import add_classical_arguments, config_from_arguments
 from ..classical.benchmark import single_spin_benchmark, write_classical_comparison
 from .reverse import (
@@ -221,6 +222,7 @@ def train_reverse(
     starting_state="mixed",
     supervision="path",
     hybrid_lambda=0.0,
+    training_diagnostics=None,
 ):
     torch.manual_seed(seed)
 
@@ -229,8 +231,10 @@ def train_reverse(
     prior = torch.eye(d, dtype=CDTYPE) / d
     if starting_state not in {"mixed", "forward"}:
         raise ValueError("starting_state must be mixed or forward")
-    if supervision not in {"path", "final"}:
-        raise ValueError("supervision must be path or final")
+    if supervision not in SUPERVISION_MODES:
+        raise ValueError(f"supervision must be one of {SUPERVISION_MODES}")
+    if epochs < 1:
+        raise ValueError("epochs must be positive")
     if starting_state == "forward":
         prior = forward_states[-1]
 
@@ -249,31 +253,38 @@ def train_reverse(
     for epoch in range(epochs):
         optimizer.zero_grad()
 
-        rho = prior
-        loss = torch.tensor(0.0, dtype=RDTYPE)
-
-        # params[0] implements the T -> T-1 reverse step.
-        schedule = parameter_schedule(params, n_steps=T)
-        for theta, t in zip(schedule, range(T, 0, -1), strict=True):
-            rho = reverse_collision_channel(rho, theta, generators)
-            if supervision == "final" and t != 1:
-                continue
-            loss = loss + objective_loss(
-                rho,
-                forward_states[t - 1],
-                objective,
-                tensors=multipole_tensors,
-                multipole_weighting=multipole_weighting,
-                husimi_grid=husimi_grid,
-                hybrid_lambda=hybrid_lambda,
-            )
-
+        loss, rho = reverse_training_loss(
+            forward_states, params, generators, prior,
+            supervision=supervision, objective=objective,
+            tensors=multipole_tensors,
+            multipole_weighting=multipole_weighting,
+            husimi_grid=husimi_grid, hybrid_lambda=hybrid_lambda,
+        )
+        if not torch.isfinite(loss):
+            raise FloatingPointError(f"non-finite loss at epoch {epoch}")
         loss.backward()
+        if not torch.isfinite(params.grad).all():
+            raise FloatingPointError(f"non-finite gradient at epoch {epoch}")
+        if training_diagnostics is not None:
+            before = params.detach().clone()
+            diagnostic = {
+                "epoch": epoch, "loss": float(loss.detach()),
+                "gradient_norm": float(torch.linalg.norm(params.grad)),
+                "gradient_norm_by_parameter_block": [
+                    float(torch.linalg.norm(block))
+                    for block in (params.grad if params.ndim == 3 else [params.grad])
+                ],
+            }
         optimizer.step()
+        if training_diagnostics is not None:
+            diagnostic["update_norm"] = float(torch.linalg.norm(params.detach() - before))
+            training_diagnostics.append(diagnostic)
 
         history.append(float(loss.detach()))
 
         if epoch % max(1, epochs // 10) == 0 or epoch == epochs - 1:
+            if supervision == "stepwise":
+                rho = generate_density(prior, params.detach(), generators, n_steps=T)
             final_err = float(frobenius_loss(rho, forward_states[0]).detach())
             print(
                 f"epoch={epoch:5d}  "
@@ -514,7 +525,7 @@ def main():
     )
     parser.add_argument("--ancilla-count", type=int, default=1)
     parser.add_argument("--starting-state", choices=["mixed", "forward"], default="mixed")
-    parser.add_argument("--supervision", choices=["path", "final"], default="path")
+    parser.add_argument("--supervision", choices=SUPERVISION_MODES, default="path")
     parser.add_argument("--hybrid-lambda", type=float, default=0.0)
     parser.add_argument(
         "--outdir",

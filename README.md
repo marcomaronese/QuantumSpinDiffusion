@@ -1,5 +1,10 @@
 # Spin phase-space quantum diffusion
 
+Branch policy: `main` is the consolidated development baseline;
+[`codex/paper`](https://github.com/marcomaronese/QuantumSpinDiffusion/tree/codex/paper)
+is the active paper workstream. See [notes/BRANCHES.md](notes/BRANCHES.md)
+for the archived branch references and recovery information.
+
 This repository studies a finite-dimensional generative construction for
 directional data on the sphere. Classical directions are encoded as spin
 coherent-state density matrices, evolved through isotropic quantum diffusion,
@@ -86,6 +91,7 @@ default:
 .venv/bin/python -m tasks.hybrid_objective_study --workers 8
 .venv/bin/python -m tasks.instrument_study
 .venv/bin/python -m tasks.two_spin_correlated
+.venv/bin/python -m tasks.two_spin_supervision
 .venv/bin/python -m tasks.validate_two_spin
 ```
 
@@ -93,6 +99,13 @@ The tasks preserve configurations, metrics, trained parameters, source
 fingerprints, and relevant intermediate states. Cached historical runs are not
 silently upgraded when the source or required baseline changes; use a new output
 directory for a new protocol.
+
+The active two-spin supervision diagnostic compares summed path, normalized
+path, final-only, and exact-input stepwise training on a fixed 39-parameter
+architecture. Its validation-only protocol is declared in
+[`notes/protocols/TWO_SPIN_SUPERVISION_V1.md`](notes/protocols/TWO_SPIN_SUPERVISION_V1.md).
+It saves a fresh source/protocol snapshot before training and leaves
+confirmation test observations unopened.
 
 ## Current conclusions
 

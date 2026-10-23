@@ -15,6 +15,7 @@ import scipy
 import torch
 
 from .reverse import GENERATOR_SETS
+from .training import SUPERVISION_MODES
 from ..classical.diffusion import ClassicalDiffusionConfig
 
 
@@ -67,8 +68,8 @@ class ExperimentConfig:
             raise ValueError("parameter_sharing must be independent or shared")
         if self.starting_state not in {"mixed", "forward"}:
             raise ValueError("starting_state must be mixed or forward")
-        if self.supervision not in {"path", "final"}:
-            raise ValueError("supervision must be path or final")
+        if self.supervision not in SUPERVISION_MODES:
+            raise ValueError(f"supervision must be one of {SUPERVISION_MODES}")
         if not 0 <= self.hybrid_lambda <= 1:
             raise ValueError("hybrid_lambda must lie in [0, 1]")
 

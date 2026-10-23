@@ -1,7 +1,7 @@
 # SpinDiffusion paper plan — authoritative research roadmap
 
-Status: active planning document; no new experiment is implied by this plan.
-Last reviewed: 2026-10-22.
+Status: active research roadmap; execution status is recorded below.
+Last reviewed: 2026-10-23.
 
 This is the single authoritative Codex plan for developing the SpinDiffusion
 paper. Read it before research work and update its status, evidence links,
@@ -11,9 +11,43 @@ actually supports; this plan defines work, not findings.
 
 ## Restart point
 
-**Next action: E0 — reconcile this plan with the active repository snapshot and
-claim ledger, then freeze the E1 protocol before launching any new run.** Do not
+Work on `codex/paper`, derived from the consolidated development baseline in
+`main`. [Branch policy and historical recovery](BRANCHES.md) define the two
+branch roles. Repository cleanup does not rerun or complete a scientific gate.
+
+**Next action: E5 — freeze the truly independent local-channel control protocol
+using the selected final-only supervision, before further objective/capacity
+changes.** The fixed-architecture supervision screen and independent-observation
+confirmation passed their bounded improvement gate on 2026-10-22; they do not
+pass the competitive-correlation or hardware gates. The E0 frozen-evidence audit
+also passed on 2026-10-22;
+historical single-spin successes are not prerequisites to rerun. Do not
 start hardware, scaling, or latent-data work while the earlier gates are open.
+
+Completed protocols: [`supervision screen`](protocols/TWO_SPIN_SUPERVISION_V1.md)
+and [`held-out confirmation`](protocols/TWO_SPIN_CONFIRMATION_V1.md).
+See [`the working results report`](TWO_SPIN_SUPERVISION_REPORT.md). Test
+observations in that confirmation are now consumed: never reuse them for
+subsequent selection. New objective/architecture studies need fresh protocols,
+selection splits and closed confirmation identities.
+
+### Progress across the complete plan
+
+| Phase | Current state | Remaining requirement |
+|---|---|---|
+| E0 | Frozen evidence replay passed: 1269 manifest entries, 70 single-spin runs and six correlated models; manuscript/claim mapping reviewed | Audit new results independently before evidence promotion |
+| E1 | Screen and subsequent confirmation protocols frozen and executed with separate train/validation/test observations, fixed budgets/guardrails and baselines | Future studies require new frozen protocols; broader generalization remains open |
+| E2 | Historical forward decay/physicality replay passed; representation sweep preserved | Broader resolution, grid/threshold and readout robustness remain open |
+| E3 | Existing single-spin supervision/hybrid results preserved and replayed | Independent evaluation per fitted single-spin model, normalized/stepwise controls and broader families remain open |
+| E4 | Open; not established by final-only training | Direct/fewer-step and learned intrinsic diffusion comparisons |
+| E5 | Pilot, 20-run supervision screen and selected-final-versus-path confirmation complete; final-only improves but still underperforms classical baselines | Truly independent local-channel control next; controlled joint-objective work and conditional capacity studies remain open |
+| E6 | Historical instruments/package exist; independent observations confirmed the bounded E5 supervision improvement on five fitted realizations | Physical finite POVM, complete trajectories, confirmation after future redesign, broader robustness, evidence promotion and publication remain open |
+
+This checkpoint resumes E5 because the two-spin pilot and the single-spin
+diagnosis already exist. E0/E1 are required before each new study. E4 remains
+a gate for diffusion-specific claims, not a prerequisite for diagnosing the
+two-spin optimization problem. This dependency rule overrides a literal
+interpretation that every historical single-spin experiment must be repeated.
 
 For each new study, first record its protocol, source fingerprint, immutable
 dataset/split identity, seeds, compute budget, metrics, selection rule, and
@@ -63,7 +97,8 @@ reconciling the full repository.
 
 ## Experiment sequence E0–E6
 
-Proceed in order. Each exit gate is a go/no-go decision. A no-go narrows the
+Follow the dependencies and current checkpoint above. Each exit gate is a
+go/no-go decision. A no-go narrows the
 paper claim or sends work back to the named earlier phase; it does not trigger
 an automatic architecture sweep.
 
@@ -311,6 +346,36 @@ experiment complete because code exists or a task can run.
 
 ### Session log and current status
 
+- 2026-10-23: repository organization defines `main` as the consolidated
+  development baseline, including the previously uncommitted E5 checkpoint,
+  and `codex/paper` as the active paper workstream. Old branch tips are retained
+  by archive tags. The streamlined paper checkout keeps code, tests, protocols,
+  scientific reports, manuscript and immutable evidence; historical handoffs
+  and redundant generated distributions remain recoverable from the baseline.
+  Scientific status is unchanged: next action is the independent local-channel
+  control protocol in E5, using fresh selection/test identities.
+- 2026-10-22: completed the first E5 supervision screen (20 quantum runs, five
+  fixed baselines on each of five datasets), then froze and executed a
+  separate confirmation using the same fitted models and previously unopened
+  observations. Mean test trace distance: final-only 0.46199196 versus summed
+  path 0.50198360; improvement in 5/5 datasets, all declared guardrails pass.
+  Final-only remains worse than factorized marginals (0.32810992) and the
+  other tested classical baselines. Source/protocol hashes, full working
+  artifacts and independent replay are linked in `TWO_SPIN_SUPERVISION_REPORT.md`.
+  The frozen paper evidence and its claims are unchanged; new observations
+  have not been promoted. Validation and confirmation audits pass; 62 tests
+  pass. Next action: freeze the genuinely independent local-channel control
+  protocol using final-only supervision, with fresh selection/test identities.
+- 2026-10-22: E0 replay passed (fresh audit in
+  `outputs/experiments/e0_audit_20261022/`); manuscript section/claim mapping
+  recorded in `materials/paper/PLAN_ALIGNMENT.md`. E1 supervision protocol
+  frozen; E5 implementation adds normalized-path and exact-input stepwise
+  training, paired state/gradient diagnostics, fixed baselines and independent
+  NumPy/SciPy metric replay. Reduced-budget engineering check passed; the
+  scientific validation screen was launched in
+  `outputs/experiments/two_spin_supervision_v1/`. No new manuscript result or
+  paper evidence was promoted at that checkpoint. This launch checkpoint is
+  superseded by the completed validation/confirmation entry above.
 - 2026-10-22: reconciled the local documentation with remote
   `codex/next-milestones` at `7656010`, preserving the superseded TODO in
   `history/DEVELOPMENT_PLAN_2026-10-19.md`. The complete code, paper evidence,

@@ -26,3 +26,10 @@ instructions; use the root README and this index for present locations.
 Scientific claims must be checked against
 [`../materials/paper/CLAIMS.md`](../materials/paper/CLAIMS.md), whose scope and
 limitations are authoritative for the frozen evidence.
+
+Current research checkpoint: the first fixed-architecture E5 supervision
+screen and its independent-observation confirmation are recorded in
+[`TWO_SPIN_SUPERVISION_REPORT.md`](TWO_SPIN_SUPERVISION_REPORT.md). Article
+alignment with the plan is assessed in
+[`materials/paper/PLAN_ALIGNMENT.md`](../materials/paper/PLAN_ALIGNMENT.md).
+Both are reports; update the authoritative plan for all active priorities.
