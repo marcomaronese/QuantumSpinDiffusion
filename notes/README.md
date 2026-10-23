@@ -9,6 +9,7 @@ update its progress, evidence links, decisions and next action after work.
 | [SPINDIFFUSION_PAPER_PLAN.md](SPINDIFFUSION_PAPER_PLAN.md) | Complete plan, progress E0–E6 and restart checkpoint |
 | [protocols/](protocols/) | Frozen protocols, split/seed roles and selection rules |
 | [TWO_SPIN_SUPERVISION_REPORT.md](TWO_SPIN_SUPERVISION_REPORT.md) | Latest supervision screen and held-out confirmation |
+| [TWO_SPIN_LOCAL_CONTROL_REPORT.md](TWO_SPIN_LOCAL_CONTROL_REPORT.md) | Independent-local/shared-ancilla comparison, audited no-go and working F6 plot |
 | [DIAGNOSTIC_REPORT.md](DIAGNOSTIC_REPORT.md) | Completed single-spin missing-mode and hybrid-objective studies |
 | [VALIDATION_REPORT.md](VALIDATION_REPORT.md) | Foundational validation record |
 | [BRANCHES.md](BRANCHES.md) | Consolidated baseline, paper branch and archival recovery |

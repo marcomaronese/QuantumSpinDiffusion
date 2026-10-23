@@ -14,9 +14,11 @@ Their presence does not schedule another run.
 | `validate_two_spin_supervision` | Independent replay of saved screen and confirmation states |
 | `two_spin_local_control` | Frozen three-condition independent-local/shared-ancilla diagnosis; final-only supervision and fresh splits |
 | `validate_two_spin_local_control` | Independent NumPy/SciPy state, channel, factorization and decision replay |
+| `plot_two_spin_local_control` | Audited working F6 diagnostics; local outputs with plot provenance |
 
 The current E5 control uses the [local-channel protocol](../notes/protocols/TWO_SPIN_LOCAL_CONTROL_V1.md)
-with fresh selection/test identities. The original
+with fresh selection/test identities. Its [audited no-go report](../notes/TWO_SPIN_LOCAL_CONTROL_REPORT.md)
+records the completed validation and the still-closed confirmation. The original
 confirmation observations are consumed and must not be reused for tuning.
 
 Audit the existing working results from the repository root:

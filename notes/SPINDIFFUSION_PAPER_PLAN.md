@@ -15,19 +15,24 @@ Work on `codex/paper`, derived from the consolidated development baseline in
 `main`. [Branch policy and historical recovery](BRANCHES.md) define the two
 branch roles. Repository cleanup does not rerun or complete a scientific gate.
 
-**Next action: E5 — execute and independently audit the frozen independent
-local-channel control screen, before further objective/capacity changes.**
-The [local-control protocol](protocols/TWO_SPIN_LOCAL_CONTROL_V1.md) is frozen;
-the product-channel implementation and reduced-budget engineering check are
-available. The fixed-architecture supervision screen and independent-observation
+**Next action: E5 — freeze a local-pretraining/controlled-correlation-stage
+protocol with a frozen-local reference, total-budget control and marginal/global
+guardrails.** The [independent-local screen](TWO_SPIN_LOCAL_CONTROL_REPORT.md)
+is complete and independently audited: both shared-ancilla conditions improve
+correlation error but worsen global and marginal reconstruction, so neither
+passes the gate and confirmation remains closed. Do not increase capacity or
+reuse these validation outcomes as confirmation. The fixed-architecture
+supervision screen and independent-observation
 confirmation passed their bounded improvement gate on 2026-10-22; they do not
 pass the competitive-correlation or hardware gates. The E0 frozen-evidence audit
 also passed on 2026-10-22;
 historical single-spin successes are not prerequisites to rerun. Do not
 start hardware, scaling, or latent-data work while the earlier gates are open.
 
-Completed protocols: [`supervision screen`](protocols/TWO_SPIN_SUPERVISION_V1.md)
-and [`held-out confirmation`](protocols/TWO_SPIN_CONFIRMATION_V1.md).
+Completed protocols: [`supervision screen`](protocols/TWO_SPIN_SUPERVISION_V1.md),
+[`held-out confirmation`](protocols/TWO_SPIN_CONFIRMATION_V1.md), and
+[`local-control validation`](protocols/TWO_SPIN_LOCAL_CONTROL_V1.md) (no-go;
+its confirmation remains closed).
 See [`the working results report`](TWO_SPIN_SUPERVISION_REPORT.md). Test
 observations in that confirmation are now consumed: never reuse them for
 subsequent selection. New objective/architecture studies need fresh protocols,
@@ -38,11 +43,11 @@ selection splits and closed confirmation identities.
 | Phase | Current state | Remaining requirement |
 |---|---|---|
 | E0 | Frozen evidence replay passed: 1269 manifest entries, 70 single-spin runs and six correlated models; manuscript/claim mapping reviewed | Audit new results independently before evidence promotion |
-| E1 | Screen and subsequent confirmation protocols frozen and executed with separate train/validation/test observations, fixed budgets/guardrails and baselines | Future studies require new frozen protocols; broader generalization remains open |
+| E1 | Supervision screen/confirmation and independent-local control protocols frozen and executed with separate observations, budgets/guardrails and fixed baselines; local-control no-go leaves its confirmation closed | Future studies require new frozen protocols; broader generalization remains open |
 | E2 | Historical forward decay/physicality replay passed; representation sweep preserved | Broader resolution, grid/threshold and readout robustness remain open |
 | E3 | Existing single-spin supervision/hybrid results preserved and replayed | Independent evaluation per fitted single-spin model, normalized/stepwise controls and broader families remain open |
 | E4 | Open; not established by final-only training | Direct/fewer-step and learned intrinsic diffusion comparisons |
-| E5 | Pilot, 20-run supervision screen and selected-final-versus-path confirmation complete; final-only improves but still underperforms classical baselines | Truly independent local-channel control next; controlled joint-objective work and conditional capacity studies remain open |
+| E5 | Pilot, supervision screen/confirmation and 15-fit independent-local/shared-ancilla screen complete; audited local-control no-go: correlation gains accompany worse global/marginal errors | Freeze local-pretraining plus controlled-correlation-stage protocol next; controlled joint-objective work and conditional capacity studies remain open |
 | E6 | Historical instruments/package exist; independent observations confirmed the bounded E5 supervision improvement on five fitted realizations | Physical finite POVM, complete trajectories, confirmation after future redesign, broader robustness, evidence promotion and publication remain open |
 
 This checkpoint resumes E5 because the two-spin pilot and the single-spin
@@ -307,8 +312,10 @@ Reviewed: 2026-10-23. This tracker is part of the authoritative plan, not a
 second task queue. Update it after each study, evidence promotion, or manuscript
 revision. An existing section is not proof that its research gate is complete.
 The manuscript currently contains **three figures and three scientific tables**,
-all built from historical frozen evidence. The latest E5 supervision results
-remain [working results](TWO_SPIN_SUPERVISION_REPORT.md), outside that snapshot.
+all built from historical frozen evidence. The E5 supervision and
+[independent-local control](TWO_SPIN_LOCAL_CONTROL_REPORT.md) results remain
+working results outside that snapshot; the latter now has an audited working
+F6 diagnostic plot, not an additional numbered manuscript figure.
 
 ### Article sections
 
@@ -343,7 +350,7 @@ audited support, not completion of every broader phase.
 | F3 — Single-spin training diagnosis / Results 4.2 | Paired path/final errors at fixed budgets, mode recovery and complex coefficient error by rank | **Present as Figure 2, `figures/diagnostic.pdf`**. Normalized-path, exact-input stepwise and independent observations per fitted single-spin model remain open. Two-spin controls do not close these single-spin gaps. E3; plan C3–C4 |
 | F4 — Objective selection and confirmation / Results 4.3 | Validation weight selection and paired confirmation of high-rank error/global trace distance | **Present as Figure 3, `figures/hybrid.pdf`**. Historical five-realization result supports a bounded mean improvement; broader family/held-out evaluation remains open. E3; plan C3–C4 |
 | F5 — Contribution of diffusion / new Results subsection | Direct/one-channel, fewer-step and full-stack quality versus declared training/generation costs; learned intrinsic spherical diffusion and fixed classical comparators | Required comparison data missing. Freeze fair budgets and common targets/readout before training; final-only success alone is insufficient. E4; plan C4 |
-| F6 — Two-spin correlation diagnosis / dedicated Results subsection | Independent-local/shared-ancilla/explicit-correlation topology; paired supervision effects; joint-state, marginal and connected-correlation errors versus fixed baselines | Old pilot is Table 3 only. New supervision screen/confirmation data exist in working runs, but no new paper figure or evidence promotion. Truly independent local control and controlled redesign are next; capacity studies remain conditional. E5; plan C5 |
+| F6 — Two-spin correlation diagnosis / dedicated Results subsection | Independent-local/shared-ancilla/explicit-correlation topology; paired supervision effects; joint-state, marginal and connected-correlation errors versus fixed baselines | Old pilot is Table 3 only. Supervision screen/confirmation and independent-local screen are working results. Audited local-control PDF/PNG now show per-realization state/correlation/marginal errors and baselines; topology diagram, controlled redesign and evidence promotion remain open. Local-control gate failed; confirmation stays closed. E5; plan C5 |
 | F7 — Physical readout and instruments / dedicated Results subsection | Fixed positive complete POVM and common target/model readout; Born samples; deterministic-versus-trajectory ensemble convergence with sampling uncertainty | Historical instrument aggregates exist; original raw conditional trajectories are absent. New finite-POVM checks, raw histories and sample validation are missing. E6; plan C2/C5 |
 | F8 — Robustness, generalization and resources / Results or supplement | Quality/cost across independent realizations, families, spin, noise and mode separation/imbalance; separate encoding, learning, readout and finite-sample errors | Latest E5 working study covers five realizations of one family only. Broader evaluation, single-spin held-out observations and complete training/generation/sampling costs remain open. E3/E6; plan C3–C5 |
 
@@ -382,23 +389,23 @@ never edit the existing immutable evidence to fill a panel.
 
 ### Immediate next step and its expected figure output
 
-Freeze a fresh **E5 independent local-channel control protocol**, keeping the
-selected final-only supervision. Define a product prior, separate ancillas and
-no inter-spin coupling or shared randomness. Retain the shared-ancilla model
-as a distinct condition; the empirical factorized-marginal baseline is also
-distinct from learned independent local channels. Fix datasets, train/validation
-splits and unopened confirmation identities, pairing rules, budgets, classical
-baselines, primary trace-distance metric, connected-correlation diagnostics,
-marginal/global-state guardrails and decision thresholds before any new run.
-Previously opened confirmation observations cannot select the new control.
+The independent-local control is implemented and its fixed comparison completed.
+Its [audited report](TWO_SPIN_LOCAL_CONTROL_REPORT.md) records a no-go and an
+F6 working plot at
+`outputs/experiments/two_spin_local_control_v1/figures/local_control.pdf`.
+Neither shared candidate passes global/marginal guardrails; no confirmation
+observations were generated. This does not close E5 or E6.
 
-After protocol freeze, implement and validate the control, then run its paired
-validation comparison. Select and confirm only according to that protocol.
-The first intended output is **F6**: topology panel, per-realization state-error
-comparison, marginal errors and connected-correlation residuals. A fair negative
-result is publishable evidence; it is not permission to start an uncontrolled
-capacity sweep. This documentation update does not implement that control,
-launch a study, produce new figures or close E5/E6.
+Next freeze **E5 local-channel pretraining followed by a controlled correlation
+stage**. Include the frozen-local reference, a control with the same total
+training budget, fixed classical baselines and explicit global/marginal
+guardrails. Declare fresh selection/closed-confirmation identities and count
+every pretraining/fine-tuning update before training. Test whether correlation
+can improve without losing the learned marginals; this is a hypothesis, not an
+established remedy or mechanism. F6 will receive the paired comparison only
+after audit; retain the current negative result. Topology diagram, evidence
+promotion and manuscript integration remain pending. Capacity sweeps stay
+conditional on diagnosis.
 
 ## Scientific safeguards and out-of-scope gates
 
@@ -447,6 +454,20 @@ experiment complete because code exists or a task can run.
 
 ### Session log and current status
 
+- 2026-10-23: completed `two_spin_local_control_v1` from clean source `b2250b0`:
+  15 quantum fits, five fixed baselines on each of five fresh datasets, 40 model
+  rows/80 metric evaluations. Mean validation trace distance: independent
+  local 0.36636852, shared no-direct 0.45477755, shared direct 0.46577034.
+  Shared models improve correlation error but worsen global/marginal metrics;
+  neither is eligible, so the gate fails and confirmation remains closed.
+  Independent replay passes 395 sealed artifacts and 45 channel steps;
+  maximum metric/channel discrepancies 1.4933e-13/1.2626e-14. All 67 tests
+  and all 1269 frozen-evidence hashes pass. An audited working F6 plot is
+  generated with provenance; no manuscript evidence or assets are promoted.
+  Protocol hash `f2a7b992060e6919d5710544b25898eab669f438cf909b500b4cee7d6134f6b8`;
+  details in `TWO_SPIN_LOCAL_CONTROL_REPORT.md`. Next action: freeze the E5
+  local-pretraining/controlled-correlation protocol with a frozen-local
+  reference, total-budget control and marginal/global guardrails.
 - 2026-10-23: froze `protocols/TWO_SPIN_LOCAL_CONTROL_V1.md` and implemented
   product local channels with separate ancillas, final-only training with
   explicit initial weights, paired shared-ancilla controls, fresh splits,

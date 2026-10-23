@@ -64,6 +64,10 @@ The new E5 supervision screen and its subsequent independent-observation
 confirmation are recorded in the
 [working results report](../../notes/TWO_SPIN_SUPERVISION_REPORT.md).
 They have not been promoted into the claim ledger or manuscript results. When
+reviewing newer work, also consult the
+[independent-local control report](../../notes/TWO_SPIN_LOCAL_CONTROL_REPORT.md):
+its audited validation no-go and working F6 plot likewise remain outside the
+manuscript snapshot; its confirmation observations stay closed. When
 promotion is warranted, follow `RESULTS_WORKFLOW.md`: named checksummed
 addition, independent audit, claim update, generated assets, manuscript,
 rendered PDF, and both archives together. No textual claim of completed E4,

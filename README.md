@@ -52,7 +52,8 @@ The manuscript currently supports a bounded construction and diagnostic study.
 The latest two-spin supervision screen and its held-out confirmation are
 documented in [the research reports](notes/README.md); they are working results,
 not yet additions to the manuscript's frozen evidence. The current next step
-is the independent local-channel control in E5, as recorded in the plan.
+is to freeze the E5 local-pretraining/controlled-correlation protocol after the
+independent-local comparison's audited no-go, as recorded in the plan.
 
 Rebuild/audit the manuscript and generate distribution packages with:
 
