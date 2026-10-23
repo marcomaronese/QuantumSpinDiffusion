@@ -3,6 +3,9 @@
 Reviewed: 2026-10-22. This is a manuscript assessment, not an alternative task
 list. Active priorities and the restart action remain in
 [`notes/SPINDIFFUSION_PAPER_PLAN.md`](../../notes/SPINDIFFUSION_PAPER_PLAN.md).
+The live [section and figure production tracker](../../notes/SPINDIFFUSION_PAPER_PLAN.md#paper-sections-and-figure-production-tracker)
+in that plan records existing figures, pending panels, evidence readiness and
+the next action; this assessment does not introduce a separate production queue.
 
 ## Finding
 

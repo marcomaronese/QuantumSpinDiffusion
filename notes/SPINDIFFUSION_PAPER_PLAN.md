@@ -299,6 +299,105 @@ about expressivity.
 artifacts/build products are reproducible. **No-go:** narrow the paper to the
 supported construction and diagnostics; list missing evidence explicitly.
 
+## Paper sections and figure production tracker
+
+Reviewed: 2026-10-23. This tracker is part of the authoritative plan, not a
+second task queue. Update it after each study, evidence promotion, or manuscript
+revision. An existing section is not proof that its research gate is complete.
+The manuscript currently contains **three figures and three scientific tables**,
+all built from historical frozen evidence. The latest E5 supervision results
+remain [working results](TWO_SPIN_SUPERVISION_REPORT.md), outside that snapshot.
+
+### Article sections
+
+Section files below are under `materials/paper/sections/`. Keep the present
+narrative order; E0–E6 are experiment phases, not mandatory section headings.
+
+| Section / source | Present state | Required integration or remaining check |
+|---|---|---|
+| Abstract / `abstract.tex` | Written for the bounded construction and historical diagnostics | Revise last, after final claim and evidence decisions; do not announce planned improvements |
+| 1. Introduction / `introduction.tex` | Directional-data motivation, construction and bounded contribution present | Complete targeted primary-source positioning and align contributions with surviving plan C1–C5 |
+| 2. Spin phase-space construction / `theory.tex` | Encoding/readout, heat transfer, CPTP reverse channels and correlated product encoding present | Add an explanatory pipeline diagram if useful (F1); document the chosen physical finite POVM and independent/shared-ancilla distinction when established |
+| 3. Numerical methods and experimental design / `methods.tex` | Historical datasets, architecture, objectives, selection, metrics and pilot baselines present | Document fresh split identities, true local control, common readout, training/generation/sampling budgets and independent confirmation for every promoted study |
+| 4. Results / `results.tex` | Resolution/forward physics; single-spin supervision; hybrid weighting; instruments and unsuccessful two-spin pilot present | Add controlled diffusion comparison (F5), separate correlated diagnosis (F6), physical sampling (F7), and robustness/costs (F8) only as evidence becomes available; retain negative outcomes |
+| 5. Discussion and limitations / `discussion.tex` | Finite resolution, missing controls and correlated underperformance acknowledged | Reconcile each go/no-go outcome; separate representation, optimization, readout and sampling limits; no unsupported advantage or diffusion-necessity claim |
+| 6. Conclusion / `discussion.tex` | Bounded historical conclusions present | Revise after the results and ledger; describe any remaining negative or inconclusive findings |
+| Data/code availability, metadata and references / `discussion.tex`, `../metadata.tex`, bibliography | Draft material exists | Verify release/archive links, author information, contributions, funding, required declarations and venue details; do not invent missing information |
+| Appendices A–C / `appendix.tex` | Transfer/tensor conventions; physicality/numerical evaluation; statistics/provenance present | Extend with reproducible checks and supplementary panels below, protocol/budget tables and evidence provenance |
+
+### Figure map and dependencies
+
+**F1–F8 are planning IDs, not current LaTeX figure numbers.** They describe
+scientific questions and panels; merge or move them to the supplement as results
+and venue space warrant. They do not impose eight main-text figures or new
+experiments beyond E0–E6. Existing figure numbers and labels stay unchanged
+until manuscript integration. “Present” below means present with historical
+audited support, not completion of every broader phase.
+
+| Planning ID / destination | Panels or scientific question | Current state and dependency |
+|---|---|---|
+| F1 — Construction / Theory | Spherical data → coherent encoding → exact forward diffusion → learned reverse channel from `I/d` → physical readout; distinguish training targets from generation inputs | Theory exists; explanatory drawing not produced. Label finite-rank smoothing and avoid implying an inverse of discarded modes. E2/E6; plan C1–C2 |
+| F2 — Representation and forward physics / Results 4.1 | Encoded mode count versus spin; measured rank powers versus exact decay; link to smoothing/resolution checks | **Present as Figure 1, `figures/physics.pdf`**. Wider grid/threshold/family/readout robustness still pending; seed-7 threshold is not universal. E2; plan C1–C2 |
+| F3 — Single-spin training diagnosis / Results 4.2 | Paired path/final errors at fixed budgets, mode recovery and complex coefficient error by rank | **Present as Figure 2, `figures/diagnostic.pdf`**. Normalized-path, exact-input stepwise and independent observations per fitted single-spin model remain open. Two-spin controls do not close these single-spin gaps. E3; plan C3–C4 |
+| F4 — Objective selection and confirmation / Results 4.3 | Validation weight selection and paired confirmation of high-rank error/global trace distance | **Present as Figure 3, `figures/hybrid.pdf`**. Historical five-realization result supports a bounded mean improvement; broader family/held-out evaluation remains open. E3; plan C3–C4 |
+| F5 — Contribution of diffusion / new Results subsection | Direct/one-channel, fewer-step and full-stack quality versus declared training/generation costs; learned intrinsic spherical diffusion and fixed classical comparators | Required comparison data missing. Freeze fair budgets and common targets/readout before training; final-only success alone is insufficient. E4; plan C4 |
+| F6 — Two-spin correlation diagnosis / dedicated Results subsection | Independent-local/shared-ancilla/explicit-correlation topology; paired supervision effects; joint-state, marginal and connected-correlation errors versus fixed baselines | Old pilot is Table 3 only. New supervision screen/confirmation data exist in working runs, but no new paper figure or evidence promotion. Truly independent local control and controlled redesign are next; capacity studies remain conditional. E5; plan C5 |
+| F7 — Physical readout and instruments / dedicated Results subsection | Fixed positive complete POVM and common target/model readout; Born samples; deterministic-versus-trajectory ensemble convergence with sampling uncertainty | Historical instrument aggregates exist; original raw conditional trajectories are absent. New finite-POVM checks, raw histories and sample validation are missing. E6; plan C2/C5 |
+| F8 — Robustness, generalization and resources / Results or supplement | Quality/cost across independent realizations, families, spin, noise and mode separation/imbalance; separate encoding, learning, readout and finite-sample errors | Latest E5 working study covers five realizations of one family only. Broader evaluation, single-spin held-out observations and complete training/generation/sampling costs remain open. E3/E6; plan C3–C5 |
+
+### Supplementary figure and table coverage
+
+These are coverage groups, not a second experiment sequence. Include the panels
+needed to substantiate the retained claims; conditional architecture work does
+not become mandatory because a supplementary group exists.
+
+| Group | Coverage and current evidence | Phase / dependency |
+|---|---|---|
+| S1 — Representation sensitivity | Spin, grid/quadrature and peak-threshold sweeps; angular matching, weak-mode height and raw-source versus encoded/readout smoothing. Historical spin sweep exists; expanded robustness missing | E2/E6; extends F2/F8 |
+| S2 — Numerical physicality | Trace, Hermiticity, eigenvalues, Kraus completeness/Choi checks and forward-decay residuals. Historical audits exist; new architectures and physical POVM need their own checks | E0/E2/E6; supports F2/F6/F7 |
+| S3 — Training diagnosis | Learning curves, gradient scales, normalized versus summed objectives, exact-input versus assembled-chain errors; per-rank complex errors. Latest two-spin working diagnostics exist; additional single-spin controls missing; do not infer gradient interference from loss curves alone | E3/E5; supports F3/F4/F6 |
+| S4 — Joint structure and conditional redesign | Marginals, joint multipoles and connected correlations; distinguish source classical MI from quantum MI. Add ancilla rank, layers 3/5/7, parameter sharing, generators or pretraining panels only if a preceding diagnosis warrants those studies; include their full budget | E5; supports F6 |
+| S5 — Sampling and readout sensitivity | Positive/complete product POVM, quadrature and whitening effects, finite-shot convergence, retained outcomes/conditional states; sample MMD only with verified positive-definite kernel and shot-bias treatment. Most new data missing | E6, then sample-based E5 losses; supports F7 |
+| S6 — Uncertainty, error sources and cost | Per-realization paired effects, declared uncertainty, failures, held-out sample counts, encoding/learning/readout/sampling error decomposition and resource accounting. Partial historical/working data exist; complete final-model evaluation remains open | E1/E3–E6; supports F3–F8 |
+
+Existing scientific tables are **T1 diagnostic supervision**, **T2 hybrid
+selection/confirmation**, and **T3 the historical two-spin pilot**, generated
+from `tables/diagnostic.tex`, `tables/hybrid.tex` and `tables/two_spin.tex`.
+`tables/numbers.tex` contains generated macros, not a fourth scientific table.
+Add or extend protocol/split/budget, final-comparison/resource, and
+claim-to-evidence tables where needed. Do not append newer DDPM or E5 results
+to the historical one-split table as if they shared its protocol.
+
+For every numerical panel retain: protocol/run identity, source fingerprint,
+target/readout definition, saved state/sample inputs, metric implementation,
+individual-realization values, sample counts, uncertainty and rendering source.
+Do not treat harmonics' power alone as phase/orientation accuracy, visual peaks
+as a robustness test, or matched parameter counts as matched compute. Show
+unequal budgets explicitly. Training, validation and confirmation must remain
+separate. Working data become paper results only through a new named snapshot,
+independent audit, ledger update and the assets/manuscript/PDF/archive workflow;
+never edit the existing immutable evidence to fill a panel.
+
+### Immediate next step and its expected figure output
+
+Freeze a fresh **E5 independent local-channel control protocol**, keeping the
+selected final-only supervision. Define a product prior, separate ancillas and
+no inter-spin coupling or shared randomness. Retain the shared-ancilla model
+as a distinct condition; the empirical factorized-marginal baseline is also
+distinct from learned independent local channels. Fix datasets, train/validation
+splits and unopened confirmation identities, pairing rules, budgets, classical
+baselines, primary trace-distance metric, connected-correlation diagnostics,
+marginal/global-state guardrails and decision thresholds before any new run.
+Previously opened confirmation observations cannot select the new control.
+
+After protocol freeze, implement and validate the control, then run its paired
+validation comparison. Select and confirm only according to that protocol.
+The first intended output is **F6**: topology panel, per-realization state-error
+comparison, marginal errors and connected-correlation residuals. A fair negative
+result is publishable evidence; it is not permission to start an uncontrolled
+capacity sweep. This documentation update does not implement that control,
+launch a study, produce new figures or close E5/E6.
+
 ## Scientific safeguards and out-of-scope gates
 
 - Finite spin truncates accessible harmonics; neither a recovery channel nor
@@ -346,6 +445,13 @@ experiment complete because code exists or a task can run.
 
 ### Session log and current status
 
+- 2026-10-23: inventoried the manuscript's three existing figures, three
+  scientific tables and section/appendix structure against the ledger and E0–E6.
+  Added the section/figure production tracker here, including supplementary
+  coverage, evidence boundaries and dependencies. No scientific result or
+  manuscript asset changed, and no study was run. Next action remains: freeze
+  the fresh E5 independent local-channel control protocol with final-only
+  supervision.
 - 2026-10-23: repository organization defines `main` as the consolidated
   development baseline, including the previously uncommitted E5 checkpoint,
   and `codex/paper` as the active paper workstream. Old branch tips are retained

@@ -14,7 +14,8 @@ update its progress, evidence links, decisions and next action after work.
 | [BRANCHES.md](BRANCHES.md) | Consolidated baseline, paper branch and archival recovery |
 
 The [paper alignment report](../materials/paper/PLAN_ALIGNMENT.md) maps the
-article's sections to the plan. The [claim ledger](../materials/paper/CLAIMS.md)
+article's sections to the plan. Live [section and figure production tracking](SPINDIFFUSION_PAPER_PLAN.md#paper-sections-and-figure-production-tracker)
+is maintained in the authoritative plan. The [claim ledger](../materials/paper/CLAIMS.md)
 defines supported manuscript conclusions; plans and reports do not silently
 promote working results into that evidence.
 
