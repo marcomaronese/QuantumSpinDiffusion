@@ -10,7 +10,7 @@ import torch
 from scipy.linalg import expm
 
 from . import single_spin as toy
-from .reverse import CDTYPE, normalized_generator
+from .reverse import CDTYPE, build_reverse_generators, normalized_generator
 
 
 def angles_to_vector(theta: float, phi: float) -> np.ndarray:
@@ -258,6 +258,43 @@ def build_two_spin_reverse_generators(
         for _, value in named
     ]
     return generators, [name for name, _ in named]
+
+
+def build_independent_two_spin_reverse_generators(
+    operators: Sequence[torch.Tensor],
+    identity: torch.Tensor,
+) -> tuple[list[torch.Tensor], list[str]]:
+    """Lift two disjoint local collision ansatzes to S1,S2,A1,A2 ordering.
+
+    Each spin has its own initially pure ancilla, reset at each channel step.
+    Every generator acts on one spin/ancilla pair only. Thus the unitary and
+    channel factorize for *all* parameter values, with no shared randomness.
+    Correlations already present in an input need not disappear, but product
+    inputs remain products. Local quadratic controls are deliberately omitted
+    to match the types of local controls in the shared-ancilla pilot.
+
+    Hilbert--Schmidt normalization is applied in the full joint space, as in
+    the shared-ancilla builder. Consequently angles are not directly comparable
+    across these architectures; equal update counts do not match resources.
+    """
+    dimension = identity.shape[0]
+    local, names = build_reverse_generators(
+        *operators, identity, generator_set="no-twist", return_names=True
+    )
+    spectator = torch.eye(2 * dimension, dtype=identity.dtype, device=identity.device)
+    generators, labels = [], []
+    for spin in (0, 1):
+        for generator, name in zip(local, names, strict=True):
+            # Initial ordering is S,A,T,B; move it to S1,S2,A1,A2.
+            lifted = torch.kron(generator.contiguous(), spectator).reshape(
+                dimension, 2, dimension, 2, dimension, 2, dimension, 2
+            )
+            order = (0, 2, 1, 3, 4, 6, 5, 7) if spin == 0 else (2, 0, 3, 1, 6, 4, 7, 5)
+            generators.append(normalized_generator(lifted.permute(order).reshape(
+                4 * dimension**2, 4 * dimension**2
+            )))
+            labels.append(f"spin{spin + 1}_{name}")
+    return generators, labels
 
 
 def _spherical_heat_step(

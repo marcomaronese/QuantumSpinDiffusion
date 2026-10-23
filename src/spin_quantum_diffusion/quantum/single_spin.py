@@ -223,6 +223,7 @@ def train_reverse(
     supervision="path",
     hybrid_lambda=0.0,
     training_diagnostics=None,
+    initial_parameters=None,
 ):
     torch.manual_seed(seed)
 
@@ -245,7 +246,13 @@ def train_reverse(
         if parameter_sharing == "independent"
         else (layers, len(generators))
     )
-    params = torch.nn.Parameter(0.03 * torch.randn(*parameter_shape, dtype=RDTYPE))
+    if initial_parameters is None:
+        initial_parameters = 0.03 * torch.randn(*parameter_shape, dtype=RDTYPE)
+    elif tuple(initial_parameters.shape) != parameter_shape:
+        raise ValueError("initial_parameters shape disagrees with the architecture")
+    if not torch.isfinite(initial_parameters).all():
+        raise ValueError("initial_parameters must be finite")
+    params = torch.nn.Parameter(initial_parameters.detach().to(dtype=RDTYPE).clone())
     optimizer = torch.optim.Adam([params], lr=lr)
 
     history = []

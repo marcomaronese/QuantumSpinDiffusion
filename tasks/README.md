@@ -12,9 +12,11 @@ Their presence does not schedule another run.
 | `two_spin_supervision` | Completed fixed-architecture four-condition screen; protocol/source snapshots and fixed classical baselines |
 | `confirm_two_spin_supervision` | Separate confirmation of the frozen original final-versus-path choice; tied to the recorded parent artifact hashes |
 | `validate_two_spin_supervision` | Independent replay of saved screen and confirmation states |
+| `two_spin_local_control` | Frozen three-condition independent-local/shared-ancilla diagnosis; final-only supervision and fresh splits |
+| `validate_two_spin_local_control` | Independent NumPy/SciPy state, channel, factorization and decision replay |
 
-The next E5 step is the truly independent local-channel control. It needs a
-new frozen protocol and fresh selection/test identities. The original
+The current E5 control uses the [local-channel protocol](../notes/protocols/TWO_SPIN_LOCAL_CONTROL_V1.md)
+with fresh selection/test identities. The original
 confirmation observations are consumed and must not be reused for tuning.
 
 Audit the existing working results from the repository root:

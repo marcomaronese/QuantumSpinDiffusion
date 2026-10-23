@@ -15,9 +15,11 @@ Work on `codex/paper`, derived from the consolidated development baseline in
 `main`. [Branch policy and historical recovery](BRANCHES.md) define the two
 branch roles. Repository cleanup does not rerun or complete a scientific gate.
 
-**Next action: E5 — freeze the truly independent local-channel control protocol
-using the selected final-only supervision, before further objective/capacity
-changes.** The fixed-architecture supervision screen and independent-observation
+**Next action: E5 — execute and independently audit the frozen independent
+local-channel control screen, before further objective/capacity changes.**
+The [local-control protocol](protocols/TWO_SPIN_LOCAL_CONTROL_V1.md) is frozen;
+the product-channel implementation and reduced-budget engineering check are
+available. The fixed-architecture supervision screen and independent-observation
 confirmation passed their bounded improvement gate on 2026-10-22; they do not
 pass the competitive-correlation or hardware gates. The E0 frozen-evidence audit
 also passed on 2026-10-22;
@@ -445,6 +447,14 @@ experiment complete because code exists or a task can run.
 
 ### Session log and current status
 
+- 2026-10-23: froze `protocols/TWO_SPIN_LOCAL_CONTROL_V1.md` and implemented
+  product local channels with separate ancillas, final-only training with
+  explicit initial weights, paired shared-ancilla controls, fresh splits,
+  fixed baselines and gated confirmation. The reduced-budget seed-997
+  engineering check and its independent SciPy channel/state replay pass;
+  it is not scientific validation. All 67 tests pass. No new paper evidence
+  is promoted. Next action: execute and independently audit the frozen E5
+  local-control screen, then open confirmation only if its gate passes.
 - 2026-10-23: inventoried the manuscript's three existing figures, three
   scientific tables and section/appendix structure against the ledger and E0–E6.
   Added the section/figure production tracker here, including supplementary
