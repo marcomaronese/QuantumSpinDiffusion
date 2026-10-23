@@ -1,102 +1,59 @@
-# Spin phase-space quantum diffusion paper
+# SpinDiffusion manuscript
 
-This is a separate, self-contained manuscript project. It preserves the existing
-repository manuscript and experiment outputs. The paper is written in English
-and reports the completed numerical evidence, including negative results.
+The article is a construction and controlled diagnostic study, including the
+negative two-spin pilot. It is a research draft; its scope is defined by the
+audited evidence, not by planned experiments.
 
-## Read or upload
+| File | Purpose |
+|---|---|
+| [manuscript.pdf](manuscript.pdf) · [main.tex](main.tex) | Read the article or edit its source |
+| [CLAIMS.md](CLAIMS.md) | Exact claim-to-evidence ledger and limitations |
+| [PLAN_ALIGNMENT.md](PLAN_ALIGNMENT.md) | Article-to-plan mapping and remaining evidence gaps |
+| [LITERATURE.md](LITERATURE.md) | Primary sources and novelty-review boundaries |
+| [RESULTS_WORKFLOW.md](RESULTS_WORKFLOW.md) | Audit and promote new evidence |
+| [SUBMISSION_NOTES.md](SUBMISSION_NOTES.md) | Publication context; the task queue is the official plan |
 
-- `manuscript.pdf`: compiled paper, including references and methodological appendices.
-- `overleaf.zip`: upload with **New Project → Upload Project** in Overleaf.
-  Select `main.tex` as the main document and pdfLaTeX as the compiler.
-- `research_bundle.zip`: the complete project, including frozen raw evidence,
-  source snapshots, regeneration scripts, and the compiled manuscript.
-- `metadata.tex`: replace the author/affiliation field before submission.
-- `CLAIMS.md`: claim-to-evidence index and boundaries on interpretation.
-- `PLAN_ALIGNMENT.md`: section-to-plan mapping and current evidence gaps;
-  the active development queue remains in the authoritative paper plan.
-- `LITERATURE.md`: verified reference sources and scope of the literature search.
-- `SUBMISSION_NOTES.md`: submission context and links to the authoritative
-  [SpinDiffusion paper plan](../../notes/SPINDIFFUSION_PAPER_PLAN.md).
+## Build and export
 
-The Overleaf ZIP contains all typesetting dependencies, vector figures, BibTeX,
-and compact result tables. It does not require Python, PyTorch, shell escape, an
-external bibliography service, or any path outside the uploaded project. Raw
-binary experiment evidence is provided in the complete research bundle rather
-than burdening the Overleaf editor with more than a thousand experiment files.
-No upload, public publication, or journal submission has been performed.
-
-## Structure
-
-```text
-main.tex, metadata.tex, references.bib, latexmkrc
-sections/        Full manuscript and appendices
-figures/         Reproducible vector PDF figures and PNG previews
-tables/          Generated LaTeX tables and numerical macros
-results/         Audited per-run CSV, JSON summaries, verification records
-evidence/
-  manifest.json  Original relative locations and SHA-256 checksums
-  raw/           Frozen experiment matrices, parameters, metrics and protocols
-  source/
-    diagnostic/  Exact historical source from the completed 70-run studies
-    current/     Separately labelled current source; includes later DDPM work
-scripts/         Freeze, audit, figure/table generation, and ZIP packaging
-build/           Local compilation logs (not included in deliverable archives)
-```
-
-## Rebuild locally
-
-From the repository root, using its existing Python environment:
+From the repository root:
 
 ```bash
 make -C materials/paper PYTHON=../../.venv/bin/python all
 ```
 
-From an extracted research bundle, install the scientific dependencies from
-`evidence/source/current/requirements_spin_diffusion.txt` in an environment of
-your choice, then run `make PYTHON=/path/to/python all`. NumPy, SciPy, PyTorch
-and Matplotlib are required for auditing/figures, and a standard TeX Live
-installation with pdfLaTeX and BibTeX is required to compile the paper.
-Exact versions recorded by the main experiments were Python 3.12.14,
-PyTorch 2.14.1+cpu, NumPy 2.5.3, SciPy 1.18.1, and Matplotlib 3.11.2. These are
-recorded environment facts, not a guarantee that every version is available
-from your package index. No retraining is necessary to rebuild the paper.
+This audits frozen results, generates figures/tables, compiles with pdfLaTeX
+and BibTeX, and produces `overleaf.zip` and `research_bundle.zip`. The ZIPs,
+their package hashes and PNG figure previews are local generated products;
+they are ignored by Git instead of storing duplicate distributions in source.
+Use `make -C materials/paper package` to package the current built manuscript.
 
-Individual steps, from this folder:
+`overleaf.zip` contains the standalone typesetting dependencies: upload it as
+a new Overleaf project and select `main.tex`. The research bundle also contains
+the evidence and regeneration scripts. To rebuild an extracted bundle, install
+its scientific dependencies from
+`evidence/source/current/requirements_spin_diffusion.txt`, then run
+`make PYTHON=/path/to/python all`. A TeX installation is needed for compilation.
 
-```bash
-python scripts/audit_evidence.py
-python scripts/build_assets.py
-make pdf
-python scripts/package.py
+## Files and evidence
+
+```text
+sections/    Article and appendices
+figures/     Vector PDF figures; optional PNG previews are generated
+tables/      Generated LaTeX tables and numerical macros
+results/     Audit, per-run metrics and paper summary
+evidence/    Manifest plus immutable raw/ and source/ snapshots
+scripts/     Audit, figure/table generation and packaging
 ```
 
-The audit independently recomputes state metrics for 70 single-spin runs and
-six two-spin outputs. It also checks frozen-file hashes, physicality, exact
-forward decay, saved parameter replay, Kraus completeness, mode recovery, and
-rank errors. Tensor generation, peak finding and channel replay reuse the
-historical implementation; the audit describes that limitation explicitly.
-Historical instrument statistics are retained, but individual instrument
-trajectories were not available to re-audit. See `results/audit.json`.
+Never edit `evidence/raw/` or `evidence/source/`. The audit checks all 1269
+manifest entries and replays the 70 historical single-spin runs and six
+correlated-pilot outputs. Some diagnostics reuse historical tensor/peak/channel
+code; individual historical instrument trajectories were unavailable. See
+`results/audit.json` and `CLAIMS.md` for the exact scope.
 
-## Preserve and add evidence
-
-The evidence snapshot is intentionally non-overwriting. Do not edit files under
-`evidence/raw/` or `evidence/source/`; they are checked against `manifest.json`.
-`scripts/freeze_evidence.py` records the initial copy operation and refuses to
-replace an existing snapshot. See `RESULTS_WORKFLOW.md` for adding new studies.
-
-Numbers in the three main tables and numerical macros are generated from the
-audited per-run CSV. The other numerical examples in the prose are rounded
-descriptions of that fixed snapshot; changing the evidence requires reviewing
-the narrative as well as regenerating assets.
-
-## Research status
-
-This is a complete research manuscript draft, not a claim of submission
-readiness. It deliberately avoids a “first fully quantum diffusion” claim,
-quantum advantage, demonstrated hardware sampling, and generalization beyond
-the studied synthetic data. Author names and institutional declarations cannot
-be inferred from repository paths. The two-spin failure and outstanding
-classical/direct-preparation comparisons are part of the paper, not omitted
-results.
+The original one-time capture script and historical distribution verification
+are preserved in the consolidated development baseline described in
+[`notes/BRANCHES.md`](../../notes/BRANCHES.md). New evidence uses a separate
+named snapshot under the results workflow. Working outputs are not silently
+added to the article. Authors, declarations and venue remain author decisions;
+no quantum advantage or hardware result is established.

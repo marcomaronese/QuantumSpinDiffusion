@@ -26,6 +26,7 @@ retired. Tags preserve their original commits and complete ancestry:
 
 `snapshot/development-2026-10-23` identifies the consolidated development
 baseline, including the previously uncommitted E5 implementation and reports.
+Its consolidated commit is `61fd9e5`; `codex/paper` descends from that commit.
 The earlier paper-plan branch contains only superseded documentation; its
 history is joined into the baseline after its scientific plan content has
 been incorporated into the current canonical plan. The join retains the
@@ -37,6 +38,14 @@ The active paper checkout keeps their useful findings in the plan, reports,
 claim ledger and immutable evidence, and regenerates distribution ZIPs as
 needed. Files absent from the paper branch are recoverable from the baseline
 tag; no history is rewritten.
+
+The paper checkout omits 15 redundant or historical files (6,983,291 bytes):
+old handoff/prompt/TODO copies, the standalone supporting tensor note, duplicate
+root requirements, the already-completed initial evidence-capture script,
+prebuilt ZIPs/package records and PNG previews. All omitted content matches
+the preserved baseline byte-for-byte. The manuscript PDF, source, vector
+figures, scientific reports, baseline implementations and all 1269 frozen
+evidence entries remain available in the paper checkout.
 
 Local generated runs remain under ignored `outputs/experiments/` directories.
 They are not removed by branch cleanup and are not automatically published as

@@ -1,5 +1,10 @@
 /build/
 /tmp/
+/overleaf.zip
+/research_bundle.zip
+/results/packages.json
+/results/build_verification.json
+/figures/*.png
 *.aux
 *.blg
 *.log

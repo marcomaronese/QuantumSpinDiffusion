@@ -352,6 +352,12 @@ experiment complete because code exists or a task can run.
   by archive tags. The streamlined paper checkout keeps code, tests, protocols,
   scientific reports, manuscript and immutable evidence; historical handoffs
   and redundant generated distributions remain recoverable from the baseline.
+  Consolidated baseline: `61fd9e5` (`snapshot/development-2026-10-23`). The paper
+  cleanup omits 15 recoverable historical/duplicate files, while keeping all
+  scientific implementations and immutable evidence. Verification: 62 tests,
+  all 1269 evidence hashes, both E5 audits, and a complete isolated manuscript
+  audit/figure/PDF/package build pass. Build log:
+  `outputs/tmp/reorganization-paper-build-20261023.log`.
   Scientific status is unchanged: next action is the independent local-channel
   control protocol in E5, using fresh selection/test identities.
 - 2026-10-22: completed the first E5 supervision screen (20 quantum runs, five
@@ -390,11 +396,12 @@ experiment complete because code exists or a task can run.
 
 ## Compatibility and historical mapping
 
-`notes/TODO.md`, `notes/NEXT_STEPS.md`, `notes/CODEX_HANDOFF.md`, and archived
-prompts/reports must point here for active work. Keep historical observations,
-equations, caveats, and evidence references; mark them as historical when they
-conflict with this sequence. Preserve compatible details by incorporating
-them into E0–E6 or the safeguards above. Do not keep a second active queue.
+`notes/TODO.md` and `notes/NEXT_STEPS.md` point here for active work. Earlier
+handoffs, prompts and the superseded TODO are retained in the consolidated
+`main` baseline and `snapshot/development-2026-10-23`, as described in
+[BRANCHES.md](BRANCHES.md), rather than in the paper checkout. Their useful
+observations, equations, caveats and evidence references remain in the plan,
+scientific reports and immutable evidence. Do not keep a second active queue.
 
 Previous-roadmap mapping: repository/test foundation and audited forward
 physics → E0/E2; single-spin missing-mode diagnosis and hybrid objective → E3;

@@ -12,7 +12,6 @@ def test_repository_has_declared_boundaries():
         "tests",
         "outputs/experiments",
         "materials/paper",
-        "materials/documents",
         "notes",
     )
     assert all((ROOT / path).is_dir() for path in required)

@@ -1,8 +1,9 @@
-# Research materials
+# Paper materials
 
-- `paper/` contains the LaTeX manuscript, audited results, and immutable frozen
-  evidence.
-- `documents/` contains other supporting documents that are not executable
-  source or project-history notes.
+[paper/](paper/) contains the manuscript, claim ledger, audited results,
+immutable evidence and build scripts. Supporting documents from earlier
+development remain recoverable from the consolidated baseline in
+[`notes/BRANCHES.md`](../notes/BRANCHES.md).
 
-Agent-facing status reports and future plans belong in `../notes/`.
+The research plan and protocols live in `../notes/`; new runs live in
+`../outputs/experiments/`.

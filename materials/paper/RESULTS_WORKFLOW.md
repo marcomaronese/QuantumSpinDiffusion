@@ -23,6 +23,9 @@
    conclusion. Promote planned work into the results only when the artifacts
    exist and the audit passes.
 8. Recompile and visually inspect the latest PDF, then regenerate both ZIPs.
+   Distribution ZIPs, package hashes and PNG previews are local generated
+   exports, ignored by Git in the paper branch. Publish a deliberate release
+   or archive when needed; do not add duplicate bundles to routine source commits.
 
 The initial frozen dataset remains useful even if a future architecture
 outperforms it: it documents the original missing-mode mechanism comparison

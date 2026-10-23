@@ -124,4 +124,6 @@ postponed.
 Validation at the time of the study: 34 tests passed, including declared training-start/loss semantics,
 hybrid gradients and selection, rank Parseval consistency, missing-mode
 handling, and the spectral unitary/gradient regression. The later repository
-stabilization moved supporting documents into `materials/documents/`.
+stabilization moved supporting documents into `materials/documents/`. Those
+supporting notes now remain in the consolidated development baseline; see
+[BRANCHES.md](BRANCHES.md) for recovery from the paper-focused checkout.
