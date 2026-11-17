@@ -39,6 +39,14 @@ has 36 audited quantum/DDPM pairs. The [working report](EUCLIDEAN_BENCHMARK_REPO
 records accurate encoded-state reconstruction but poor raw-data quality under
 the fixed chart/readout. This exploratory side study does not replace the
 controlled E5 restart or close its gates; its held-out tests are now consumed.
+The user-authorized [chart/readout diagnosis](protocols/EUCLIDEAN_CHART_V1.md)
+is also complete, with fresh validation/confirmation data, exact continuous
+POVM sampling and no reverse-channel training. The
+[report](EUCLIDEAN_CHART_REPORT.md) records 16.5–81.5% held-out SW1 reductions
+for selected sinh-radial adapters at j=5/2, but unresolved support structure:
+the selected ring adapter increases hole mass despite lowering SW1. These
+representation-only spin controls do not constitute a trained capacity sweep
+or close E5; confirmation observations are consumed.
 
 Completed protocols: [`supervision screen`](protocols/TWO_SPIN_SUPERVISION_V1.md),
 [`held-out confirmation`](protocols/TWO_SPIN_CONFIRMATION_V1.md), and
@@ -474,6 +482,33 @@ experiment complete because code exists or a task can run.
 
 ### Session log and current status
 
+- 2026-11-17: completed the user-authorized
+  [Euclidean chart/readout study](EUCLIDEAN_CHART_REPORT.md), protocol
+  `EUCLIDEAN_CHART_V1`, with 378 screen cases and 162 closed-confirmation
+  cases on six fresh 2D families, three calibrations and four continuous-POVM
+  batches each. Final screen is
+  `outputs/experiments/euclidean_chart_v1_screen_20261117_v2`; confirmation is
+  `outputs/experiments/euclidean_chart_v1_confirm_20261117`. Ordinary stereo
+  is geometrically invertible but generically induces infinite second
+  moments under coherent readout; the sinh-radial variant has exponentially
+  bounded decoded tails. Joint rotation invariance was checked; a fresh
+  angular control retains two significant modes at j=5/2. Validation-only
+  scale selection confirms 16.5–81.5% SW1 reductions at j=5/2, with all six
+  relative adapter gates passing. These gates do not establish faithful
+  support: a post-hoc ring check finds 26.8% mass inside radius 1 versus
+  0% in the raw test and 6.0% for the old chart; at j=10 it falls to 2.1%
+  under the frozen sinh scale. No reverse channel was fitted or selected.
+  Independent NumPy/SciPy audits pass 477 screen and 260 confirmation hashes;
+  maximum inverse replay errors are 1.47e-10 and 7.86e-11. The initial screen
+  was replayed after correcting the independent verifier's normalization
+  order at the clipped equator; primary scores/selections are identical,
+  with no change to candidates or selection rules. All 112 tests pass.
+  Source fingerprint starts `673fbd51cbb3b14b`; paper evidence and E5 gates
+  remain unchanged. All confirmation observations are consumed; future map
+  selection needs fresh data and explicit structural guardrails.
+  Next action: freeze the E5 local-pretraining/controlled-correlation
+  protocol with a frozen-local reference, total-budget control and
+  marginal/global guardrails.
 - 2026-11-17: implemented and completed the user-authorized
   [Euclidean benchmark point 1](EUCLIDEAN_BENCHMARK_REPORT.md), protocol
   `EUCLIDEAN_BENCHMARK_V1`, run

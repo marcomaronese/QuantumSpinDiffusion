@@ -28,8 +28,24 @@ def sample_coherent_directions(
     """Reparameterized continuous coherent POVM on coherent input states."""
     shape = directions.shape[:-1]
     options = dict(dtype=directions.dtype, device=directions.device, generator=rng)
-    overlap = torch.rand(shape, **options).pow(1 / (two_j + 1))
-    azimuth = 2 * math.pi * torch.rand(shape, **options)
+    return coherent_directions_from_uniforms(
+        directions, two_j, torch.rand(shape, **options), torch.rand(shape, **options),
+    )
+
+
+def coherent_directions_from_uniforms(directions, two_j, radial_uniform, azimuth_uniform):
+    """Exact coherent POVM quantiles, allowing shared independently saved noise."""
+    if (not isinstance(two_j, int) or two_j<0 or directions.shape[-1]!=3
+            or radial_uniform.shape!=directions.shape[:-1]
+            or azimuth_uniform.shape!=radial_uniform.shape):
+        raise ValueError("invalid spin or quantile shapes")
+    if (not torch.isfinite(directions).all() or not torch.isfinite(radial_uniform).all()
+            or not torch.isfinite(azimuth_uniform).all()
+            or torch.any((radial_uniform<0) | (radial_uniform>1))
+            or torch.any((azimuth_uniform<0) | (azimuth_uniform>1))):
+        raise ValueError("invalid directions or uniform quantiles")
+    overlap = radial_uniform.pow(1 / (two_j + 1))
+    azimuth = 2 * math.pi * azimuth_uniform
     cosine = (2 * overlap - 1).unsqueeze(-1)
     sine = (2 * torch.sqrt(overlap * (1 - overlap))).unsqueeze(-1)
     axes = torch.eye(3, dtype=directions.dtype, device=directions.device)

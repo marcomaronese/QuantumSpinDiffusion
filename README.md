@@ -58,6 +58,10 @@ The user-requested [synthetic 1D/2D benchmark](notes/EUCLIDEAN_BENCHMARK_REPORT.
 is a separate exploratory result: 36 audited quantum/DDPM pairs show accurate
 encoded-state reconstruction but poor raw-data quality under the fixed
 Euclidean chart and coherent readout. It does not close the paper's gates.
+The follow-up [chart/readout study](notes/EUCLIDEAN_CHART_REPORT.md) confirms
+substantial scalar-error improvements with a radial sinh adapter, while
+showing that low-spin annulus/support structure is still not recovered.
+It studies the representation only, without fitting reverse channels.
 
 Rebuild/audit the manuscript and generate distribution packages with:
 

@@ -28,6 +28,11 @@ euclidea resta limitata dalla codifica/lettura provata. Non è una replica dei
 numeri QELM o una soluzione validata del problema. La variante sintetica
 condizionata richiede ancora una pipeline generica per le classi.
 
+Il successivo [studio della mappa e della lettura](EUCLIDEAN_CHART_REPORT.md),
+senza addestramenti inversi, conferma miglioramenti dell'errore con una
+variante radiale sinh della stereografica. Restano difetti di struttura a
+basso spin; non è ancora una nuova esecuzione del benchmark generativo.
+
 Riferimenti: [codifica a singolo spin](../src/spin_quantum_diffusion/quantum/single_spin.py),
 [codifica correlata](../src/spin_quantum_diffusion/quantum/correlated.py).
 

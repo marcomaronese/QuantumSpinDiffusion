@@ -65,6 +65,39 @@ observations without touching the sealed run with `tasks.plot_synthetic_benchmar
 arguments for a separate post-hoc exact weighted-transport check between the
 two declared POVM grids; it creates no fit or new sample.
 
+## Euclidean charts through the continuous coherent POVM
+
+The [chart/readout protocol](../notes/protocols/EUCLIDEAN_CHART_V1.md) studies
+the original bounded map, stereographic maps and a radial sinh modification,
+without fitting reverse channels. Scale selection is validation-only at
+j=5/2; larger spins are representation controls. The continuous kernel
+sampler avoids a readout grid and saves common source indices and uniform
+quantiles so the output can be independently reconstructed.
+
+```bash
+MPLCONFIGDIR=/tmp/spin-chart-matplotlib .venv/bin/python -m tasks.euclidean_chart_study \
+  --phase screen --outdir outputs/experiments/euclidean_chart_screen_new
+OPENBLAS_NUM_THREADS=1 .venv/bin/python -m tasks.validate_euclidean_chart \
+  --study-dir outputs/experiments/euclidean_chart_screen_new
+MPLCONFIGDIR=/tmp/spin-chart-matplotlib .venv/bin/python -m tasks.euclidean_chart_study \
+  --phase confirm --screen-dir outputs/experiments/euclidean_chart_screen_new \
+  --outdir outputs/experiments/euclidean_chart_confirmation_new
+OPENBLAS_NUM_THREADS=1 .venv/bin/python -m tasks.validate_euclidean_chart \
+  --study-dir outputs/experiments/euclidean_chart_confirmation_new
+```
+
+Use fresh directories. The second phase requires the audited screen and
+identical source fingerprint, and preserves its selection hash before
+generating new confirmation observations. `--smoke` is a separate reduced
+engineering identity and must be used consistently in both phases. The
+[working analysis](../notes/EUCLIDEAN_CHART_REPORT.md) distinguishes geometric
+invertibility from finite-spin smoothing, ordinary stereo's infinite second
+moments, and the scope of global rotation invariance.
+`tasks.summarize_euclidean_chart` takes `--screen-dir`, `--confirmation-dir`
+and a fresh `--outdir` to document the predeclared adapter gates and a separate
+post-hoc annulus-hole diagnostic from saved observations. Reduced SW1 is not
+treated as proof of faithful support recovery.
+
 ## Historical studies and supporting controls
 
 | Module | Paper or plan role |
