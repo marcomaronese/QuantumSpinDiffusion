@@ -206,8 +206,10 @@ def build_two_spin_reverse_generators(
     operators: Sequence[torch.Tensor],
     identity: torch.Tensor,
     include_direct_interactions: bool,
+    *,
+    separate_ancilla_couplings: bool = False,
 ) -> tuple[list[torch.Tensor], list[str]]:
-    """Build a shared-ancilla two-spin ansatz with an interaction ablation."""
+    """Build shared-ancilla controls with collective or per-spin couplings."""
     Jx, Jy, Jz = operators
     X = torch.tensor([[0, 1], [1, 0]], dtype=CDTYPE)
     Y = torch.tensor([[0, -1j], [1j, 0]], dtype=CDTYPE)
@@ -237,14 +239,14 @@ def build_two_spin_reverse_generators(
                 ("Jx1Jx2_plus_Jy1Jy2", first[0] @ second[0] + first[1] @ second[1]),
             ]
         )
-    totals = [left + right for left, right in zip(first, second, strict=True)]
-    for label, total, pauli in zip(
-        ["Jx_total_Xa", "Jy_total_Ya", "Jz_total_Za"],
-        totals,
-        [X, Y, Z],
-        strict=True,
-    ):
-        named.append((label, torch.kron(total.contiguous(), pauli)))
+    if separate_ancilla_couplings:
+        couplings = [("1_", first), ("2_", second)]
+    else:
+        couplings = [("_total_", [left + right for left, right in zip(first, second, strict=True)])]
+    for suffix, controls in couplings:
+        for axis, operator, pauli in zip("xyz", controls, (X, Y, Z), strict=True):
+            name = f"J{axis}{suffix}{axis.upper()}a"
+            named.append((name, torch.kron(operator.contiguous(), pauli)))
     named.extend(
         [
             ("I_Xa", torch.kron(joint_identity.contiguous(), X)),

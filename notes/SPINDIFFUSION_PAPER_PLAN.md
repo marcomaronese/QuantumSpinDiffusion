@@ -1,7 +1,7 @@
 # SpinDiffusion paper plan — authoritative research roadmap
 
 Status: active research roadmap; execution status is recorded below.
-Last reviewed: 2026-10-23.
+Last reviewed: 2026-11-17.
 
 This is the single authoritative Codex plan for developing the SpinDiffusion
 paper. Read it before research work and update its status, evidence links,
@@ -26,8 +26,12 @@ supervision screen and independent-observation
 confirmation passed their bounded improvement gate on 2026-10-22; they do not
 pass the competitive-correlation or hardware gates. The E0 frozen-evidence audit
 also passed on 2026-10-22;
-historical single-spin successes are not prerequisites to rerun. Do not
-start hardware, scaling, or latent-data work while the earlier gates are open.
+historical single-spin successes are not prerequisites to rerun. Hardware,
+scaling, and latent-data studies for the paper remain subject to the earlier
+gates. At the user's request, the [binary MNIST engineering pilot](../tasks/mnist_binary/README.md)
+was implemented and run ahead of that sequence. Its outputs are exploratory.
+The user-requested [directional spin grid](protocols/SPIN_GRID_V1.md) is also
+exploratory and precedes the controlled E5 redesign.
 
 Completed protocols: [`supervision screen`](protocols/TWO_SPIN_SUPERVISION_V1.md),
 [`held-out confirmation`](protocols/TWO_SPIN_CONFIRMATION_V1.md), and
@@ -308,7 +312,7 @@ supported construction and diagnostics; list missing evidence explicitly.
 
 ## Paper sections and figure production tracker
 
-Reviewed: 2026-10-23. This tracker is part of the authoritative plan, not a
+Reviewed: 2026-11-10. This tracker is part of the authoritative plan, not a
 second task queue. Update it after each study, evidence promotion, or manuscript
 revision. An existing section is not proof that its research gate is complete.
 The manuscript currently contains **three figures and three scientific tables**,
@@ -342,6 +346,15 @@ and venue space warrant. They do not impose eight main-text figures or new
 experiments beyond E0–E6. Existing figure numbers and labels stay unchanged
 until manuscript integration. “Present” below means present with historical
 audited support, not completion of every broader phase.
+
+Working visualization support added on 2026-11-10: real spherical-harmonic
+atlases and encoded-target/reconstructed Husimi-Q heatmaps on unit
+spin-coherent direction spheres, including opposite views and signed residuals.
+The saved-state renderer is documented in [`tasks/README.md`](../tasks/README.md#bloch-direction-sphere-heatmaps-saved-states-only).
+An illustrative historical j=2.5, seed-7, mixed-prior/final-only, 500-epoch run
+is rendered under `outputs/experiments/bloch_heatmaps_20261110_v2/` with input
+hashes and exact plotted fields. This supports figure preparation for F2/F3;
+it adds no experiment, gate result, or promoted manuscript figure.
 
 | Planning ID / destination | Panels or scientific question | Current state and dependency |
 |---|---|---|
@@ -454,6 +467,132 @@ experiment complete because code exists or a task can run.
 
 ### Session log and current status
 
+- 2026-11-17: recorded the user-requested comparison with arXiv:2611.20139
+  as [seven numbered benchmark groups](QELM_BENCHMARK_FEASIBILITY.md),
+  distinguishing available binary-MNIST/capacity/sampling workflows from
+  missing dataset adapters, MMD/LeNet-FID, RFF and architecture-specific
+  controls. This is a code-readiness assessment, not a frozen protocol or
+  experimental result; no scientific study was launched or evidence
+  promoted. Branch review confirms `codex/paper` as the active workstream.
+  Repository synchronization includes the previously local binary-MNIST,
+  spin-grid and plotting workflows and the difficulty register; the full
+  `.venv/bin/python -m pytest -q` suite passes (85 tests).
+  Next action: freeze the E5 local-pretraining/controlled-correlation
+  protocol with a frozen-local reference, total-budget control and
+  marginal/global guardrails.
+- 2026-11-15: clarified the user's proposal 8.2 as weaker isotropic diffusion
+  for progressively higher-rank training groups, rather than an unspecified
+  spectral counterterm. The [difficulty register](DIFFICOLTA_E_SOLUZIONI.md)
+  records the derived candidate scale `D_b*t_b = kappa/[L_b*(L_b+1)]`, which
+  bounds attenuation within each task, and distinguishes it from cumulative
+  attenuation, assembled-chain quality and terminal-prior matching. This is
+  a mathematical design note, not experimental validation; no code, runs,
+  method selection or paper evidence changed. Next action: freeze the E5
+  local-pretraining/controlled-correlation protocol with a frozen-local
+  reference, total-budget control and marginal/global guardrails.
+- 2026-11-15: recorded the user's clarification that staged harmonic training
+  should also be considered with attenuation-controlling diffusion terms.
+  [Proposal 8.2 in the difficulty register](DIFFICOLTA_E_SOLUZIONI.md)
+  distinguishes a forward-dynamics modification from loss weighting; the
+  exact terms remain unspecified. It records the unchanged final attenuation
+  under time repartition at fixed integrated diffusion, physical spectrum
+  constraints, terminal-prior checks and controls separating both effects.
+  No implementation, experiment, method selection or evidence promotion.
+  Next action: freeze the E5 local-pretraining/controlled-correlation protocol
+  with a frozen-local reference, total-budget control and marginal/global
+  guardrails.
+- 2026-11-15: documented the user's proposed progressive harmonic-band
+  curriculum as proposal 8.1 in the
+  [difficulty register](DIFFICOLTA_E_SOLUZIONI.md). The candidate gradually
+  adds finer multipole losses on the assembled output from `I/d`, retaining
+  earlier bands and global checks. It is distinct from teacher-forced
+  temporal-step training and does not remove encoding or universal-inversion
+  limits. Budget-paired controls and acceptance requirements are recorded for
+  later protocol design. No code, experiment, selected method, scientific
+  gate or paper evidence changed. Next action: freeze the E5
+  local-pretraining/controlled-correlation protocol with a frozen-local
+  reference, total-budget control and marginal/global guardrails.
+- 2026-11-15: documentation-only work at the user's request: created the
+  [difficulty and candidate-solution register](DIFFICOLTA_E_SOLUZIONI.md),
+  preserving twelve numbered points with source references and space for
+  proposed solutions, acceptance checks and outcomes. The register separates
+  observed results, missing comparisons, mathematical constraints and untested
+  risks; it does not define a second execution queue. No experiment was run,
+  no solution was selected and no scientific gate or paper evidence changed.
+  Next action: freeze the E5 local-pretraining/controlled-correlation protocol
+  with a frozen-local reference, total-budget control and marginal/global
+  guardrails.
+- 2026-11-11: rendered saved spin-grid target and generated distributions in
+  `outputs/experiments/spin_grid_distributions_20261111/`, using the first
+  protocol seed (107), three spins and the largest saved local spin (`j=5/2`).
+  The first-site figure shows the theoretical raw marginal and the validation
+  encoding/generated Husimi densities with declared linear color scales.
+  The joint figure retains all 64 unconditional region probabilities.
+  Five input hashes, marginal normalization and the saved TV metric replay
+  pass; both PNG figures were visually inspected and all 85 tests pass.
+  Next action: freeze the E5 local-pretraining/controlled-correlation protocol
+  with a frozen-local reference, total-budget control and marginal/global
+  guardrails.
+- 2026-11-11: completed the user-requested [directional spin grid](protocols/SPIN_GRID_V1.md)
+  in `outputs/experiments/spin_grid_v1_20261111/`. The common three-direction
+  target combines four components per site, pairwise dependence and a
+  modular three-site constraint. All 45 fits completed across `N=1,2,3`,
+  five local spins `j=1/2` through `5/2`, and three paired realizations.
+  At `N=3`, increasing `j` from `1/2` to `5/2` reduced mean raw-to-encoded
+  region TV from 0.667 to 0.501 and increased encoded-to-model TV from
+  0.011 to 0.295. Raw-to-model TV across that row was 0.657–0.669. The
+  first-pair comparison and the third-order diagnostic quantify persistent
+  correlation error at the fixed 160-update budget. The finer-grid check
+  changes joint TV by at most 0.00230 between corresponding readout
+  distributions. Independent NumPy/SciPy replay verifies all 45 fits and
+  163 sealed artifacts, with a maximum trajectory discrepancy of `2.21e−14`.
+  All 84 tests and 1,269 frozen evidence hashes pass. The working figure is
+  `performance_heatmap.pdf` in the run directory. This grid has descriptive
+  validation results, a factorized reference and sealed test identities.
+  Next action: freeze the E5 local-pretraining/controlled-correlation
+  protocol with a frozen-local reference, total-budget control and
+  marginal/global guardrails.
+- 2026-11-11: completed the user-requested [extended binary MNIST pilot](../tasks/mnist_binary/README.md#training-esteso-del-2026-11-11)
+  in `outputs/experiments/mnist_binary_extended_20261111/`. Both extended
+  variants used 100 codec epochs and 3,000 inverse updates per seed. With
+  paired seeds 7 and 19 on the same split, exact Born-weighted classifier
+  agreement averaged 85.2% (classic short), 84.7% (classic long), and 96.7%
+  (richer model with j=5/2, six collisions, wider networks and a Born loss).
+  Mean validation Born total variation was 0.112, 0.122 and 0.035,
+  respectively. Within-class pixel dispersion is still smaller than in the
+  real validation images. A terminated rich seed-7 attempt was retained and
+  rerun to the full budget. The evaluator verifies saved state physicality,
+  Born probabilities and checkpoint replay and records artifact hashes in
+  `evaluation/comparison.json`. Rich seed 19 is the demonstration checkpoint.
+  The official MNIST test and the paper evidence remain sealed. Next action:
+  freeze the E5 local-pretraining/controlled-correlation protocol with a
+  frozen-local reference, total-budget control and marginal/global guardrails.
+- 2026-11-10: implemented and ran the user-requested binary MNIST engineering
+  pilot `mnist_binary_01_v1`. A classical autoencoder learns two directions,
+  the conditional MLP controls the three reverse spin collisions, and a
+  complete product coherent POVM supplies the decoder input. The run uses
+  11,665 training and 1,000 validation images from the official training
+  split and records their indices and source hashes. Validation Born total
+  variation is 0.086 for 0 and 0.107 for 1. Visual inspection shows soft
+  strokes and occasional class ambiguity. The saved checkpoint independently
+  generated 64 images in `mnist_binary_01_seed42`. All 79 tests, 18 saved-state
+  physicality checks and 1269 frozen-evidence hashes pass. Paper evidence
+  and scientific gate status are carried forward from the previous entry.
+  Next action: freeze the E5 local-pretraining/controlled-correlation protocol
+  with a frozen-local reference, total-budget control and marginal/global
+  guardrails.
+- 2026-11-10: added reusable unit-sphere heatmaps, real-harmonic atlases and
+  saved-state rendering via `tasks.plot_bloch_heatmaps`; future single-spin
+  CLI runs also save a target/model/residual sphere comparison. Rendered the
+  predeclared illustrative historical seed-7, j=2.5, 500-epoch final-only run
+  from saved mixed-prior states into
+  `outputs/experiments/bloch_heatmaps_20261110_v2/` (PNG/PDF, exact fields,
+  source/input hashes and readout conventions). Inspected both opposite views;
+  77 tests and all 1269 frozen-evidence hashes pass. No training, new
+  observations, scientific selection, evidence promotion or manuscript change.
+  E5's no-go and closed confirmation remain unchanged. Next action: freeze the
+  E5 local-pretraining/controlled-correlation protocol with a frozen-local
+  reference, total-budget control and marginal/global guardrails.
 - 2026-10-23: completed `two_spin_local_control_v1` from clean source `b2250b0`:
   15 quantum fits, five fixed baselines on each of five fresh datasets, 40 model
   rows/80 metric evaluations. Mean validation trace distance: independent

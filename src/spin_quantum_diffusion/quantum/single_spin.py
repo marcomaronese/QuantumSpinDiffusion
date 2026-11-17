@@ -63,6 +63,7 @@ from .multipoles import (
     multipole_trajectory,
 )
 from .config import ExperimentConfig, reproducibility_metadata
+from .sphere_plots import plot_husimi_comparison
 from .training import SUPERVISION_MODES, reverse_training_loss
 from ..classical.diffusion import add_classical_arguments, config_from_arguments
 from ..classical.benchmark import single_spin_benchmark, write_classical_comparison
@@ -888,6 +889,12 @@ def main():
         "Generated spherical distribution (Husimi Q)",
         outdir / "generated_Q.png",
     )
+    sphere_figure = plot_husimi_comparison(
+        th, ph, Q_target, Q_generated,
+        title=f"Target and reconstruction | j = {j:g}, seed = {args.seed}",
+    )
+    sphere_figure.savefig(outdir / "bloch_comparison.png", dpi=180)
+    plt.close(sphere_figure)
     plot_training(history, outdir / "training_loss.png")
     plot_multipole_power(times, powers, outdir / "multipole_power.png")
     plot_multipole_decay_comparison(
