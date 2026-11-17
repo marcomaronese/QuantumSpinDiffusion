@@ -1,6 +1,7 @@
 # Confronto con i benchmark QELM: sette punti di fattibilità
 
-Valutazione del codice disponibile al 2026-11-17, senza eseguire gli studi.
+Registro di fattibilità al 2026-11-17, aggiornato dopo l'esecuzione del punto 1
+su autorizzazione dell'utente. Gli altri sei gruppi non sono stati eseguiti.
 La numerazione conserva i sette gruppi discussi con l'utente; non è un elenco
 esaustivo di tutti gli esperimenti del paper.
 
@@ -11,21 +12,21 @@ classico addestrabile. SpinDiffusion apprende invece canali di ricostruzione
 di stati e campiona direzioni mediante il readout coerente. I confronti devono
 quindi dichiarare rappresentazione, lettura, budget e metriche comuni.
 
-Questa nota registra la fattibilità tecnica, non nuovi risultati o un
-protocollo approvato. Le priorità restano nel
+Questa nota registra la fattibilità tecnica. Protocollo e risultati del punto 1
+sono nel [rapporto dedicato](EUCLIDEAN_BENCHMARK_REPORT.md). Le priorità restano nel
 [piano autorevole](SPINDIFFUSION_PAPER_PLAN.md); le conclusioni supportate
 restano nel [claim ledger](../materials/paper/CLAIMS.md).
 
 ## 1. Distribuzioni sintetiche in una e due dimensioni
 
-**Stato: richiedono adattamenti.** I test gaussiani, multimodali, ring e
-two moons sono problemi possibili per un confronto, ma gli entry point
-attuali generano dati direzionali su sfere e prodotti di sfere. Mancano
-gli adattatori per i dataset euclidei del paper e per riportare i campioni
-nelle coordinate originali. Per distribuzioni non compatte vanno dichiarati
-anche la trasformazione o il troncamento delle code e il relativo errore.
-La variante sintetica condizionata richiederebbe inoltre una pipeline
-generica per le classi, oggi assente.
+**Stato: implementato ed eseguito per dodici famiglie incondizionate.**
+Il nuovo entry point `tasks.synthetic_benchmark` usa un adattatore sferico
+fisso, rende esplicito il troncamento delle code e riporta i campioni nelle
+coordinate originali. Sono completati 36 confronti appaiati con DDPM e replay
+indipendente: gli stati sono ricostruiti con piccolo errore, mentre la qualità
+euclidea resta limitata dalla codifica/lettura provata. Non è una replica dei
+numeri QELM o una soluzione validata del problema. La variante sintetica
+condizionata richiede ancora una pipeline generica per le classi.
 
 Riferimenti: [codifica a singolo spin](../src/spin_quantum_diffusion/quantum/single_spin.py),
 [codifica correlata](../src/spin_quantum_diffusion/quantum/correlated.py).
@@ -57,12 +58,14 @@ Riferimenti: [configurazione del modello immagini](../tasks/mnist_binary/model.p
 
 ## 4. Valutazione tramite MMD e LeNet-FID
 
-**Stato: non implementata come nel paper.** Le metriche attuali comprendono
+**Stato: disponibile una parte per i dati sintetici; LeNet-FID assente.**
+Il punto 1 aggiunge W1/sliced W1 e la discrepanza energy/MMD con stimatore V
+per campioni 1D/2D. Non aggiunge la loss MMD al training quantistico o il
+valutatore LeNet-FID delle immagini. Le altre metriche comprendono
 errori di stato, variazione totale delle probabilità di Born, errori di
-ricostruzione, accuratezza diagnostica e dispersione dei pixel. Non sono
-presenti la valutazione MMD e la pipeline LeNet-FID del paper. Il
-classificatore del pilota non le sostituisce. Aggiungerle per la valutazione
-è distinto dal cambiare la loss di addestramento del modello.
+ricostruzione, accuratezza diagnostica e dispersione dei pixel. Il
+classificatore del pilota non sostituisce LeNet-FID. La nuova valutazione
+sintetica resta distinta dal cambiamento della loss di addestramento.
 
 Riferimenti: [valutazione MNIST](../tasks/mnist_binary/__main__.py),
 [confronto esteso](../tasks/mnist_binary/evaluate_extended.py).

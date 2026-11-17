@@ -54,6 +54,10 @@ documented in [the research reports](notes/README.md); they are working results,
 not yet additions to the manuscript's frozen evidence. The current next step
 is to freeze the E5 local-pretraining/controlled-correlation protocol after the
 independent-local comparison's audited no-go, as recorded in the plan.
+The user-requested [synthetic 1D/2D benchmark](notes/EUCLIDEAN_BENCHMARK_REPORT.md)
+is a separate exploratory result: 36 audited quantum/DDPM pairs show accurate
+encoded-state reconstruction but poor raw-data quality under the fixed
+Euclidean chart and coherent readout. It does not close the paper's gates.
 
 Rebuild/audit the manuscript and generate distribution packages with:
 

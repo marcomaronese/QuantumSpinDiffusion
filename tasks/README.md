@@ -33,6 +33,38 @@ The local outputs must exist; they are not part of a fresh clone. The
 [supervision report](../notes/TWO_SPIN_SUPERVISION_REPORT.md) records their
 hashes, numerical findings and limits.
 
+## Euclidean synthetic benchmark (QELM comparison point 1)
+
+The user-authorized [frozen protocol](../notes/protocols/EUCLIDEAN_BENCHMARK_V1.md)
+covers twelve unconditional 1D/2D target families, three realizations each,
+a fixed j=5/2 model and the existing classical directional DDPM. A fixed
+train-scaled bounded chart exposes radial clipping; target and learned states
+share a complete coherent POVM and an affine coordinate decoder. Raw-data,
+encoded-oracle and learned-model discrepancies are recorded separately.
+This exploratory side study does not close the paper's E5 gate.
+
+```bash
+MPLCONFIGDIR=/tmp/spin-synthetic-matplotlib .venv/bin/python -m tasks.synthetic_benchmark \
+  --outdir outputs/experiments/euclidean_benchmark_v1_new
+.venv/bin/python -m tasks.validate_synthetic_benchmark \
+  --study-dir outputs/experiments/euclidean_benchmark_v1_new
+```
+
+Use a fresh output directory. `--smoke` runs two separate engineering cases
+with two optimizer updates. All scientific fits complete before the held-out
+test phase. The run saves datasets/chart identities, frozen source/protocol,
+parameters, trajectories, sampling outcomes, primary/secondary metrics,
+resources, figures and checksums. The independent NumPy/SciPy replay checks
+channel and heat trajectories, physicality, POVM completeness, Born draws,
+decoded samples, grid sensitivity and primary sample metrics.
+
+The [completed working report](../notes/EUCLIDEAN_BENCHMARK_REPORT.md) records
+the fixed configuration's representation/readout limitation. Render saved
+observations without touching the sealed run with `tasks.plot_synthetic_benchmark`
+(`--study-dir`, fresh `--outdir`). `tasks.diagnose_synthetic_grid` uses the same
+arguments for a separate post-hoc exact weighted-transport check between the
+two declared POVM grids; it creates no fit or new sample.
+
 ## Historical studies and supporting controls
 
 | Module | Paper or plan role |

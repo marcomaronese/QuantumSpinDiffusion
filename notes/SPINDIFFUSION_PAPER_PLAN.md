@@ -32,6 +32,13 @@ gates. At the user's request, the [binary MNIST engineering pilot](../tasks/mnis
 was implemented and run ahead of that sequence. Its outputs are exploratory.
 The user-requested [directional spin grid](protocols/SPIN_GRID_V1.md) is also
 exploratory and precedes the controlled E5 redesign.
+The user-authorized point 1 of the
+[QELM benchmark comparison](QELM_BENCHMARK_FEASIBILITY.md) is complete:
+the [Euclidean synthetic benchmark](protocols/EUCLIDEAN_BENCHMARK_V1.md)
+has 36 audited quantum/DDPM pairs. The [working report](EUCLIDEAN_BENCHMARK_REPORT.md)
+records accurate encoded-state reconstruction but poor raw-data quality under
+the fixed chart/readout. This exploratory side study does not replace the
+controlled E5 restart or close its gates; its held-out tests are now consumed.
 
 Completed protocols: [`supervision screen`](protocols/TWO_SPIN_SUPERVISION_V1.md),
 [`held-out confirmation`](protocols/TWO_SPIN_CONFIRMATION_V1.md), and
@@ -467,6 +474,27 @@ experiment complete because code exists or a task can run.
 
 ### Session log and current status
 
+- 2026-11-17: implemented and completed the user-authorized
+  [Euclidean benchmark point 1](EUCLIDEAN_BENCHMARK_REPORT.md), protocol
+  `EUCLIDEAN_BENCHMARK_V1`, run
+  `outputs/experiments/euclidean_benchmark_v1_20261117`. Twelve unconditional
+  1D/2D families and three realizations give 36 quantum/DDPM pairs, all fitted
+  before held-out evaluation. At fixed j=5/2, mean model-test trace distance
+  is 0.01529 and Born TV is 0.00842, while raw W1/sliced-W1 remains close to
+  the degraded encoded oracle (family means 0.383–0.827 for the model versus
+  0.025–0.060 for real-versus-real). The bounded chart, clipping and coherent
+  readout are explicit; this is not a QELM replication, an advantage claim or
+  a universal representational limit. Independent NumPy/SciPy replay passes
+  36 pairs and 316 artifact hashes, maximum trajectory error 3.29e-14.
+  The grid-sensitive binned TV prompted a separately saved post-hoc exact
+  transport diagnostic: coarse/fine weighted W1 differs by at most 0.01642,
+  with no new fits or samples. Saved-observation figures were inspected;
+  102 tests pass. Source fingerprint starts `22111a8261302ba0`; manuscript
+  evidence and scientific gates are unchanged. Tests in this study are
+  consumed and must not be reused for future selection/confirmation.
+  Next action: freeze the E5 local-pretraining/controlled-correlation
+  protocol with a frozen-local reference, total-budget control and
+  marginal/global guardrails.
 - 2026-11-17: recorded the user-requested comparison with arXiv:2611.20139
   as [seven numbered benchmark groups](QELM_BENCHMARK_FEASIBILITY.md),
   distinguishing available binary-MNIST/capacity/sampling workflows from
